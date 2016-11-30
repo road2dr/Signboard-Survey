@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#cccccc</color>
+    <color name="colorAccent">#ff3300</color>
+
+    <color name="light_gray">#e4e4e4</color>
+
+    <color name="label_seperator">#aeaeae</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="secondary_text">#757575</color>
+
+
+    <color name="label_text_color">#000000</color>
+    <color name="postit_color_1">#FFFFA5</color>
+    <color name="postit_color_2">#E7FFC0</color>
+    <color name="postit_color_3">#FFD2FF</color>
+
+</resources>

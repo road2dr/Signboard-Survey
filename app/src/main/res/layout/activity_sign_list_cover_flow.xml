@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow
+        android:id="@+id/sign_cover_flow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:coverWidth="200dp"
+        app:coverHeight="300dp"/>
+
+    
+</LinearLayout>

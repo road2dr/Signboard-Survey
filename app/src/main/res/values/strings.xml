@@ -185,6 +185,7 @@
     <string name="register_shop_count">등록한 업소 정보</string>
     <string name="shut_down_shop_count">폐업 처리한 업소</string>
     <string name="survey_result">조사 결과</string>
+    <string name="search_result">검색 결과</string>
     <string name="more">더보기</string>
     <string name="building">건물</string>
     <string name="minus_mark">-</string>

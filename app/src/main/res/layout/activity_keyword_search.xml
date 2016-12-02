@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="50dp"
+        android:padding="7dp">
+        <RelativeLayout
+            android:id="@+id/keyword_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/bg_edt_tv_simple"
+            android:addStatesFromChildren="true">
+
+            <com.mjict.signboardsurvey.widget.JAutoCompleteTextView
+                android:id="@+id/keyword_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/search_button"
+                android:background="@null"
+                android:maxLines="1"
+                android:inputType="text"/>
+            <ImageButton
+                android:id="@+id/search_button"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_search"
+                android:background="@null"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -12,7 +12,7 @@ import com.mjict.signboardsurvey.R;
 public class RecentSignViewHolder {
     private View parent;
     private ImageView imageView;
-    private TextView shopNameTextView;
+    private TextView contentTextView;
     private TextView typeTextView;
     private TextView resultTextView;
 
@@ -27,11 +27,11 @@ public class RecentSignViewHolder {
         return imageView;
     }
 
-    public TextView getShopNameTextView() {
-        if(shopNameTextView == null)
-            shopNameTextView = (TextView)parent.findViewById(R.id.shop_name_text_view);
+    public TextView getContentTextView() {
+        if(contentTextView == null)
+            contentTextView = (TextView)parent.findViewById(R.id.content_text_view);
 
-        return shopNameTextView;
+        return contentTextView;
     }
 
     public TextView getTypeTextView() {

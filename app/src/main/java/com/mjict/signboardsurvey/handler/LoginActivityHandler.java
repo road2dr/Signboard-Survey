@@ -31,6 +31,9 @@ public class LoginActivityHandler extends DefaultSActivityHandler {
         activity.setLoginButtonOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // temp TODO 나중에 제거 => 비번 체크 없이 로그인
+                goToSummary();
+
                 User user = ((UserWrapper)activity.getSelectedUser()).user;
                 String password = activity.getInputPassword();
                 if(user == null) {

@@ -15,14 +15,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
+            android:clickable="false"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/bg_edt_tv_simple"
-            android:addStatesFromChildren="true">
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/search_button"
-                android:background="@null"/>
+            android:background="@drawable/bg_edt_tv_simple">
             <ImageButton
                 android:id="@+id/search_button"
                 android:layout_width="50dp"
@@ -85,7 +80,8 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:text="@string/more"
-                        android:gravity="center_vertical"/>
+                        android:gravity="center_vertical"
+                        android:visibility="gone"/>
                 </RelativeLayout>
                 <com.mjict.signboardsurvey.widget.HorizontalListView
                     android:id="@+id/recent_building_list_view"
@@ -116,7 +112,8 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:text="@string/more"
-                        android:gravity="center_vertical"/>
+                        android:gravity="center_vertical"
+                        android:visibility="gone"/>
                 </RelativeLayout>
                 <com.mjict.signboardsurvey.widget.HorizontalListView
                     android:id="@+id/recent_sign_list_view"

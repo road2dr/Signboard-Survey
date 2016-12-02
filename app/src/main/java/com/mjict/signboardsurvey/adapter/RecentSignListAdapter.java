@@ -10,11 +10,12 @@ import android.widget.ArrayAdapter;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.adapter.holder.RecentSignViewHolder;
 import com.mjict.signboardsurvey.model.BitmapSign;
+import com.mjict.signboardsurvey.model.ui.RecentSign;
 
 /**
  * Created by Junseo on 2016-11-10.
  */
-public class RecentSignListAdapter extends ArrayAdapter<BitmapSign> {
+public class RecentSignListAdapter extends ArrayAdapter<RecentSign> {
 
     private LayoutInflater inflater = null;
     private Context context;
@@ -49,9 +50,9 @@ public class RecentSignListAdapter extends ArrayAdapter<BitmapSign> {
             holder = (RecentSignViewHolder)view.getTag();
         }
 
-        BitmapSign s = getItem(position);
+        RecentSign s = getItem(position);
         holder.getImageView().setImageBitmap(s.image);
-        holder.getShopNameTextView().setText(s.name);
+        holder.getContentTextView().setText(s.content);
         holder.getTypeTextView().setText(s.type);
         holder.getResultTextView().setText(s.result);
 

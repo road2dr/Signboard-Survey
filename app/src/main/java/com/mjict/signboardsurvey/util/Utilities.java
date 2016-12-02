@@ -1,6 +1,8 @@
 package com.mjict.signboardsurvey.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -338,4 +340,21 @@ public class Utilities {
 //		// 위 조건에 모두 해당 사항이 없으면 디폴드 결과 갑으소
 //		return defaultResult;
 //	}
+
+	public static Bitmap loadImage(String path, int sampleSize) {
+		File file = new File(path);
+		Bitmap image = null;
+		if (file.exists()) {
+			try {
+				BitmapFactory.Options opt = new BitmapFactory.Options();
+				opt.inSampleSize = sampleSize;
+				image = BitmapFactory.decodeFile(path, opt);
+			} catch (Exception e) {
+				e.printStackTrace();
+				image = null;
+			}
+		}
+
+		return image;
+	}
 }

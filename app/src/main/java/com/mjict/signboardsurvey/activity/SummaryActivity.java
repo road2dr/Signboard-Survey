@@ -1,7 +1,6 @@
 package com.mjict.signboardsurvey.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,10 +11,8 @@ import com.mjict.signboardsurvey.adapter.RecentBuildingListAdapter;
 import com.mjict.signboardsurvey.adapter.RecentSignListAdapter;
 import com.mjict.signboardsurvey.adapter.SummaryStatisticsViewPagerAdapter;
 import com.mjict.signboardsurvey.handler.LocalStatisticsActivityHandler;
-import com.mjict.signboardsurvey.handler.SummaryActivityHandler;
-import com.mjict.signboardsurvey.model.BitmapBuilding;
-import com.mjict.signboardsurvey.model.BitmapSign;
-import com.mjict.signboardsurvey.model.RecentSign;
+import com.mjict.signboardsurvey.model.ui.RecentBuilding;
+import com.mjict.signboardsurvey.model.ui.RecentSign;
 import com.mjict.signboardsurvey.sframework.SActivityHandler;
 import com.mjict.signboardsurvey.widget.CircleIndicator;
 import com.mjict.signboardsurvey.widget.HorizontalListView;
@@ -67,22 +64,15 @@ public class SummaryActivity extends SABaseActivity {
         statisticsView = this.findViewById(R.id.statistics_view);
 
 
-        // test
-        recentSignAdapter.add(new RecentSign(R.drawable.test_sign1, "GS25", "가로형", "무허가 요건구비"));
-        recentSignAdapter.add(new RecentSign(R.drawable.test_sign2, "할매국밥", "가로형", "요건불비(수량)"));
-        recentSignAdapter.add(new RecentSign(R.drawable.test_sign3, "명인 순두부", "세로형", "무허가 요건구비"));
-        recentSignAdapter.add(new RecentSign(R.drawable.test_sign4, "야호 노래방", "지주이용", "무허가 요건구비"));
-        recentSignAdapter.add(new RecentSign(R.drawable.test_sign5, "삼성 본사", "가로형", "요건불비(규격)"));
-        recentSignAdapter.add(new RecentSign(R.drawable.test_sign6, "가나 목욕탕", "세로형", "무신고 요건구비"));
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SummaryActivity.this, SearchResultActivity.class);
-                intent.putExtra(SActivityHandler.HANDLER_CLASS, SummaryActivityHandler.class);
-                startActivity(intent);
-            }
-        });
+//        searchButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(SummaryActivity.this, SearchResultActivity.class);
+//                intent.putExtra(SActivityHandler.HANDLER_CLASS, SummaryActivityHandler.class);
+//                startActivity(intent);
+//            }
+//        });
 
         statisticsView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,24 +104,27 @@ public class SummaryActivity extends SABaseActivity {
         recentBuildingListView.setOnItemClickListener(listener);
     }
 
-    public void addToRecentBuilding(BitmapBuilding building) {
+    public void addToRecentBuilding(RecentBuilding building) {
         recentBuildingAdapter.add(building);
     }
 
-    public void setRecentBuildingImage(int pos, Bitmap image) {
-        recentBuildingAdapter.setImage(pos, image);
+    public void clearRecentBuildingList() {
+        recentBuildingAdapter.clear();
     }
 
     public void setRecentSignListOnItemClickListener(AdapterView.OnItemClickListener listener) {
         recentSignListView.setOnItemClickListener(listener);
     }
 
-    public void addToRecentSign(BitmapSign sign) {
-
+    public void addToRecentSign(RecentSign sign) {
+        recentSignAdapter.add(sign);
     }
 
-    public void setRecentSignImage(int pos, Bitmap img) {
-
+    public void clearRecentSignList() {
+        recentSignAdapter.clear();
     }
 
+    public void setSearchViewOnclickListener(View.OnClickListener listener) {
+        searchEditText.setOnClickListener(listener);
+    }
 }

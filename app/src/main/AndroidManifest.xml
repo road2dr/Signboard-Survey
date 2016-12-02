@@ -50,6 +50,13 @@
         </activity>
 
         <activity
+            android:name=".activity.KeywordSearchActivity"
+            android:theme="@style/AppTheme.Base"
+            android:screenOrientation="portrait">
+        </activity>
+
+
+        <activity
             android:name=".activity.SearchResultActivity"
             android:theme="@style/AppTheme.Base"
             android:screenOrientation="portrait">

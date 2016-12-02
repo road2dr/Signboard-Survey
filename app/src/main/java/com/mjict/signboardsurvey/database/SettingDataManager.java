@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @author Junseo
- *
+ * TODO 나중에 MJContext로 이동 시켜야 할 듯
  */
 public class SettingDataManager {
 

@@ -10,13 +10,13 @@ import android.widget.ArrayAdapter;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.adapter.holder.RecentBuildingViewHolder;
 import com.mjict.signboardsurvey.model.BitmapBuilding;
-import com.mjict.signboardsurvey.model.Building;
+import com.mjict.signboardsurvey.model.ui.RecentBuilding;
 
 
 /**
  * Created by Junseo on 2016-11-30.
  */
-public class RecentBuildingListAdapter extends ArrayAdapter<BitmapBuilding> {
+public class RecentBuildingListAdapter extends ArrayAdapter<RecentBuilding> {
 
     private LayoutInflater inflater = null;
     private Context context;
@@ -42,25 +42,18 @@ public class RecentBuildingListAdapter extends ArrayAdapter<BitmapBuilding> {
         View view = convertView;
         RecentBuildingViewHolder holder = null;
         if(view == null) {
-            view = inflater.inflate(R.layout.list_col_recent_sign, parent, false);
+            view = inflater.inflate(R.layout.list_col_recent_building, parent, false);
             holder = new RecentBuildingViewHolder(view);
             view.setTag(holder);
         } else {
             holder = (RecentBuildingViewHolder)view.getTag();
         }
 
-        BitmapBuilding b = getItem(position);
+        RecentBuilding b = getItem(position);
 
-        Bitmap img = b.image;
-        Building building = b.building;
-        String secondBuildingName = building.getSecondBuildingNumber();
-        String bnum = (secondBuildingName != null && !secondBuildingName.equals("")) ? (building.getFirstBuildingNumber()+"-"+secondBuildingName) : building.getFirstBuildingNumber();
-        String name = building.getName().equals("") ? bnum : building.getName();
-        String address = building.getStreetName() + " " + bnum;
-
-        holder.getImageView().setImageBitmap(img);
-        holder.getNameTextView().setText(name);
-        holder.getAddressTextView().setText(address);
+        holder.getImageView().setImageBitmap(b.image);
+        holder.getNameTextView().setText(b.name);
+        holder.getAddressTextView().setText(b.address);
 
 
         return view;

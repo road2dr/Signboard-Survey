@@ -23,6 +23,7 @@ public class MJContext {
 
     private static Queue<Long> recentSigns = new LinkedList<>();
     private static Queue<Long> recentBuildings = new LinkedList<>();
+    private static Queue<String> recentKeywords = new LinkedList<>();
 
     public static User getCurrentUser() {
         return currentUser;
@@ -49,7 +50,7 @@ public class MJContext {
         recentSigns.offer(id);
     }
 
-    public Long[] getRecentSings() {
+    public static Long[] getRecentSings() {
         Long[] ids = new Long[recentSigns.size()];
         ids = recentSigns.toArray(ids);
 
@@ -64,11 +65,27 @@ public class MJContext {
         recentBuildings.offer(id);
     }
 
-    public Long[] getRecentBuildings() {
+    public static Long[] getRecentBuildings() {
         Long[] ids = new Long[recentBuildings.size()];
         ids = recentBuildings.toArray(ids);
 
         return ids;
+    }
+
+    public static void addRecentKeyword(String keyword) {
+        int max = AppDataConfiguration.MAX_RECENT_KEYWORD_COUNT;
+        if(recentKeywords.size() >= max)
+            recentKeywords.remove();
+
+        recentKeywords.offer(keyword);
+    }
+
+    // 순서는 오래된 놈이 헤드 위치에
+    public static String[] getRecentKeywords() {
+        String[] keywords = new String[recentKeywords.size()];
+        keywords = recentKeywords.toArray(keywords);
+
+        return keywords;
     }
 
     public static boolean save() {
@@ -78,15 +95,21 @@ public class MJContext {
     public static boolean load(Context context) {
         boolean answer = AppDataConfiguration.load(context);
         int smax = AppDataConfiguration.MAX_RECENT_SIGN_COUNT;
-        for(int i=0; i<smax; i++) {
+        for(int i=(smax-1); i>=0; i--) {
             long id = AppDataConfiguration.getRecentSign(i);
             recentSigns.offer(id);
         }
 
         int bmax = AppDataConfiguration.MAX_RECENT_BUILDING_COUNT;
-        for(int i=0; i<bmax; i++) {
+        for(int i=(bmax-1); i>=0; i--) {
             long id = AppDataConfiguration.getRecentBuilding(i);
             recentBuildings.offer(id);
+        }
+
+        int kmax = AppDataConfiguration.MAX_RECENT_KEYWORD_COUNT;
+        for(int i=(kmax-1); i>=0; i--) {
+            String keyword = AppDataConfiguration.getRecentKeyword(i);
+            recentKeywords.offer(keyword);
         }
 
         return answer;

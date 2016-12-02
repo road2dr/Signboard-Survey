@@ -107,12 +107,25 @@ public class DatabaseManager {
 		List<User> users = null;
 		
 		try {
-			users = helper.getUserDao().queryForAll();			
+			users = helper.getUserDao().queryForAll();
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
 		
 		return users;
+	}
+
+	public List<StreetAddress> contain(String filterKey) {
+//		try {
+//			QueryBuilder<StreetAddress, Void> qb = helper.getStreetAddressDao().queryBuilder();
+//			qb.where().like("madeCompany", "%"+filterKey+"%");
+//			qb.limit(10)
+//			PreparedQuery<StreetAddress> pq = qb.prepare();
+//			return helper.getStreetAddressDao().query(pq);
+//		} catch (SQLException e) {
+//			throw new AppException(e);
+//		}
+		return null;
 	}
 	
 	/**

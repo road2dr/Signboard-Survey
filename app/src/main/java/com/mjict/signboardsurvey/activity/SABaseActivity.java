@@ -166,6 +166,13 @@ public abstract class SABaseActivity extends AppCompatSActivity {
         return true;
     }
 
+    @Override
+    protected void onPause() {
+        waitingDialog.dismiss();
+        
+        super.onPause();
+    }
+
     public void showWaitingDialog(int resId) {
         waitingDialog.setStatusText(resId);
         waitingDialog.show();

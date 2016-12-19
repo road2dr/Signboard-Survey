@@ -14,20 +14,18 @@
             android:id="@+id/building_image_view"
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_gray_border"
-            android:src="@drawable/test_building2"/>
+            android:background="@drawable/bg_gray_border"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_marginLeft="5dp">
             <TextView
-                android:id="@+id/title_text_view"
+                android:id="@+id/building_name_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:gravity="center"
-                android:text="큰 빌딩"/>
+                android:gravity="center"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,7 +36,6 @@
                 android:id="@+id/street_address_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="인천광역시 남동구 구월동 구월남로 1"
                 android:minLines="2"
                 android:maxLines="2"/>
             <TextView
@@ -51,7 +48,6 @@
                 android:id="@+id/house_address_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="안천광역시 남동구 구월동 1706"
                 android:minLines="2"
                 android:maxLines="2"/>
         </LinearLayout>

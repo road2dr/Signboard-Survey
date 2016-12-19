@@ -23,6 +23,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp">
             <EditText
+                android:id="@+id/first_number_edit_text"
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
             <TextView
@@ -33,10 +34,12 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"/>
             <EditText
+                android:id="@+id/second_number_edit_text"
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
         </LinearLayout>
         <Button
+            android:id="@+id/search_button"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:text="@string/search"

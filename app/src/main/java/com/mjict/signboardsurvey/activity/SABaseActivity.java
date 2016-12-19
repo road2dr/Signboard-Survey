@@ -8,6 +8,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
+import android.support.v7.widget.PopupMenu;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +31,8 @@ public abstract class SABaseActivity extends AppCompatSActivity {
 //    private NavigationView navigationView;
     private TextView titleTextView;
     private ImageView menuButton;
-
+    private ImageView optionButton;
+    private PopupMenu optionPopup;
 
     private WaitingDialog waitingDialog;
     private AlertDialog.Builder alertDialog;
@@ -97,6 +100,15 @@ public abstract class SABaseActivity extends AppCompatSActivity {
         });
 
         titleTextView = (TextView)this.findViewById(R.id.title_text_view);
+        optionButton = (ImageView)this.findViewById(R.id.option_button);
+        optionPopup = new PopupMenu(SABaseActivity.this, optionButton, Gravity.NO_GRAVITY, android.support.v7.appcompat.R.attr.popupMenuStyle, 0);
+        optionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                optionPopup.show();
+            }
+        });
+        optionButton.setVisibility(View.INVISIBLE);
 
         waitingDialog = new WaitingDialog(this);
         waitingDialog.create();
@@ -115,10 +127,6 @@ public abstract class SABaseActivity extends AppCompatSActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
-        // junseo
-//        getMenuInflater().inflate(R.menu.main, menu);
-
         return true;
     }
 
@@ -171,6 +179,18 @@ public abstract class SABaseActivity extends AppCompatSActivity {
         waitingDialog.dismiss();
         
         super.onPause();
+    }
+
+    public void inflateOptionMenu(int resId) {
+        optionPopup.inflate(resId);
+    }
+
+    public void setOnOptionMenuItemClickListener(PopupMenu.OnMenuItemClickListener listener) {
+        optionPopup.setOnMenuItemClickListener(listener);
+    }
+
+    public void showOptionButton() {
+        optionButton.setVisibility(View.VISIBLE);
     }
 
     public void showWaitingDialog(int resId) {

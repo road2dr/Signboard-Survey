@@ -23,7 +23,7 @@
                 android:paddingBottom="10dp"
                 android:paddingRight="5dp">
                 <LinearLayout
-                    android:id="@+id/sign_image_card_view"
+                    android:id="@+id/sign_image_layout"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:orientation="vertical"
@@ -41,11 +41,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:background="@drawable/bg_gray_border"
-                        android:src="@drawable/test_sign2"/>
+                        android:background="@drawable/bg_gray_border"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/content_card_view"
+                    android:id="@+id/content_layout"
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
                     android:orientation="vertical"
@@ -67,10 +66,10 @@
                         android:focusableInTouchMode="true"
                         android:inputType="none"
                         android:clickable="false"
-                        android:text="24시 할매 해장국"/>
+                        android:enabled="false"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/placed_location_card_view"
+                    android:id="@+id/display_location_layout"
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
                     android:orientation="vertical"
@@ -85,17 +84,17 @@
                         android:textStyle="bold"
                         android:text="@string/placed_location"/>
                     <EditText
-                        android:id="@+id/location_edit_text"
+                        android:id="@+id/display_location_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clickable="false"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:inputType="none"
-                        android:text="3/4 층"/>
+                        android:enabled="false"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/building_location_card_view"
+                    android:id="@+id/building_location_layout"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:orientation="vertical"
@@ -129,7 +128,7 @@
                 android:paddingBottom="10dp"
                 android:paddingRight="10dp">
                 <LinearLayout
-                    android:id="@+id/sign_type_card_view"
+                    android:id="@+id/sign_type_layout"
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
                     android:orientation="vertical"
@@ -150,10 +149,10 @@
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:inputType="none"
-                        android:text="가로형간판"/>
+                        android:enabled="false"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/size_card_view"
+                    android:id="@+id/size_layout"
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
                     android:orientation="vertical"
@@ -175,10 +174,10 @@
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:inputType="none"
-                        android:text="6.2 X 1.2 X 0.2"/>
+                        android:enabled="false"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/light_type_card_view"
+                    android:id="@+id/light_type_layout"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:orientation="vertical"
@@ -201,7 +200,7 @@
                         android:src="@drawable/img_lgith1"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/status_card_view"
+                    android:id="@+id/status_layout"
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
                     android:orientation="vertical"
@@ -223,7 +222,7 @@
                         android:clickable="false"
                         android:focusableInTouchMode="true"
                         android:inputType="none"
-                        android:text="정상"/>
+                        android:enabled="false"/>
                 </LinearLayout>
 
             </LinearLayout>

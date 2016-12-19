@@ -60,7 +60,7 @@ public class SignViewPagerAdapter extends PagerAdapter {
         TextView typeTextView = (TextView)view.findViewById(R.id.type_text_view);
         TextView resultTextView = (TextView)view.findViewById(R.id.result_text_view);
 
-        imageView.setImageResource(s.image);
+//        imageView.setImageResource(s.image);
         contentTextView.setText(s.content);
         sizeTextView.setText(s.size);
 //        typeTextView.setText(s.);

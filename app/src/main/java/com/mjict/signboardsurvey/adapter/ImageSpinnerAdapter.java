@@ -49,7 +49,8 @@ public class ImageSpinnerAdapter extends ArrayAdapter<IconItem> {
         TextView textView = (TextView)view.findViewById(R.id.text_view);
 
         IconItem item = getItem(position);
-        imageView.setImageResource(item.image);
+        if(item.image != -1)
+            imageView.setImageResource(item.image);
         textView.setText(item.obj.toString());
 
 //        if(position==0){

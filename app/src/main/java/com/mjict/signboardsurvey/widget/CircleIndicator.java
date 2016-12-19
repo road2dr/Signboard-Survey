@@ -298,7 +298,7 @@ public class CircleIndicator extends LinearLayout {
         for (int i = 0; i < count; i++) {
             // junseo
             Integer img = images.get(i);
-            Log.d("junseo", "gggg: "+i+","+img);
+
             if(img != null) {
                 if (currentItem == i) {
                     Log.d("junseo", "mImmediateAnimatorOut");

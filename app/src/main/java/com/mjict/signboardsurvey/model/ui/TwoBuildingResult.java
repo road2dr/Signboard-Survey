@@ -1,4 +1,6 @@
-package com.mjict.signboardsurvey.model;
+package com.mjict.signboardsurvey.model.ui;
+
+import com.mjict.signboardsurvey.model.ui.BuildingResult;
 
 /**
  * Created by Junseo on 2016-11-14.

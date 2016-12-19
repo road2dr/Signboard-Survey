@@ -7,7 +7,7 @@
     android:paddingBottom="10dp">
 
     <LinearLayout
-        android:id="@+id/first_cell"
+        android:id="@+id/first_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -36,7 +36,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/second_cell"
+        android:id="@+id/second_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -65,7 +65,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/third_cell"
+        android:id="@+id/third_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"

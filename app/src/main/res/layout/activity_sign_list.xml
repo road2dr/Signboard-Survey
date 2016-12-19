@@ -21,9 +21,9 @@
                 android:text="@string/shop_name"
                 android:gravity="center"/>
             <TextView
+                android:id="@+id/shop_name_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="한신 포차"
                 android:gravity="center_vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -37,9 +37,9 @@
                 android:text="@string/shop_category"
                 android:gravity="center"/>
             <TextView
+                android:id="@+id/shop_category_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="음식점"
                 android:gravity="center_vertical"/>
         </LinearLayout>
     </LinearLayout>

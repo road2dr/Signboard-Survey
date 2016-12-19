@@ -11,7 +11,7 @@
         android:orientation="horizontal"
         android:background="?attr/colorPrimary" >
         <ImageButton
-            android:id="@+id/back_button"
+            android:id="@+id/back_image_button"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_left_arrow"
@@ -22,7 +22,7 @@
             android:id="@+id/title_text_view"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/back_button"
+            android:layout_toRightOf="@+id/back_image_button"
             android:layout_toLeftOf="@+id/next_button"
             android:text="@string/basic_information"
             android:textSize="22sp"
@@ -41,8 +41,7 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
-        android:scaleType="centerCrop"
-        android:src="@drawable/test_sign5"/>
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,13 +53,13 @@
             android:gravity="center"
             android:textSize="20sp"
             android:text="@string/content"/>
-        <TextView
+        <EditText
+            android:id="@+id/content_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:textSize="20sp"
-            android:text="24시 할매 순대국밥"/>
+            android:textSize="20sp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,13 +71,13 @@
             android:gravity="center"
             android:textSize="20sp"
             android:text="@string/status"/>
-        <Spinner
+        <com.mjict.signboardsurvey.widget.SimpleSpinner
+            android:id="@+id/status_spinner"
             android:layout_width="170dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:textSize="20sp"
-            android:text="24시 할매 순대국밥"/>
+            android:textSize="20sp" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -95,11 +94,11 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp">
             <EditText
+                android:id="@+id/width_edit_text"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:textSize="20sp"
-                android:text="6.2"/>
+                android:textSize="20sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -109,11 +108,11 @@
                 android:textSize="20sp"
                 android:text="@string/multiply_sign"/>
             <EditText
+                android:id="@+id/length_edit_text"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:textSize="20sp"
-                android:text="1.2"/>
+                android:textSize="20sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -123,11 +122,11 @@
                 android:textSize="20sp"
                 android:text="@string/multiply_sign"/>
             <EditText
+                android:id="@+id/height_edit_text"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:textSize="20sp"
-                android:text=""/>
+                android:textSize="20sp"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout

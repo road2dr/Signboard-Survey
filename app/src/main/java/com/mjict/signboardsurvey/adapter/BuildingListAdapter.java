@@ -1,15 +1,15 @@
 package com.mjict.signboardsurvey.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.mjict.signboardsurvey.R;
-import com.mjict.signboardsurvey.model.BuildingResult;
+import com.mjict.signboardsurvey.adapter.holder.BuildingRowViewHolder;
+import com.mjict.signboardsurvey.model.ui.BuildingResult;
 
 /**
  * Created by Junseo on 2016-11-14.
@@ -25,26 +25,34 @@ public class BuildingListAdapter extends ArrayAdapter<BuildingResult> {
         inflater = LayoutInflater.from(context);
     }
 
+    public void setImage(int position, Bitmap image) {
+        if(position < 0 || position >= getCount())
+            return;
+
+        BuildingResult br = getItem(position);
+        br.image = image;
+
+        notifyDataSetChanged();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
-
+        BuildingRowViewHolder holder = null;
         if(view == null) {
             view = inflater.inflate(R.layout.list_row_building, parent, false);
+            holder = new BuildingRowViewHolder(view);
+            view.setTag(holder);
+        } else {
+            holder = (BuildingRowViewHolder)view.getTag();
         }
 
-        BuildingResult b = getItem(position);
+        BuildingResult br = getItem(position);
 
-        ImageView buildingImageView = (ImageView)view.findViewById(R.id.building_image_view);
-        TextView titleTextView = (TextView)view.findViewById(R.id.title_text_view);
-        TextView streetAddressTextView = (TextView)view.findViewById(R.id.street_address_text_view);
-        TextView houseAddressTextView = (TextView)view.findViewById(R.id.house_address_text_view);
-
-        String title = (b.buildingName == null) ? b.buildingNumber : b.buildingName;
-        titleTextView.setText(title);
-        buildingImageView.setImageResource(b.image);
-        streetAddressTextView.setText(b.streetAddress);
-        houseAddressTextView.setText(b.houseAddress);
+        holder.getTitleTextView().setText(br.name);
+        holder.getImageView().setImageBitmap(br.image);
+        holder.getHouseAddressTextView().setText(br.houseAddress);
+        holder.getStreetAddressTextView().setText(br.streetAddress);
 
         return view;
     }

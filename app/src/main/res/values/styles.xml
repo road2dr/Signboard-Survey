@@ -13,7 +13,15 @@
         <item name="windowNoTitle">true</item>
         
         <item name="android:textViewStyle">@style/MyTextViewStyle</item>
+        <item name="popupMenuStyle">@style/MyPopupMenu</item>
     </style>
+
+
+    <style name="MyPopupMenu" parent="android:Widget.Holo.Light.ListPopupWindow">
+        <item name="android:popupBackground">@color/colorPrimaryDark</item>
+        <item name="android:popupElevation">0dp</item>
+    </style>
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

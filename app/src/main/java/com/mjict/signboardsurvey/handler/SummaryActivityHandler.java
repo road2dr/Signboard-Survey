@@ -2,6 +2,7 @@ package com.mjict.signboardsurvey.handler;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,7 +10,7 @@ import android.view.View;
 import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.activity.KeywordSearchActivity;
 import com.mjict.signboardsurvey.activity.SummaryActivity;
-import com.mjict.signboardsurvey.database.SettingDataManager;
+import com.mjict.signboardsurvey.util.SettingDataManager;
 import com.mjict.signboardsurvey.model.BitmapBuilding;
 import com.mjict.signboardsurvey.model.BitmapSign;
 import com.mjict.signboardsurvey.model.Building;
@@ -92,7 +93,7 @@ public class SummaryActivityHandler extends DefaultSActivityHandler {
             public void onTaskFinished(Boolean aBoolean) {
             }
         });
-        recentSignSearchTask.execute(ids);
+        recentSignSearchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, ids);
     }
 
     private void startToLoadRecentBuilding() {
@@ -127,7 +128,7 @@ public class SummaryActivityHandler extends DefaultSActivityHandler {
             public void onTaskFinished(Boolean aBoolean) {
             }
         });
-        recentBuildingSearchTask.execute(ids);
+        recentBuildingSearchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, ids);
     }
 
     @Override

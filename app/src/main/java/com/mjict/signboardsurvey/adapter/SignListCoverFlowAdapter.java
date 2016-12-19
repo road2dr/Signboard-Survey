@@ -59,7 +59,7 @@ public class SignListCoverFlowAdapter extends BaseAdapter {
         TextView sizeTextView = (TextView)view.findViewById(R.id.size_text_view);
         TextView resultTextView = (TextView)view.findViewById(R.id.result_text_view);
 
-        imageView.setImageResource(s.image);
+//        imageView.setImageResource(s.image);
         contentTextView.setText(s.content);
         sizeTextView.setText(s.size);
         resultTextView.setText(s.result);

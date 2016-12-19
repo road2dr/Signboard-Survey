@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <SurfaceView
+        android:id="@+id/cameraPreview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:clickable="true"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@+id/shootButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp">
+
+        <View
+            android:id="@+id/minus_view"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:background="@drawable/ic_zoom_out"/>
+        <SeekBar
+            android:id="@+id/zoomSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/minus_view"
+            android:layout_toLeftOf="@+id/plus_view"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:progressDrawable="@drawable/seekbar_progress_selector"
+            android:thumb="@drawable/seekbar_scrubber_selector"
+            android:maxHeight="50dp"
+            android:maxWidth="50dp" />
+        <View
+            android:id="@+id/plus_view"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:background="@drawable/ic_zoom_in"/>
+    </RelativeLayout>
+
+
+
+    <ImageButton
+        android:id="@+id/shootButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/icon_camera_on"
+        android:background="@drawable/bg_camera_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp" />
+	
+
+    
+</RelativeLayout>

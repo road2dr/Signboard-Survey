@@ -2,24 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="240dp"
+    android:layout_height="260dp"
     android:padding="5dp">
     <LinearLayout
+        android:id="@+id/first_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="@drawable/bg_gray_border"
         android:layout_marginRight="2.5dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:padding="5dp">
         <ImageView
             android:id="@+id/first_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="120dp" />
+            android:layout_width="150dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center_horizontal"/>
         <TextView
             android:id="@+id/first_title_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/street_address"
+            android:textSize="14sp"
+            android:gravity="left"/>
+        <TextView
+            android:id="@+id/first_street_address_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minLines="2"
+            android:maxLines="2"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,21 +51,38 @@
             android:maxLines="2"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/second_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="@drawable/bg_gray_border"
         android:layout_marginLeft="2.5dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:padding="5dp">
         <ImageView
             android:id="@+id/second_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="120dp" />
+            android:layout_width="150dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center_horizontal"/>
         <TextView
             android:id="@+id/second_title_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/street_address"
+            android:textSize="14sp"
+            android:gravity="left"/>
+        <TextView
+            android:id="@+id/second_street_address_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minLines="2"
+            android:maxLines="2"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

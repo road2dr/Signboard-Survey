@@ -1,14 +1,14 @@
 package com.mjict.signboardsurvey.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.mjict.signboardsurvey.R;
+import com.mjict.signboardsurvey.adapter.holder.SignInfoRowViewHolder;
 import com.mjict.signboardsurvey.model.SignInfo;
 
 /**
@@ -24,31 +24,38 @@ public class SignListAdapter extends ArrayAdapter<SignInfo> {
         inflater = LayoutInflater.from(context);
     }
 
+    public void setImage(int position, Bitmap image) {
+        if(position < 0 || position >= getCount())
+            return;
+
+        SignInfo s = getItem(position);
+        s.image = image;
+        notifyDataSetChanged();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
-
+        SignInfoRowViewHolder holder = null;
         if(view == null) {
             view = inflater.inflate(R.layout.list_row_sign, parent, false);
+            holder = new SignInfoRowViewHolder(view);
+            view.setTag(holder);
+        } else {
+            holder = (SignInfoRowViewHolder)view.getTag();
         }
 
         SignInfo s = getItem(position);
 
-        ImageView imageView = (ImageView)view.findViewById(R.id.image_view);
-        TextView nameTextView = (TextView)view.findViewById(R.id.name_text_view);
-        TextView sizeTextView = (TextView)view.findViewById(R.id.size_text_view);
-        TextView resultTextView = (TextView)view.findViewById(R.id.result_text_view);
-
-        imageView.setImageResource(s.image);
-        nameTextView.setText(s.content);
-        sizeTextView.setText(s.size);
-        resultTextView.setText(s.result);
+        holder.getImageView().setImageBitmap(s.image);
+        holder.getNameTextView().setText(s.content);
+        holder.getResultTextView().setText(s.result);
+        holder.getSizeTextView().setText(s.size);
 
         final int[] colors = {0xffFFFFA5, 0xffE7FFC0, 0xffFFD2FF};
         int color = colors[position%3];
         view.setBackgroundColor(color);
 
         return view;
-
     }
 }

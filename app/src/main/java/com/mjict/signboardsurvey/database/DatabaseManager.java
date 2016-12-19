@@ -3,6 +3,8 @@ package com.mjict.signboardsurvey.database;
 import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.BuildingPicture;
 import com.mjict.signboardsurvey.model.Inspection;
@@ -29,18 +31,18 @@ public class DatabaseManager {
 
 	private static DatabaseManager instance;
 	private DatabaseHelper helper;
-	
+
 	private DatabaseManager(Context context) {
 		helper = new DatabaseHelper(context);
 	}
-	
+
 	public static DatabaseManager getInstance(Context context) {
 		// TODO context 가 activity 타입이면 Exception 발생 시키게 수정
 		if(instance == null)
 			instance = new DatabaseManager(context);
 		return instance;
 	}
-	
+
 	public DatabaseHelper getHelper() {
 		return helper;
 	}
@@ -76,56 +78,91 @@ public class DatabaseManager {
 	public List<Sign> getAllSigns() {
 		List<Sign> list = null;
 		try {
-			list = helper.getSignDao().queryForAll();			
+			list = helper.getSignDao().queryForAll();
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
 
 		return list;
 	}
-	
+
 	/**
 	 * ��� Shop �����͸� ��ȸ.
 	 * @return Shop ����Ʈ, ���� �߻��� null
 	 */
 	public List<Shop> getAllShops() {
-		List<Shop> list = null;		
+		List<Shop> list = null;
 		try {
-			list = helper.getShopDao().queryForAll();			
+			list = helper.getShopDao().queryForAll();
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
-		
+
 		return list;
 	}
-	
+
 	/**
 	 * ��� ����� �����͸� ��ȸ.
 	 * @return User ����Ʈ, ���� �߻��� null
 	 */
 	public List<User> getAllUsers() {
 		List<User> users = null;
-		
+
 		try {
 			users = helper.getUserDao().queryForAll();
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
-		
+
 		return users;
 	}
 
-	public List<StreetAddress> contain(String filterKey) {
-//		try {
-//			QueryBuilder<StreetAddress, Void> qb = helper.getStreetAddressDao().queryBuilder();
-//			qb.where().like("madeCompany", "%"+filterKey+"%");
-//			qb.limit(10)
-//			PreparedQuery<StreetAddress> pq = qb.prepare();
-//			return helper.getStreetAddressDao().query(pq);
-//		} catch (SQLException e) {
-//			throw new AppException(e);
-//		}
-		return null;
+	public List<StreetAddress> findStreetAddressContain(String filterKey, int limit) {
+		List<StreetAddress> addresses = null;
+		try {
+			QueryBuilder<StreetAddress, Void> qb = helper.getStreetAddressDao().queryBuilder();
+			qb.limit(limit);
+			qb.where().like("street", "%"+filterKey+"%").or().like("town", filterKey);
+			qb.orderBy("town", true);
+			PreparedQuery<StreetAddress> pq = qb.prepare();
+			addresses = helper.getStreetAddressDao().query(pq);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return addresses;
+	}
+
+	public List<Building> findBuildingsContain(String filterKey, int limit) {
+		List<Building> buildings = null;
+		try {
+			QueryBuilder<Building, Long> qb = helper.getBuildingDao().queryBuilder();
+			qb.limit(limit);
+			qb.where().like("name", "%"+filterKey+"%");
+			qb.orderBy("name", true);
+			PreparedQuery<Building> pq = qb.prepare();
+			buildings = helper.getBuildingDao().query(pq);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return buildings;
+	}
+
+	public List<Shop> findShopsContain(String filterKey, int limit) {
+		List<Shop> shops = null;
+		try {
+			QueryBuilder<Shop, String> qb = helper.getShopDao().queryBuilder();
+			qb.limit(limit);
+			qb.where().like("name", "%"+filterKey+"%");
+			qb.orderBy("name", true);
+			PreparedQuery<Shop> pq = qb.prepare();
+			shops = helper.getShopDao().query(pq);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return shops;
 	}
 	
 	/**

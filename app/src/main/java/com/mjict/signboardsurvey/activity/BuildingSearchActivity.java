@@ -1,27 +1,30 @@
 package com.mjict.signboardsurvey.activity;
 
-import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.adapter.BuildingListAdapter;
 import com.mjict.signboardsurvey.adapter.BuildingTableListAdapter;
-import com.mjict.signboardsurvey.handler.ShopListActivityHandler;
-import com.mjict.signboardsurvey.model.BuildingResult;
-import com.mjict.signboardsurvey.model.TwoBuildingResult;
-import com.mjict.signboardsurvey.sframework.SActivityHandler;
+import com.mjict.signboardsurvey.model.ui.BuildingResult;
 
 /**
  * Created by Junseo on 2016-11-14.
  */
 public class BuildingSearchActivity extends SABaseActivity {
 
+    private EditText firstNumberEditText;
+    private EditText secondNumberEditText;
+    private Button searchButton;
     private ListView buildingListView;
     private BuildingListAdapter listAdapter;
     private BuildingTableListAdapter tableListAdapter;
+    private BuildingListItemOnClickListener itemOnClickListener;
 
     private RadioGroup listOptionRadioGroup;
 
@@ -35,18 +38,31 @@ public class BuildingSearchActivity extends SABaseActivity {
         super.init();
         this.setTitle(R.string.title_building_search);
 
+        firstNumberEditText = (EditText)this.findViewById(R.id.first_number_edit_text);
+        secondNumberEditText = (EditText)this.findViewById(R.id.second_number_edit_text);
+        searchButton = (Button)this.findViewById(R.id.search_button);
         buildingListView = (ListView)this.findViewById(R.id.building_list_view);
         listAdapter = new BuildingListAdapter(this);
         tableListAdapter = new BuildingTableListAdapter(this);
         buildingListView.setAdapter(listAdapter);
 
-        // test
         buildingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(BuildingSearchActivity.this, ShopListActivity.class);
-                intent.putExtra(SActivityHandler.HANDLER_CLASS, ShopListActivityHandler.class);
-                startActivity(intent);
+                if(listOptionRadioGroup.getCheckedRadioButtonId() == R.id.radio_option_list) {
+                    BuildingResult b = listAdapter.getItem(position);
+                    if(itemOnClickListener != null)
+                        itemOnClickListener.onItemClicked(position, b);
+                }
+            }
+        });
+
+        tableListAdapter.setOnColumnClickListener(new BuildingTableListAdapter.OnColumnClickListener() {
+            @Override
+            public void onClick(int index) {
+                BuildingResult b = tableListAdapter.getColumnItem(index);
+                if(itemOnClickListener != null)
+                    itemOnClickListener.onItemClicked(index, b);
             }
         });
 
@@ -65,25 +81,41 @@ public class BuildingSearchActivity extends SABaseActivity {
                 }
             }
         });
-
-        BuildingResult[] testData = {
-                new BuildingResult(R.drawable.test_building1, "인천광역시 남동구 구월동 구월남로 94", "안천광역시 남동구 구월동 488-21", "동신 빌딩", "94"),
-                new BuildingResult(R.drawable.ic_building, "인천광역시 남동구 구월동 구월남로 55", "안천광역시 남동구 구월동 32-1", "약초 빌딩", "55"),
-                new BuildingResult(R.drawable.test_building2, "인천광역시 남동구 구월동 구월남로 1", "안천광역시 남동구 구월동 1706", "큰 빌딩", "1"),
-                new BuildingResult(R.drawable.test_building3, "인천광역시 남동구 구월동 구월남로 17", "안천광역시 남동구 구월동 488-55", null, "17"),
-                new BuildingResult(R.drawable.ic_building, "인천광역시 남동구 구월동 구월남로 24", "안천광역시 남동구 구월동 2560", "누누 빌딩", "24"),
-                new BuildingResult(R.drawable.test_building4, "인천광역시 남동구 구월동 구월남로 32", "안천광역시 남동구 구월동 332", "남산 빌딩", "32"),
-                new BuildingResult(R.drawable.ic_building, "인천광역시 남동구 구월동 구월남로 88", "안천광역시 남동구 구월동 33-88", null, "88")
-        };
-
-        for(int i=0; i<testData.length; i++) {
-            listAdapter.add(testData[i]);
-            if(i % 2 == 0) {
-                BuildingResult first = testData[i];
-                BuildingResult second = (i+1 >= testData.length) ? null : testData[i+1];
-                tableListAdapter.add(new TwoBuildingResult(first, second));
-            }
-
-        }
     }
+
+    public String getInputFirstNumber() {
+        return firstNumberEditText.getText().toString();
+    }
+
+    public String getInputSecondNumber() {
+        return secondNumberEditText.getText().toString();
+    }
+
+    public void setSearchButtonOnClickListener(View.OnClickListener listener) {
+        searchButton.setOnClickListener(listener);
+    }
+
+    public void addToList(BuildingResult building) {
+        tableListAdapter.add(building);
+        listAdapter.add(building);
+    }
+
+    public void setListImage(int position, Bitmap image) {
+        tableListAdapter.setImage(position, image);
+        listAdapter.setImage(position, image);
+    }
+
+    public void clearListView() {
+        listAdapter.clear();
+        tableListAdapter.clear();
+    }
+
+    public void setListItemOnClickListener(BuildingListItemOnClickListener listener) {
+        itemOnClickListener = listener;
+    }
+
+    public static interface BuildingListItemOnClickListener {
+        public void onItemClicked(int position, BuildingResult building);
+    }
+
 }

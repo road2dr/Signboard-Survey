@@ -3,8 +3,10 @@ package com.mjict.signboardsurvey.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 @DatabaseTable(tableName="streetAddress")
-public class StreetAddress {
+public class StreetAddress implements Serializable {
 	
 	@DatabaseField
 	private String initialConsonant;

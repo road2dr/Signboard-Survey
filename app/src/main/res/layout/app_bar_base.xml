@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -31,6 +31,7 @@
                 android:id="@+id/menu_button"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
                 android:background="@null"/>
 
             <TextView
@@ -38,10 +39,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="?attr/actionBarSize"
+                android:layout_toRightOf="@+id/menu_button"
                 android:gravity="center"
                 android:textSize="20sp"/>
 
-        </LinearLayout>
+            <ImageButton
+                android:id="@+id/option_button"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
+                android:background="@null"
+                android:src="@drawable/btn_option_sel"/>
+
+        </RelativeLayout>
         <!--<android.support.v7.widget.Toolbar-->
             <!--android:id="@+id/toolbar"-->
             <!--android:layout_width="match_parent"-->

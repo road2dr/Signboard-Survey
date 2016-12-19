@@ -1,4 +1,4 @@
-package com.mjict.signboardsurvey.model;
+package com.mjict.signboardsurvey.model.ui;
 
 /**
  * Created by Junseo on 2016-11-14.

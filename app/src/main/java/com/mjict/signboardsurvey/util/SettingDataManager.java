@@ -24,8 +24,10 @@ public class SettingDataManager {
 	public static final int RESULT = 50;			//
 
 	public static final int SIGN_STATUS = 105;
-	public static final int REINSPECTION_CODE = 115;
+	public static final int REVIEW_CODE = 115;
 	public static final int AREA_TYPE = 15;
+
+//	public static final int BUILDING_LOCATION =
 	
 //	public static final String SHOP_CONDITON = "90";	//
 //	public static final String SHOP_CATEGORY = "60";	//
@@ -33,15 +35,15 @@ public class SettingDataManager {
 //	public static final String LIGHT_TYPE = "35";		//
 //	public static final String RESULT = "50";			//
 
-	public static final int SIGN_CATEGORY = 51;
-	public static final int ATTACHED_LOCATION = 52;
-	public static final int CAB = 53;
-	public static final int SIDE_COUNT = 54;
-	public static final int FRAME = 55;
-	public static final int PANEL = 56;
-	public static final int DESIGN = 57;
-	public static final int FONT = 58;
-	public static final int SHAPE = 59;
+//	public static final int SIGN_CATEGORY = 51;
+//	public static final int ATTACHED_LOCATION = 52;
+//	public static final int CAB = 53;
+//	public static final int SIDE_COUNT = 54;
+//	public static final int FRAME = 55;
+//	public static final int PANEL = 56;
+//	public static final int DESIGN = 57;
+//	public static final int FONT = 58;
+//	public static final int SHAPE = 59;
 //	public static final int
 
 	
@@ -79,6 +81,10 @@ public class SettingDataManager {
 		return searchSetting(LIGHT_TYPE, code);
 	}
 
+	public String getDefaultShopCategoty() {
+		return "기타";
+	}
+
 	public String getDefaultLightTypeName() {
 		return "비조명";		// TODO 나중에 상수로 묶어 놓든가 해
 	}
@@ -91,8 +97,16 @@ public class SettingDataManager {
 		return "가로형 간판";
 	}
 
+	public String getDefaultSignStatus() {
+		return "지정된 값 없음";
+	}
+
 	public String getDefaultReviewName() {
 		return "해당 사항 없음";
+	}
+
+	public String getDefaultShopStatusName() {
+		return "지정되지 않음";
 	}
 
 	public Setting getResult(int code) {
@@ -130,11 +144,11 @@ public class SettingDataManager {
 	}
 
 	public Setting[] getReviewCodes() {
-		return searchSetting(REINSPECTION_CODE);
+		return searchSetting(REVIEW_CODE);
 	}
 
 	public Setting getReviewCode(int code) {
-		return searchSetting(REINSPECTION_CODE, code);
+		return searchSetting(REVIEW_CODE, code);
 	}
 
 	public Setting[] getAreaTypeCodes() {
@@ -145,29 +159,29 @@ public class SettingDataManager {
 		return searchSetting(AREA_TYPE, code);
 	}
 
-	public Setting[] getSignCategories() {
-		return searchSetting(SIGN_CATEGORY);
-	}
+//	public Setting[] getSignCategories() {
+//		return searchSetting(SIGN_CATEGORY);
+//	}
+//
+//	public Setting getSignCategory(int code) {
+//		return searchSetting(SIGN_CATEGORY, code);
+//	}
+//
+//	public Setting[] getAttachedLocations() {
+//		return searchSetting(ATTACHED_LOCATION);
+//	}
+//
+//	public Setting getAttachedLocation(int code) {
+//		return searchSetting(ATTACHED_LOCATION, code);
+//	}
 
-	public Setting getSignCategory(int code) {
-		return searchSetting(SIGN_CATEGORY, code);
-	}
-
-	public Setting[] getAttachedLocations() {
-		return searchSetting(ATTACHED_LOCATION);
-	}
-
-	public Setting getAttachedLocation(int code) {
-		return searchSetting(ATTACHED_LOCATION, code);
-	}
-
-	public Setting[] getCabs() {
-		return searchSetting(CAB);
-	}
-
-	public Setting getCab(int code) {
-		return searchSetting(CAB, code);
-	}
+//	public Setting[] getCabs() {
+//		return searchSetting(CAB);
+//	}
+//
+//	public Setting getCab(int code) {
+//		return searchSetting(CAB, code);
+//	}
 
 //	public static final int CAB = 53;
 //	public static final int SIDE_COUNT = 54;

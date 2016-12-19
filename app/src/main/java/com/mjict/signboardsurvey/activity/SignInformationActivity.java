@@ -1,28 +1,30 @@
 package com.mjict.signboardsurvey.activity;
 
-import android.content.Intent;
+import android.graphics.Bitmap;
+import android.support.v7.widget.PopupMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.mjict.signboardsurvey.R;
-import com.mjict.signboardsurvey.handler.BasicSignInformationInputActivityHandler;
-import com.mjict.signboardsurvey.sframework.SActivityHandler;
 
 /**
  * Created by Junseo on 2016-11-17.
  */
 public class SignInformationActivity extends SABaseActivity {
 
-    private View signImageCardView;
-    private View contentCardView;
-    private View placedLocationCardView;
-    private View buildingLocationCardView;
-    private View signTypeCardView;
-    private View sizeCardView;
-    private View lightTypeCardView;
-    private View signStatusCardView;
+    private View signImageLayout;
+    private ImageView signImageView;
+    private EditText contentTextView;
+    private EditText displayLocationTextView;
+    private ImageView buildingLocationImageView;
+    private EditText typeTextView;
+    private EditText sizeTextView;
+    private ImageView lightTypeImageView;
+    private EditText statusTextView;
 
-//    private View nextButton;
-
+    private OnOptionMenuItemClickListener optionMenuItemClickListener;
 
 
     @Override
@@ -35,73 +37,86 @@ public class SignInformationActivity extends SABaseActivity {
         super.init();
         this.setTitle(R.string.signboard_detail_information);
 
-        signImageCardView = this.findViewById(R.id.sign_image_card_view);
-        contentCardView = this.findViewById(R.id.content_card_view);
-        placedLocationCardView = this.findViewById(R.id.placed_location_card_view);
-        buildingLocationCardView = this.findViewById(R.id.building_location_card_view);
-        signTypeCardView = this.findViewById(R.id.sign_type_card_view);
-        sizeCardView = this.findViewById(R.id.size_card_view);
-        lightTypeCardView = this.findViewById(R.id.light_type_card_view);
-        signStatusCardView = this.findViewById(R.id.status_card_view);
-
-        signImageCardView.setOnClickListener(new View.OnClickListener() {
+        this.showOptionButton();
+        this.inflateOptionMenu(R.menu.option_menu_sign_information);
+        this.setOnOptionMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SignInformationActivity.this, BasicSignInformationInputActivity.class);
-                intent.putExtra(SActivityHandler.HANDLER_CLASS, BasicSignInformationInputActivityHandler.class);
-                startActivity(intent);
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.modify_sign:
+                        if(optionMenuItemClickListener != null)
+                            optionMenuItemClickListener.onModifySignClicked();
+                        break;
+                }
+                return true;
             }
         });
 
-        contentCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        signImageLayout = this.findViewById(R.id.sign_image_layout);
+        signImageView = (ImageView)this.findViewById(R.id.sign_image_view);
+        contentTextView = (EditText)this.findViewById(R.id.content_edit_text);
+        displayLocationTextView = (EditText)this.findViewById(R.id.display_location_edit_text);
+        buildingLocationImageView = (ImageView)this.findViewById(R.id.building_image_view);
+        typeTextView = (EditText)this.findViewById(R.id.type_edit_text);
+        sizeTextView = (EditText)this.findViewById(R.id.size_edit_text);
+        lightTypeImageView = (ImageView)this.findViewById(R.id.light_type_image_view);
+        statusTextView = (EditText)this.findViewById(R.id.status_edit_text);
 
-            }
-        });
-
-        placedLocationCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        buildingLocationCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        signTypeCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        sizeCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        lightTypeCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        signStatusCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        signImageLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(SignInformationActivity.this, BasicSignInformationInputActivity.class);
+//                intent.putExtra(SActivityHandler.HANDLER_CLASS, BasicSignInformationInputActivityHandler.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
+
+
+    }
+
+    public void setOptionMenuItemClickListener(SignInformationActivity.OnOptionMenuItemClickListener listener) {
+        optionMenuItemClickListener = listener;
+    }
+
+    public void setSignImage(Bitmap image) {
+        signImageView.setImageBitmap(image);
+    }
+
+    public void setSignImageViewOnClickListener(View.OnClickListener listener) {
+        signImageLayout.setOnClickListener(listener);
+    }
+
+    public void setContentText(String text) {
+        contentTextView.setText(text);
+    }
+
+    public void setDisplayLocationText(String text) {
+        displayLocationTextView.setText(text);
+    }
+
+    public void setBuildingLocationImage(int resId) {
+        buildingLocationImageView.setImageResource(resId);
+    }
+
+    public void setTypeText(String text) {
+        typeTextView.setText(text);
+    }
+
+    public void setSizeText(String text) {
+        sizeTextView.setText(text);
+    }
+
+    public void setLightTypeImage(int resId) {
+        lightTypeImageView.setImageResource(resId);
+    }
+
+    public void setStatusText(String text) {
+        statusTextView.setText(text);
+    }
+
+    public static interface OnOptionMenuItemClickListener {
+        public void onModifySignClicked();
     }
 }

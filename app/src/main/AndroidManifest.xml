@@ -144,6 +144,28 @@
             android:theme="@style/AppTheme.Base">
         </activity>
 
+        <activity android:name=".activity.SignMeasureActivity"
+            android:theme="@style/AppTheme.Base">
+        </activity>
+
+        <activity
+            android:name=".activity.AddressSearchActivity"
+            android:theme="@style/AppTheme.Base"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".activity.DemolishedSignActivity"
+            android:theme="@style/AppTheme.Base"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".activity.ReviewSignActivity"
+            android:theme="@style/AppTheme.Base"
+            android:screenOrientation="portrait">
+        </activity>
+
 
     </application>
 </manifest>

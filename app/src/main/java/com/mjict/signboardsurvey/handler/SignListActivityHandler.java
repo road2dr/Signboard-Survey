@@ -1,13 +1,16 @@
 package com.mjict.signboardsurvey.handler;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.R;
+import com.mjict.signboardsurvey.activity.BasicSignInformationInputActivity;
 import com.mjict.signboardsurvey.activity.SignInformationActivity;
 import com.mjict.signboardsurvey.activity.SignListActivity;
 import com.mjict.signboardsurvey.model.IndexBitmap;
@@ -15,10 +18,12 @@ import com.mjict.signboardsurvey.model.Setting;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
 import com.mjict.signboardsurvey.model.SignInfo;
-import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
 import com.mjict.signboardsurvey.task.LoadImageTask;
 import com.mjict.signboardsurvey.task.LoadSignsByShopTask;
+import com.mjict.signboardsurvey.task.ModifySignTask;
+import com.mjict.signboardsurvey.task.RegisterSignTask;
+import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 import com.mjict.signboardsurvey.util.SettingDataManager;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
 
@@ -27,7 +32,7 @@ import java.util.ArrayList;
 /**
  * Created by Junseo on 2016-11-15.
  */
-public class SignListActivityHandler extends DefaultSActivityHandler {
+public class SignListActivityHandler extends SABaseActivityHandler {
     private SignListActivity activity;
     private Shop currentShop;
     private ArrayList<Sign> shopSigns;
@@ -44,6 +49,13 @@ public class SignListActivityHandler extends DefaultSActivityHandler {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 goToSignInformation(position);
+            }
+        });
+
+        activity.setOptionMenuItemClickListener(new SignListActivity.OnOptionMenuItemClickListener() {
+            @Override
+            public void onAddNewSignClicked() {
+                goToSignInput();
             }
         });
 
@@ -75,6 +87,47 @@ public class SignListActivityHandler extends DefaultSActivityHandler {
         super.onActivityStop();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == MJConstants.REQUEST_SIGN_INFORMATION) {
+            if(resultCode == Activity.RESULT_OK) {
+                // 간판 정보 바뀜
+                Sign sign = (Sign)data.getSerializableExtra(MJConstants.SIGN);
+                int index = -1;
+                for(int i=0; i<shopSigns.size(); i++) {
+                    Sign s = shopSigns.get(i);
+                    if(s.getId() == sign.getId()) {
+                        index = i;
+                    }
+                }
+
+                if(index == -1) {   // 새간판
+                    startToInsertSignAndUpdateUI(sign);
+                } else {
+                    startToModifySignAndUpdateUI(index, sign);
+                }
+
+//                SignInfo si = signToSignInfo(sign);
+//                String path = SyncConfiguration.getDirectoryForSingPicture() + sign.getPicNumber();
+//                if(index == -1) {
+//                    // 새간판
+//                    shopSigns.add(sign);
+//                    activity.addToList(si);
+//
+//                    startToLoadSignImage(shopSigns.size()-1, path);
+//                } else {
+//                    // 기존 간판
+//                    shopSigns.set(index, sign);
+//                    activity.setSignInfo(index, si);
+//                    startToLoadSignImage(index, path);
+//                }
+
+            } else {
+                // 간판 정보 안 바뀜
+            }
+        }
+    }
+
     private void startToLoadSignList() {
         LoadSignsByShopTask task = new LoadSignsByShopTask(activity.getApplicationContext());
         task.setDefaultAsyncTaskListener(new AsyncTaskListener<Sign, Boolean>() {
@@ -89,45 +142,108 @@ public class SignListActivityHandler extends DefaultSActivityHandler {
                         Sign s = signs[0];
                         shopSigns.add(s);
 
-                        SettingDataManager smgr = SettingDataManager.getInstance();
+                        SignInfo si = signToSignInfo(s);
 
-                        // update to ui
-                        String content = s.getContent();
-                        String size = s.getWidth()+" X "+s.getLength();
-                        if(s.getHeight() != 0)
-                            size = size + " X "+s.getHeight();
-
-                        Setting statusSetting = smgr.getSignStatus(s.getStatusCode());
-                        Setting lightSetting = smgr.getLightType(s.getLightType());
-                        Setting resultSetting = smgr.getResult(s.getInspectionResult());
-
-                        String status = statusSetting == null ? smgr.getDefaultShopStatusName() : statusSetting.getName();
-                        String light = lightSetting == null ? smgr.getDefaultLightTypeName() : lightSetting.getName();
-                        String result = resultSetting == null ? smgr.getDefaultResultName() : resultSetting.getName();
-                        String location = s.getPlacedFloor() +" / "+s.getTotalFloor();
-                        SignInfo si = new SignInfo(null, content, size, status, light, location, result);
                         activity.addToList(si);
-
-                        startToLoadSignImages();
                     }
                 }
             }
             @Override
             public void onTaskFinished(Boolean result) {
                 activity.hideWaitingDialog();
+
+                String[] paths = new String[shopSigns.size()];
+                for(int i=0; i<shopSigns.size(); i++) {
+                    Sign sign = shopSigns.get(i);
+                    String path = SyncConfiguration.getDirectoryForSingPicture() + sign.getPicNumber();
+                    paths[i] = path;
+                }
+
+                startToLoadSignImages(paths);
             }
         });
         task.execute(currentShop);
     }
 
-    private void startToLoadSignImages() {
-        String[] paths = new String[shopSigns.size()];
-        for(int i=0; i<shopSigns.size(); i++) {
-            Sign sign = shopSigns.get(i);
-            String path = SyncConfiguration.getDirectoryForSingPicture() + sign.getPicNumber();
-            paths[i] = path;
-        }
+    private void startToInsertSignAndUpdateUI(final Sign sign) {
+        RegisterSignTask task = new RegisterSignTask(activity.getApplicationContext(), currentShop.getId());
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Long>() {
+            @Override
+            public void onTaskStart() {
+                activity.showWaitingDialog(R.string.saving);
+            }
 
+            @Override
+            public void onTaskFinished(Long result) {
+                activity.hideWaitingDialog();
+                if(result < 0) {
+                    // TODO 등록 실패 - 사진 파일 삭제
+                    Toast.makeText(activity, R.string.failed_to_save_sign_information, Toast.LENGTH_SHORT);
+                } else {
+                    // 등록 성공
+                    sign.setId(result);
+
+                    SignInfo si = signToSignInfo(sign);
+                    String path = SyncConfiguration.getDirectoryForSingPicture() + sign.getPicNumber();
+                    shopSigns.add(sign);
+                    activity.addToList(si);
+
+                    startToLoadSignImage(shopSigns.size()-1, path);
+                }
+            }
+        });
+        task.execute(sign);
+    }
+
+    private void startToModifySignAndUpdateUI(final int position, final Sign sign) {
+        ModifySignTask task = new ModifySignTask(activity.getApplicationContext());
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
+            @Override
+            public void onTaskStart() {
+                activity.showWaitingDialog(R.string.saving);
+            }
+
+            @Override
+            public void onTaskFinished(Boolean result) {
+                activity.hideWaitingDialog();
+                if(result == false) {
+                    // TODO 수정 실패 - 사진 파일 삭제
+                    Toast.makeText(activity, R.string.failed_to_save_sign_information, Toast.LENGTH_SHORT);
+                } else {
+                    SignInfo si = signToSignInfo(sign);
+                    String path = SyncConfiguration.getDirectoryForSingPicture() + sign.getPicNumber();
+                    shopSigns.set(position, sign);
+                    activity.setSignInfo(position, si);
+                    startToLoadSignImage(position, path);
+                }
+            }
+        });
+        task.execute(sign);
+    }
+
+    private SignInfo signToSignInfo(Sign s) {
+        SettingDataManager smgr = SettingDataManager.getInstance();
+
+        // update to ui
+        String content = s.getContent();
+        String size = s.getWidth()+" X "+s.getLength();
+        if(s.getHeight() != 0)
+            size = size + " X "+s.getHeight();
+
+        Setting statusSetting = smgr.getSignStatus(s.getStatusCode());
+        Setting lightSetting = smgr.getLightType(s.getLightType());
+        Setting resultSetting = smgr.getResult(s.getInspectionResult());
+
+        String status = statusSetting == null ? smgr.getDefaultShopStatusName() : statusSetting.getName();
+        String light = lightSetting == null ? smgr.getDefaultLightTypeName() : lightSetting.getName();
+        String result = resultSetting == null ? smgr.getDefaultResultName() : resultSetting.getName();
+        String location = s.getPlacedFloor() +" / "+s.getTotalFloor();
+
+        SignInfo si = new SignInfo(null, content, size, status, light, location, result);
+        return si;
+    }
+
+    private void startToLoadSignImages(String... paths) {
         signImageLoadTask = new LoadImageTask();
         signImageLoadTask.setSampleSize(8);
         signImageLoadTask.setDefaultAsyncTaskListener(new AsyncTaskListener<IndexBitmap, Boolean>() {
@@ -146,12 +262,37 @@ public class SignListActivityHandler extends DefaultSActivityHandler {
         signImageLoadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, paths);
     }
 
+    private void startToLoadSignImage(final int position, String path) {
+        signImageLoadTask = new LoadImageTask();
+        signImageLoadTask.setSampleSize(8);
+        signImageLoadTask.setDefaultAsyncTaskListener(new AsyncTaskListener<IndexBitmap, Boolean>() {
+            @Override
+            public void onTaskStart() {
+            }
+            @Override
+            public void onTaskProgressUpdate(IndexBitmap... values) {
+                for(int i=0; i<values.length; i++)
+                    activity.setSignImage(position, values[i].image);
+            }
+            @Override
+            public void onTaskFinished(Boolean result) {
+            }
+        });
+        signImageLoadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, path);
+    }
+
     private void goToSignInformation(int position) {
         Sign sign = shopSigns.get(position);
 
         Intent intent = new Intent(activity, SignInformationActivity.class);
         intent.putExtra(HANDLER_CLASS, SignInformationActivityHandler.class);
         intent.putExtra(MJConstants.SIGN, sign);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_INFORMATION);
+    }
+
+    private void goToSignInput() {
+        Intent intent = new Intent(activity, BasicSignInformationInputActivity.class);
+        intent.putExtra(HANDLER_CLASS, BasicSignInformationInputActivityHandler.class);
+        activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_INFORMATION);
     }
 }

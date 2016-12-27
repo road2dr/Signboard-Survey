@@ -9,12 +9,11 @@ import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.activity.KeywordSearchActivity;
 import com.mjict.signboardsurvey.activity.SearchResultActivity;
-import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
 
 /**
  * Created by Junseo on 2016-12-02.
  */
-public class KeywordSearchActivityHandler extends DefaultSActivityHandler {
+public class KeywordSearchActivityHandler extends SABaseActivityHandler {
     private KeywordSearchActivity activity;
 
     @Override

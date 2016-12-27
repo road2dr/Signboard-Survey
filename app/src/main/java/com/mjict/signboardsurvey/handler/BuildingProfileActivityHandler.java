@@ -16,7 +16,6 @@ import com.mjict.signboardsurvey.model.BuildingPicture;
 import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
-import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
 import com.mjict.signboardsurvey.task.LoadBuildingPictureTask;
 import com.mjict.signboardsurvey.task.LoadImageTask;
@@ -31,7 +30,7 @@ import java.util.List;
 /**
  * Created by Junseo on 2016-11-15.
  */
-public class BuildingProfileActivityHandler extends DefaultSActivityHandler {
+public class BuildingProfileActivityHandler extends SABaseActivityHandler {
 
     private BuildingProfileActivity activity;
     private Building currentBuilding;

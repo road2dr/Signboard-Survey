@@ -12,7 +12,6 @@ import com.mjict.signboardsurvey.activity.SignInformationActivity;
 import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.model.Setting;
 import com.mjict.signboardsurvey.model.Sign;
-import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
 import com.mjict.signboardsurvey.task.LoadImageTask;
 import com.mjict.signboardsurvey.util.SettingDataManager;
@@ -21,10 +20,11 @@ import com.mjict.signboardsurvey.util.SyncConfiguration;
 /**
  * Created by Junseo on 2016-11-17.
  */
-public class SignInformationActivityHandler extends DefaultSActivityHandler {
+public class SignInformationActivityHandler extends SABaseActivityHandler {
     private SignInformationActivity activity;
 
     private Sign currentSign;
+
 
     @Override
     public void onActivityCreate(Bundle savedInstanceState) {
@@ -62,15 +62,31 @@ public class SignInformationActivityHandler extends DefaultSActivityHandler {
         startToLoadSignImage();
     }
 
+    private int responseResult = Activity.RESULT_CANCELED;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == MJConstants.REQUEST_SIGN_INFORMATION) {
             if(resultCode == Activity.RESULT_OK) {
+                Sign sign = (Sign) data.getSerializableExtra(MJConstants.SIGN);
+                currentSign = sign;
+
                 updateToUI();
 
                 startToLoadSignImage();
+                responseResult = Activity.RESULT_OK;
+            } else {
+                responseResult = Activity.RESULT_CANCELED;
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent responseIntent = new Intent();
+        responseIntent.putExtra(MJConstants.SIGN, currentSign);
+        activity.setResult(responseResult, responseIntent);
+
+        super.onBackPressed();
     }
 
     private void updateToUI() {
@@ -84,16 +100,51 @@ public class SignInformationActivityHandler extends DefaultSActivityHandler {
         String displayLocation = activity.getString(R.string.display_location_format, currentSign.getPlacedFloor(), currentSign.getTotalFloor());
         String type = typeSetting == null ? smgr.getDefaultSignTypeName() : typeSetting.getName();
         String status = statusSetting == null ? smgr.getDefaultSignStatus() : statusSetting.getName();
-        String size = currentSign.getWidth() +"/"+currentSign.getLength();
+        String size = currentSign.getWidth() +" X "+currentSign.getLength();
         if(currentSign.getHeight() != 0)
             size = size + currentSign.getHeight();
+
+        boolean isFront = currentSign.getPlacedSide().equals("Y") ? false : true;   // TODO 정면 도로. 확인 필요
+        boolean isFrontBack = currentSign.isFrontBackRoad();
+        boolean isIntersection = currentSign.getIsIntersection().equals("Y") ? true : false;
 
         activity.setContentText(content);
         activity.setDisplayLocationText(displayLocation);
         activity.setTypeText(type);
         activity.setStatusText(status);
         activity.setSizeText(size);
+        activity.setFrontChecked(isFront);
+        activity.setFrontBackChecked(isFrontBack);
+        activity.setIntersectionChecked(isIntersection);
     }
+
+//    private void startToModifySign(final Sign sign) {
+//        ModifySignTask task = new ModifySignTask(activity.getApplicationContext());
+//        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
+//            @Override
+//            public void onTaskStart() {
+//                activity.showWaitingDialog(R.string.saving);
+//            }
+//
+//            @Override
+//            public void onTaskFinished(Boolean result) {
+//                activity.hideWaitingDialog();
+//
+//                if(result == false) {
+//                    activity.showAlertDialog(R.string.failed_to_save_sign_information);
+//                    return;
+//                }
+//
+//                currentSign = sign;
+//                signDataChanged = true;
+//
+//                updateToUI();
+//
+//                startToLoadSignImage();
+//            }
+//        });
+//        task.execute(sign);
+//    }
 
     private void startToLoadSignImage() {
         String path = SyncConfiguration.getDirectoryForSingPicture()+currentSign.getPicNumber();

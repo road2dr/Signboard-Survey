@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +34,9 @@ public abstract class SABaseActivity extends AppCompatSActivity {
     private ImageView menuButton;
     private ImageView optionButton;
     private PopupMenu optionPopup;
+    private Button addressSearchButton;
+    private Button demolishedSignButton;
+    private Button reviewSignButton;
 
     private WaitingDialog waitingDialog;
     private AlertDialog.Builder alertDialog;
@@ -112,6 +116,10 @@ public abstract class SABaseActivity extends AppCompatSActivity {
 
         waitingDialog = new WaitingDialog(this);
         waitingDialog.create();
+
+        addressSearchButton = (Button)this.findViewById(R.id.address_search_button);
+        demolishedSignButton = (Button)this.findViewById(R.id.demolished_sign_button);
+        reviewSignButton = (Button)this.findViewById(R.id.review_sign_button);
     }
 
     @Override
@@ -187,6 +195,18 @@ public abstract class SABaseActivity extends AppCompatSActivity {
 
     public void setOnOptionMenuItemClickListener(PopupMenu.OnMenuItemClickListener listener) {
         optionPopup.setOnMenuItemClickListener(listener);
+    }
+
+    public void setAddressSearchButtonOnClickListener(View.OnClickListener listener) {
+        addressSearchButton.setOnClickListener(listener);
+    }
+
+    public void setDemolishedSignButtonOnClickListener(View.OnClickListener listener) {
+        demolishedSignButton.setOnClickListener(listener);
+    }
+
+    public void setReviewSignButtonOnClickListener(View.OnClickListener listener) {
+        reviewSignButton.setOnClickListener(listener);
     }
 
     public void showOptionButton() {

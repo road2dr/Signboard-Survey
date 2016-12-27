@@ -90,7 +90,7 @@
             android:textSize="16sp"
             android:text="사용자 자료 조회"/>
         <Button
-            android:id="@+id/review_sign_button"
+            android:id="@+id/demolished_sign_button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/user_statistics_button"
@@ -101,7 +101,20 @@
             android:textAlignment="textStart"
             android:drawablePadding="30dp"
             android:textSize="16sp"
-            android:text="철거/재조사 간판"/>
+            android:text="철거 간판"/>
+        <Button
+            android:id="@+id/review_sign_button"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/demolished_sign_button"
+            android:drawableLeft="@drawable/btn_doc_search_sel"
+            android:paddingLeft="45dp"
+            android:paddingRight="25dp"
+            android:background="@drawable/bg_gray_border"
+            android:textAlignment="textStart"
+            android:drawablePadding="30dp"
+            android:textSize="16sp"
+            android:text="재조사 간판"/>
         <Button
             android:id="@+id/address_search_button"
             android:layout_width="match_parent"

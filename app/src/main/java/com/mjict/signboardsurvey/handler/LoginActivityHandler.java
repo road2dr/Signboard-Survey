@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.LoginActivity;
 import com.mjict.signboardsurvey.activity.SummaryActivity;
 import com.mjict.signboardsurvey.model.User;
-import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
 import com.mjict.signboardsurvey.task.LoadUserDataTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by Junseo on 2016-11-09.
  */
-public class LoginActivityHandler extends DefaultSActivityHandler {
+public class LoginActivityHandler extends SABaseActivityHandler {
 
     private LoginActivity activity;
 
@@ -32,7 +32,12 @@ public class LoginActivityHandler extends DefaultSActivityHandler {
             @Override
             public void onClick(View v) {
                 // temp TODO 나중에 제거 => 비번 체크 없이 로그인
-                goToSummary();
+                if(true) {
+                    User user = ((UserWrapper)activity.getSelectedUser()).user;
+                    MJContext.setCurrentUser(user);
+                    goToSummary();
+                    return;
+                }
 
                 User user = ((UserWrapper)activity.getSelectedUser()).user;
                 String password = activity.getInputPassword();
@@ -46,6 +51,7 @@ public class LoginActivityHandler extends DefaultSActivityHandler {
                 }
 
                 if(user.getPassword().equals(password)) {
+                    MJContext.setCurrentUser(user);
                     goToSummary();
                 } else {
                     Toast.makeText(activity, R.string.password_not_matched, Toast.LENGTH_SHORT).show();

@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Created by Junseo on 2016-11-14.
  */
-public class BuildingSearchActivityHandler extends DefaultSActivityHandler {
+public class BuildingSearchActivityHandler extends SABaseActivityHandler {
     private BuildingSearchActivity activity;
     private Address address;
 

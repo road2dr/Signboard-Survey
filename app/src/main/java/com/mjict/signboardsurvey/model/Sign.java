@@ -119,6 +119,8 @@ public class Sign implements Serializable {
 	@DatabaseField(columnName = "frontBackRoad")
 	private boolean isFrontBackRoad;
 
+	// TODO "정면" 을 나타낼 필드가 없다
+
 
 	public Sign() {
 		
@@ -472,7 +474,7 @@ public class Sign implements Serializable {
 		this.isDeleted = isDeleted;
 	}
 
-	public int getReviewCodeCode() {
+	public int getReviewCode() {
 		return reviewCode;
 	}
 

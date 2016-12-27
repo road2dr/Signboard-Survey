@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -18,7 +19,10 @@ public class SignInformationActivity extends SABaseActivity {
     private ImageView signImageView;
     private EditText contentTextView;
     private EditText displayLocationTextView;
-    private ImageView buildingLocationImageView;
+//    private ImageView buildingLocationImageView;
+    private CheckBox frontCheckBox;
+    private CheckBox intersectionCheckBox;
+    private CheckBox frontBackCheckBox;
     private EditText typeTextView;
     private EditText sizeTextView;
     private ImageView lightTypeImageView;
@@ -56,11 +60,17 @@ public class SignInformationActivity extends SABaseActivity {
         signImageView = (ImageView)this.findViewById(R.id.sign_image_view);
         contentTextView = (EditText)this.findViewById(R.id.content_edit_text);
         displayLocationTextView = (EditText)this.findViewById(R.id.display_location_edit_text);
-        buildingLocationImageView = (ImageView)this.findViewById(R.id.building_image_view);
+        frontCheckBox = (CheckBox)this.findViewById(R.id.front_check_box);
+        intersectionCheckBox = (CheckBox)this.findViewById(R.id.intersection_check_box);
+        frontBackCheckBox = (CheckBox)this.findViewById(R.id.front_back_check_box);
         typeTextView = (EditText)this.findViewById(R.id.type_edit_text);
         sizeTextView = (EditText)this.findViewById(R.id.size_edit_text);
         lightTypeImageView = (ImageView)this.findViewById(R.id.light_type_image_view);
         statusTextView = (EditText)this.findViewById(R.id.status_edit_text);
+
+        frontCheckBox.setEnabled(false);
+        intersectionCheckBox.setEnabled(false);
+        frontBackCheckBox.setEnabled(false);
 
 //        signImageLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -96,8 +106,16 @@ public class SignInformationActivity extends SABaseActivity {
         displayLocationTextView.setText(text);
     }
 
-    public void setBuildingLocationImage(int resId) {
-        buildingLocationImageView.setImageResource(resId);
+    public void setFrontChecked(boolean checked) {
+        frontCheckBox.setChecked(checked);
+    }
+
+    public void setIntersectionChecked(boolean checked) {
+        intersectionCheckBox.setChecked(checked);
+    }
+
+    public void setFrontBackChecked(boolean checked){
+        frontBackCheckBox.setChecked(checked);
     }
 
     public void setTypeText(String text) {

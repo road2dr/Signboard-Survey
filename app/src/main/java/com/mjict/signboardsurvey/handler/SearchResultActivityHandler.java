@@ -11,7 +11,6 @@ import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.StreetAddress;
 import com.mjict.signboardsurvey.model.UnifiedSearchResult;
 import com.mjict.signboardsurvey.model.ui.BuildingResult;
-import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 import com.mjict.signboardsurvey.task.UnifiedSearchTask;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
@@ -21,7 +20,7 @@ import java.util.List;
 /**
  * Created by Junseo on 2016-11-11.
  */
-public class SearchResultActivityHandler extends DefaultSActivityHandler {
+public class SearchResultActivityHandler extends SABaseActivityHandler {
     public static final int MAX_ADDRESS_RESULT = 7;
     public static final int MAX_BUILDING_RESULT = 5;
     public static final int MAX_SHOP_RESULT = 10;

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#f2f2f2"
+    android:padding="10dp">
+
+   <com.mjict.signboardsurvey.widget.ImageZoomView
+       android:id="@+id/image_zoom_view"
+       android:layout_width="150dp"
+       android:layout_height="150dp"
+       android:layout_alignParentRight="true"
+       android:layout_alignParentTop="true"
+       android:layout_marginTop="30dp"
+       android:layout_marginLeft="20dp"
+       android:layout_marginRight="20dp"
+       android:layout_marginBottom="0dp"
+       android:visibility="gone"/>
+
+   <com.mjict.signboardsurvey.widget.TouchImageView
+       android:id="@+id/image_view"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_toLeftOf="@+id/button_layout"
+       android:layout_above="@+id/measure_layout"
+       android:scaleType="fitCenter"/>
+    
+    <LinearLayout
+        android:id="@+id/measure_layout"
+        android:layout_width="480dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="30dp">
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="@string/distance_colon"
+            android:textColor="@color/label_text_color"/>
+        <EditText 
+            android:id="@+id/distance_edit_text"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:inputType="number"/>
+        <TextView 
+            android:id="@+id/width_text_view"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:gravity="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/multiply_mark"
+            android:gravity="center"
+            android:textColor="@color/label_text_color"
+        ></TextView>
+        <TextView
+            android:id="@+id/height_text_view"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/equal_mark"
+            android:textColor="@color/label_text_color"/>
+
+        <TextView
+            android:id="@+id/result_text_view"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:gravity="center"/>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/button_layout"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"        
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="20dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/measure_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/calculation" />
+
+        <Button
+            android:id="@+id/apply_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/apply" />
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/close_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/close" />
+    </LinearLayout>
+    
+</RelativeLayout>

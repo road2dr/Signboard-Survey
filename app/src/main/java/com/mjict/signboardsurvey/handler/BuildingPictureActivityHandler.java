@@ -12,18 +12,18 @@ import com.mjict.signboardsurvey.activity.PictureActivity;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.BuildingPicture;
 import com.mjict.signboardsurvey.model.IndexBitmap;
-import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
 import com.mjict.signboardsurvey.task.InsertBuildingPictureTask;
 import com.mjict.signboardsurvey.task.LoadImageTask;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
+import com.mjict.signboardsurvey.util.Utilities;
 
 import java.util.ArrayList;
 
 /**
  * Created by Junseo on 2016-07-26.
  */
-public class BuildingPictureActivityHandler extends DefaultSActivityHandler {
+public class BuildingPictureActivityHandler extends SABaseActivityHandler {
 
 
     private PictureActivity activity;
@@ -129,14 +129,16 @@ public class BuildingPictureActivityHandler extends DefaultSActivityHandler {
     }
 
     private void addPictureButtonClicked() {
-//        Intent intent = new Intent(activity, CameraActivity.class);
-//        intent.putExtra(HANDLER_CLASS, BuildingCameraActivityHandler.class);
-//        intent.putExtra(BuildingCameraActivityHandler.BUILDING_ID, buildingId);
-//
-//        activity.startActivityForResult(intent, REQUEST_TAKE_AND_SAVE);
+        // 건물 사진 파일 이름 만듬
+        String time = Utilities.getCurrentTimeAsString();
+        int hash = Math.abs((int)Utilities.hash(time));
+        String dir = SyncConfiguration.getDirectoryForBuildingPicture();
+        final String fileName = String.format("building_%d_%d.jpg", building.getId(), hash);
+        String path = dir + fileName;
+
         Intent intent = new Intent(activity, CameraActivity.class);
-        intent.putExtra(HANDLER_CLASS, BuildingCameraActivityHandler.class);
-        intent.putExtra(MJConstants.BUILDING, building);
+        intent.putExtra(HANDLER_CLASS, CameraActivityHandler.class);
+        intent.putExtra(MJConstants.PATH, path);
 
         activity.startActivityForResult(intent, MJConstants.REQUEST_TAKE_AND_SAVE);
 
@@ -256,7 +258,9 @@ public class BuildingPictureActivityHandler extends DefaultSActivityHandler {
     }
 
     private void startToSavePictureInformation(String path) {
-        final BuildingPicture bp = new BuildingPicture(0, building.getId(), path, "");
+        String fileName = path.substring(path.lastIndexOf("/")+1);
+
+        final BuildingPicture bp = new BuildingPicture(0, building.getId(), fileName, "");
         InsertBuildingPictureTask task = new InsertBuildingPictureTask(activity.getApplicationContext());
         task.setDefaultAsyncTaskListener(new AsyncTaskListener<Long, Boolean>() {
             @Override

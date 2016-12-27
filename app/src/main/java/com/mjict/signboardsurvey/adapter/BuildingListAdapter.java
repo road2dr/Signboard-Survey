@@ -35,6 +35,15 @@ public class BuildingListAdapter extends ArrayAdapter<BuildingResult> {
         notifyDataSetChanged();
     }
 
+    public void replaceItem(int position, BuildingResult data) {
+        if(position < 0 || position >= getCount())
+            return;
+
+        BuildingResult br = getItem(position);
+        remove(br);
+        insert(data, position);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;

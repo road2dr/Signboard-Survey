@@ -36,7 +36,7 @@ public class SignInfoRowViewHolder {
 
     public TextView getSizeTextView() {
         if(sizeTextView == null)
-            sizeTextView = (TextView)parent.findViewById(R.id.name_text_view);
+            sizeTextView = (TextView)parent.findViewById(R.id.size_text_view);
 
         return sizeTextView;
     }

@@ -24,6 +24,15 @@ public class SignListAdapter extends ArrayAdapter<SignInfo> {
         inflater = LayoutInflater.from(context);
     }
 
+    public void replaceItem(int position, SignInfo data) {
+        if(position < 0 || position >= getCount())
+            return;
+
+        SignInfo sd = getItem(position);
+        remove(sd);
+        insert(data, position);
+    }
+
     public void setImage(int position, Bitmap image) {
         if(position < 0 || position >= getCount())
             return;

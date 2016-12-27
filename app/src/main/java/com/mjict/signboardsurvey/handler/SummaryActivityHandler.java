@@ -10,22 +10,21 @@ import android.view.View;
 import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.activity.KeywordSearchActivity;
 import com.mjict.signboardsurvey.activity.SummaryActivity;
-import com.mjict.signboardsurvey.util.SettingDataManager;
 import com.mjict.signboardsurvey.model.BitmapBuilding;
 import com.mjict.signboardsurvey.model.BitmapSign;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.Setting;
 import com.mjict.signboardsurvey.model.ui.RecentBuilding;
 import com.mjict.signboardsurvey.model.ui.RecentSign;
-import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
 import com.mjict.signboardsurvey.task.SearchBitmapBuildingsByIdTask;
 import com.mjict.signboardsurvey.task.SearchBitmapSignsByIdTask;
+import com.mjict.signboardsurvey.util.SettingDataManager;
 
 /**
  * Created by Junseo on 2016-11-09.
  */
-public class SummaryActivityHandler extends DefaultSActivityHandler {
+public class SummaryActivityHandler extends SABaseActivityHandler {
 
     private SummaryActivity activity;
 

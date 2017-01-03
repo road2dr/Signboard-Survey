@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.mjict.signboardsurvey.R;
@@ -25,6 +26,8 @@ public class SummaryActivity extends SABaseActivity {
     private View searchEditText;
     private ImageButton searchButton;
 
+    private Button addressSearchButton;
+    private Button mapSearchButton;
     private ViewPager statisticsViewPager;
     private SummaryStatisticsViewPagerAdapter vpAdapter;
     private CircleIndicator circleIndicator;
@@ -60,6 +63,9 @@ public class SummaryActivity extends SABaseActivity {
 
         searchEditText = (View)this.findViewById(R.id.search_edit_text);
         searchButton = (ImageButton)this.findViewById(R.id.search_button);
+
+        addressSearchButton = (Button)this.findViewById(R.id.address_search_summary_button);
+        mapSearchButton = (Button)this.findViewById(R.id.map_search_summary_button);
 
         statisticsView = this.findViewById(R.id.statistics_view);
 
@@ -126,5 +132,13 @@ public class SummaryActivity extends SABaseActivity {
 
     public void setSearchViewOnclickListener(View.OnClickListener listener) {
         searchEditText.setOnClickListener(listener);
+    }
+
+    public void setAddressSearchSummaryButtonOnClickListener(View.OnClickListener listener) {
+        addressSearchButton.setOnClickListener(listener);
+    }
+
+    public void setMapSearchSummaryButtonOnClickListener(View.OnClickListener listener) {
+        mapSearchButton.setOnClickListener(listener);
     }
 }

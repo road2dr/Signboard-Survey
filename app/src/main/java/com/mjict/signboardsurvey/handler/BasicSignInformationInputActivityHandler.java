@@ -354,6 +354,8 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
     }
 
     private Sign createNewSign() {
+        String currentTime = Utilities.getCurrentTimeAsString();
+
         long id = -1;
         int type = -1;
         float width = 0f;
@@ -373,16 +375,16 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         int inspectionResult = -1;
         String permissionNumber = "";   // 안쓰는거 같음
         String inputor = MJContext.getCurrentUser().getUserId();
-        String inputDate = "";
+        String inputDate = currentTime;
         String needReinspection = "";   // 안쓰는거 같음 - reviewCode로 대체 될 듯
         int statusCode = -1;
         String picNumber = "";
         String modifier = "";
-        String modifyDate = "";
+        String modifyDate = currentTime;
         int totalFloor = 0;
         String isIntersection = "N";
         int tblNumber = 510;
-        int addressId = -1;     // 안쓰는거 같음
+        int addressId = -1;
         String demolitionPicPath = "";
         String demolishedDate = "";
         boolean isDeleted = false;

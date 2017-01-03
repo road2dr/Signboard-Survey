@@ -30,7 +30,9 @@ public class LoadImageTask extends DefaultAsyncTask<String, IndexBitmap, Boolean
                 image = Utilities.loadImage(path, inSampleSize);
             }
             IndexBitmap li = new IndexBitmap(i, image);
-            publishProgress(li);
+
+            if(isCancelled() == false)
+                publishProgress(li);
         }
 
         return true;

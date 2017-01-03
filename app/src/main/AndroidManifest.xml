@@ -155,6 +155,12 @@
         </activity>
 
         <activity
+            android:name=".activity.MapSearchActivity"
+            android:theme="@style/AppTheme.Base"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
             android:name=".activity.DemolishedSignActivity"
             android:theme="@style/AppTheme.Base"
             android:screenOrientation="portrait">
@@ -162,6 +168,12 @@
 
         <activity
             android:name=".activity.ReviewSignActivity"
+            android:theme="@style/AppTheme.Base"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".activity.UserDataSearchActivity"
             android:theme="@style/AppTheme.Base"
             android:screenOrientation="portrait">
         </activity>

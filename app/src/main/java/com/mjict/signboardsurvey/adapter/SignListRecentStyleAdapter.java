@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mjict.signboardsurvey.R;
-import com.mjict.signboardsurvey.model.SignInfo;
+import com.mjict.signboardsurvey.model.ui.SignInfo;
 import com.mjict.signboardsurvey.widget.RecentsAdapter;
 
 import java.util.ArrayList;

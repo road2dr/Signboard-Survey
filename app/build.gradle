@@ -25,7 +25,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:design:23.3.0'
     compile 'org.xdty.preference:color-picker:0.0.4'
-    compile files('libs/libDaumMapAndroid.jar')
+    compile files('libs/libDaumMapEngineApi.jar')
     compile files('libs/mediautil.jar')
     compile files('libs/ormlite-android-4.48.jar')
     compile files('libs/ormlite-core-4.48.jar')

@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.mjict.signboardsurvey.MJContext;
+import com.mjict.signboardsurvey.activity.AddressSearchActivity;
 import com.mjict.signboardsurvey.activity.KeywordSearchActivity;
+import com.mjict.signboardsurvey.activity.MapSearchActivity;
 import com.mjict.signboardsurvey.activity.SummaryActivity;
 import com.mjict.signboardsurvey.model.BitmapBuilding;
 import com.mjict.signboardsurvey.model.BitmapSign;
@@ -40,7 +42,21 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
             @Override
             public void onClick(View v) {
                 Log.d("junseo", "???");
-                goToKeyworkSearch();
+                goToKeywordSearch();
+            }
+        });
+
+        activity.setAddressSearchSummaryButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToAddressSearch();
+            }
+        });
+
+        activity.setMapSearchSummaryButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMapSearch();
             }
         });
 
@@ -138,9 +154,21 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
         super.onActivityStop();
     }
 
-    private void goToKeyworkSearch() {
+    private void goToKeywordSearch() {
         Intent intent = new Intent(activity, KeywordSearchActivity.class);
         intent.putExtra(HANDLER_CLASS, KeywordSearchActivityHandler.class);
+        activity.startActivity(intent);
+    }
+
+    private void goToAddressSearch() {
+        Intent intent = new Intent(activity, AddressSearchActivity.class);
+        intent.putExtra(HANDLER_CLASS, AddressSearchActivityHandler.class);
+        activity.startActivity(intent);
+    }
+
+    private void goToMapSearch() {
+        Intent intent = new Intent(activity, MapSearchActivity.class);
+        intent.putExtra(HANDLER_CLASS, MapSearchActivityHandler.class);
         activity.startActivity(intent);
     }
 }

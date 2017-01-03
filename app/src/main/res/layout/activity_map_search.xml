@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageButton
+        android:id="@+id/select_building_button"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/location_search_button"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="20dp"
+        android:visibility="invisible"
+        android:scaleType="fitXY"
+        android:src="@drawable/icon_search"
+        android:background="@drawable/bg_circle_button"/>
+    <ImageButton
+        android:id="@+id/location_search_button"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginRight="30dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/icon_gps"
+        android:background="@drawable/bg_circle_button"/>
+
+    <TextView
+        android:id="@+id/status_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:textSize="16sp"/>
+
+
+</RelativeLayout>

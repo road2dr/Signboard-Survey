@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.adapter.SignListAdapter;
-import com.mjict.signboardsurvey.model.SignInfo;
+import com.mjict.signboardsurvey.model.ui.SignInfo;
 
 /**
  * Created by Junseo on 2016-11-16.

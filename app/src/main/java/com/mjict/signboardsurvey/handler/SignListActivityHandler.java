@@ -17,7 +17,7 @@ import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.model.Setting;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
-import com.mjict.signboardsurvey.model.SignInfo;
+import com.mjict.signboardsurvey.model.ui.SignInfo;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
 import com.mjict.signboardsurvey.task.LoadImageTask;
 import com.mjict.signboardsurvey.task.LoadSignsByShopTask;
@@ -166,6 +166,7 @@ public class SignListActivityHandler extends SABaseActivityHandler {
     }
 
     private void startToInsertSignAndUpdateUI(final Sign sign) {
+        sign.setAddressId(currentShop.getAddressId());
         RegisterSignTask task = new RegisterSignTask(activity.getApplicationContext(), currentShop.getId());
         task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Long>() {
             @Override

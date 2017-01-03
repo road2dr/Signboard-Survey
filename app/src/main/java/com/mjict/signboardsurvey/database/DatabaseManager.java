@@ -5,6 +5,7 @@ import android.content.Context;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.BuildingPicture;
 import com.mjict.signboardsurvey.model.Inspection;
@@ -196,6 +197,25 @@ public class DatabaseManager {
 		}
 		
 		return shop;
+	}
+
+	public List<Sign> findSignByUserId(String userId) {
+
+		List<Sign> signs = null;
+		try {
+			QueryBuilder<Sign, Long> qb = helper.getSignDao().queryBuilder();
+			Where<Sign, Long> where = qb.where().eq("inputor", userId).or().eq("modifier", userId);
+			PreparedQuery<Sign> pq = qb.prepare();
+			signs = helper.getSignDao().query(pq);
+
+//			qb.
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			signs = null;
+		}
+
+		return signs;
 	}
 	
 	/**

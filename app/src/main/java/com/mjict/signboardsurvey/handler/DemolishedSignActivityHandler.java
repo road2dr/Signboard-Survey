@@ -73,7 +73,7 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
 
         activity.setCountySpinnerOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
             @Override
-            public void onItemSelectionChanged(int position, Object data) {
+            public void onItemSelectionChanged(int position, int id, Object data) {
                 if(position == -1)
                     return;
 
@@ -83,7 +83,7 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
 
         activity.setTownSpinnerrOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
             @Override
-            public void onItemSelectionChanged(int position, Object data) {
+            public void onItemSelectionChanged(int position, int id, Object data) {
                 if(position == -1)
                     return;
 
@@ -93,7 +93,7 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
 
         activity.setConsonantSpinnerrOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
             @Override
-            public void onItemSelectionChanged(int position, Object data) {
+            public void onItemSelectionChanged(int position, int id, Object data) {
                 if(position == -1)
                     return;
 

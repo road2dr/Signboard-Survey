@@ -1,4 +1,4 @@
-package com.mjict.signboardsurvey.model;
+package com.mjict.signboardsurvey.model.ui;
 
 import android.graphics.Bitmap;
 

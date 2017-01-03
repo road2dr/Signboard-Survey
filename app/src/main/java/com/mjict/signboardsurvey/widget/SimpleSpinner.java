@@ -140,7 +140,7 @@ public class SimpleSpinner extends AppCompatSpinner implements AdapterView.OnIte
         SpinnerItem item = spinnerAdapter.getItem(position);
 
         if(listener != null)
-            listener.onItemSelectionChanged(position, item.data);
+            listener.onItemSelectionChanged(position, item.id, item.data);
 
         if(spinnerTouched && byTouchListener != null)
             byTouchListener.onItemSelectionChanged(position, item.data);
@@ -151,7 +151,7 @@ public class SimpleSpinner extends AppCompatSpinner implements AdapterView.OnIte
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         if(listener != null)
-            listener.onItemSelectionChanged(-1, null);
+            listener.onItemSelectionChanged(-1, -1, null);
 
         spinnerTouched = false;
     }
@@ -180,7 +180,7 @@ public class SimpleSpinner extends AppCompatSpinner implements AdapterView.OnIte
     }
 
     public static interface OnItemSelectionChangedListener {
-        void onItemSelectionChanged(int position, Object data);
+        void onItemSelectionChanged(int position, int id, Object data);
     }
 
     public static interface OnItemSelectionChangedByTouchListener {

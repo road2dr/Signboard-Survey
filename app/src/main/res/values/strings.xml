@@ -198,7 +198,28 @@
     <string name="add_new_sign">새 간판 추가</string>
     <string name="demolished_signs">철거 간판</string>
     <string name="review_signs">재조사 간판</string>
-
+    <string name="sign_information">간판 정보</string>
+    <string name="map_search">지도 검색</string>
+    <string name="my_location">내 위치</string>
+    <string name="error_occurred_while_search_buildings">건물 정보를 찾는 도중 오류가 발생 했습니다. 시스템 관리자에게 문의하세요.</string>
+    <string name="there_are_no_buildings_be_searched">검색된 건물이 없습니다.</string>
+    <string name="searching_around_buildings">주변 건물 검색 중...</string>
+    <string name="gps_is_off_cannot_use_map_search">위치 찾기 서비스가 꺼져 있습니다. 해당 기능을 켜 주세요.</string>
+    <string name="searching_current_address">주소 정보 검색 중...</string>
+    <string name="today">오늘</string>
+    <string name="three_days">3일</string>
+    <string name="a_week">일주일</string>
+    <string name="a_month">한달</string>
+    <string name="all">전체</string>
+    <string name="all_county">시/구/군 전체</string>
+    <string name="all_town">읍/면/동 전체</string>
+    <string name="searching_user_sign_data">데이터 검색 중... %1$d 건</string>
+    <string name="finish_to_search_user_sign_data">사용자 간판 데이터 검색 완료. 총 %1$d 건</string>
+    <string name="user_info">ID: %1$s 이름: %2$s</string>
+    <string name="there_are_no_user_sign_data">사용자의 간판 데이터가 없습니다.</string>
+    <string name="loading_all_user_sign_data">사용자의 모든 간판 데이터를 불러오는 중...</string>
+    <string name="applying_filter">검색 조건 적용 중... </string>
+    <string name="filtered_signs_count">검색 조건에 부합한 간판의 수: %1$d 건</string>
 
     <!-- !!!!!!!!!!!!!!!!!!!!!! -->
     <string name="local_statistics">지역 통계</string>

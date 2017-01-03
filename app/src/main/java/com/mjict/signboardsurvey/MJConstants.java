@@ -9,6 +9,8 @@ public class MJConstants {
 //    responseIntent.putExtra(VERTICAL_ANGLE, verticalAngle);
 //    responseIntent.putExtra(CAMERA_ZOOM, zoom);
 
+    public static final String DAUM_MAP_API_KEY= "1102f91eb0784b65cf2b1b9acfac8ded";
+
     public static final String KEYWORD = "keyword";
     public static final String PROVINCE = "province";
     public static final String COUNTY = "county";

@@ -6,8 +6,10 @@ import android.view.View;
 
 import com.mjict.signboardsurvey.activity.AddressSearchActivity;
 import com.mjict.signboardsurvey.activity.DemolishedSignActivity;
+import com.mjict.signboardsurvey.activity.MapSearchActivity;
 import com.mjict.signboardsurvey.activity.ReviewSignActivity;
 import com.mjict.signboardsurvey.activity.SABaseActivity;
+import com.mjict.signboardsurvey.activity.UserDataSearchActivity;
 import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
 
 /**
@@ -41,6 +43,20 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
                 goToReviewSign();
             }
         });
+
+        activity.setMapSearchButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMapSearch();
+            }
+        });
+
+        activity.setUserStatisticsButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToUserStatistics();
+            }
+        });
     }
 
     private void goToAddressSearch() {
@@ -60,6 +76,20 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
     private void goToReviewSign() {
         Intent intent = new Intent(activity, ReviewSignActivity.class);
         intent.putExtra(HANDLER_CLASS, ReviewSignActivityHandler.class);
+
+        activity.startActivity(intent);
+    }
+
+    private void goToMapSearch() {
+        Intent intent = new Intent(activity, MapSearchActivity.class);
+        intent.putExtra(HANDLER_CLASS, MapSearchActivityHandler.class);
+
+        activity.startActivity(intent);
+    }
+
+    private void goToUserStatistics() {
+        Intent intent = new Intent(activity, UserDataSearchActivity.class);
+        intent.putExtra(HANDLER_CLASS, UserDataSearchActivityHandler.class);
 
         activity.startActivity(intent);
     }

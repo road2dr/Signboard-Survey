@@ -3,6 +3,11 @@ package com.mjict.signboardsurvey.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Geocoder;
+import android.location.Location;
+import android.util.Log;
+
+import com.mjict.signboardsurvey.model.Address;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,9 +15,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class Utilities {
@@ -92,58 +100,58 @@ public class Utilities {
 //		return modiDate.after(lastSyncDate);
 //	}
 
-//	public static SimpleAddress getAddressFromLocation(Context context, Location location) {
-//		Geocoder geoCoder = new Geocoder(context);
-//		double lat = location.getLatitude();
-//		double lng = location.getLongitude();
-//
-//		List<Address> addresses = null;
-//
-//		try {
-//			addresses = geoCoder.getFromLocation(lat, lng, 5);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//			return null;
-//		}
-//
-////		geoCoder.getFromLocationName()
-//
-//		// TODO 주소 검색하면 후보로 여러개 나오는데 주소가 정확하지 않으므로 이걸 다 써야 할듯
-//
-//		SimpleAddress address = null;
-//		if(addresses.size() > 0) {
-//			Address a = addresses.get(0);
-//
-//			int idx = a.getMaxAddressLineIndex();
-//			for(int i=0; i<idx; i++) {
-//				String adl = a.getAddressLine(i);
-//				Log.d("junseo", "address line: "+i+": "+adl);
-//			}
-//
-//			String contry = a.getCountryName();				// 대한민국		// 대한민국
-//			String adminArea = a.getAdminArea();			// 서울특별시		// 인천광역시		// 인천광역시
-//			String locality = a.getLocality();				// 강남구		// 남동구		// 남동구
-//			String subLocality = a.getSubLocality();		// null			// null			// null
-//			String premise = a.getPremises();				// null							// null
-//			String thoroughfare = a.getThoroughfare();		// 언주로87길		// 구월3동		// 구월남로
-//			String subthoroughfare = a.getSubThoroughfare();				// 1091-3		// 258
-//			String sa = a.getSubAdminArea();				// null
-//			String featureName = a.getFeatureName();		// 44			// 1091-3		// 258
-//
-//			// feature name 이 있으면 지번 주소
-//			// subThroughfare 이 있으면 도로명 주소
-//
-//			Log.d("junseo", "address: "+contry+" "+adminArea+" "+locality+" "+subLocality+" "+thoroughfare+" "+featureName+" "+premise+" "+subthoroughfare+" "+sa);
-////			address = contry+" "+locality+" "+subLocality+" "+thoroughfare+" "+featureName;
-////			대한민국 경기도 성남시 수정구 산성동 1700 null 1700 null
-////			address = new SimpleAddress(adminArea, locality, thoroughfare, featureName);
-//
+	public static Address getAddressFromLocation(Context context, Location location) {
+		Geocoder geoCoder = new Geocoder(context);
+		double lat = location.getLatitude();
+		double lng = location.getLongitude();
+
+		List<android.location.Address> addresses = null;
+
+		try {
+			addresses = geoCoder.getFromLocation(lat, lng, 5);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+//		geoCoder.getFromLocationName()
+
+		// TODO 주소 검색하면 후보로 여러개 나오는데 주소가 정확하지 않으므로 이걸 다 써야 할듯
+
+		Address address = null;
+		if(addresses.size() > 0) {
+			android.location.Address a = addresses.get(0);
+
+			int idx = a.getMaxAddressLineIndex();
+			for(int i=0; i<idx; i++) {
+				String adl = a.getAddressLine(i);
+				Log.d("junseo", "address line: "+i+": "+adl);
+			}
+
+			String contry = a.getCountryName();				// 대한민국		// 대한민국
+			String adminArea = a.getAdminArea();			// 서울특별시		// 인천광역시		// 인천광역시
+			String locality = a.getLocality();				// 강남구		// 남동구		// 남동구
+			String subLocality = a.getSubLocality();		// null			// null			// null
+			String premise = a.getPremises();				// null							// null
+			String thoroughfare = a.getThoroughfare();		// 언주로87길		// 구월3동		// 구월남로
+			String subthoroughfare = a.getSubThoroughfare();				// 1091-3		// 258
+			String sa = a.getSubAdminArea();				// null
+			String featureName = a.getFeatureName();		// 44			// 1091-3		// 258
+
+			// feature name 이 있으면 지번 주소
+			// subThroughfare 이 있으면 도로명 주소
+
+			Log.d("junseo", "address: "+contry+" "+adminArea+" "+locality+" "+subLocality+" "+thoroughfare+" "+featureName+" "+premise+" "+subthoroughfare+" "+sa);
+//			address = contry+" "+locality+" "+subLocality+" "+thoroughfare+" "+featureName;
+//			대한민국 경기도 성남시 수정구 산성동 1700 null 1700 null
+//			address = new SimpleAddress(adminArea, locality, thoroughfare, featureName);
+
 //			int type = (featureName != null) ? SimpleAddress.ADDRESS_TYPE_HOUSE_NUMBER : SimpleAddress.ADDRESS_TYPE_STREET;
-//			String county = (subLocality == null) ? locality : locality+" "+subLocality;
+			String county = (subLocality == null) ? locality : locality+" "+subLocality;
 //			String town = (type == SimpleAddress.ADDRESS_TYPE_HOUSE_NUMBER) ? thoroughfare : null;
 //			String street = (type == SimpleAddress.ADDRESS_TYPE_STREET) ? thoroughfare : null;
 //			String houseNumber = (type == SimpleAddress.ADDRESS_TYPE_HOUSE_NUMBER) ? featureName : null;
-//
+
 //			String firstHouseNumber = null;
 //			String secondHouseNumber = null;
 //			if(featureName != null && type == SimpleAddress.ADDRESS_TYPE_STREET) {
@@ -152,16 +160,16 @@ public class Utilities {
 //				if(split.length >= 1)
 //					secondHouseNumber = split[1];
 //			}
-//
-//
-////			int type, String province, String county, String town, String street, String firstBuildingNumber, String secondBuildingNumber, String houseNumber
-//
-//			address = new SimpleAddress(type, adminArea, county, town, street, firstHouseNumber, secondHouseNumber, houseNumber);
-//
-//		}
-//
-//		return address;
-//	}
+
+
+//			int type, String province, String county, String town, String street, String firstBuildingNumber, String secondBuildingNumber, String houseNumber
+
+			address = new Address(adminArea, county, null, null, null, null, null, null);
+
+		}
+
+		return address;
+	}
 
 	public static float stringToFloat(String value) throws WrongNumberFormatException {
 		float result = -1;
@@ -185,6 +193,17 @@ public class Utilities {
 		return result;
 	}
 
+//	Calendar cal = new GregorianCalendar(Locale.KOREA);
+//	cal.setTime(new Date());
+//	cal.add(Calendar.YEAR, 1); // 1년을 더한다.
+//	cal.add(Calendar.MONTH, 1); // 한달을 더한다.
+//	cal.add(Calendar.DAY_OF_YEAR, 1); // 하루를 더한다.
+//	cal.add(Calendar.HOUR, 1); // 시간을 더한다
+//
+//	SimpleDateFormat fm = new SimpleDateFormat(
+//			"yyyy-MM-dd HH시mm분ss초");
+//	String strDate = fm.format(cal.getTime());
+//
 	public static String getCurrentTimeAsString() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd aa hh:mm:ss", Locale.KOREAN);
 		String date = format.format(Calendar.getInstance().getTime());
@@ -192,9 +211,52 @@ public class Utilities {
 		return date;
 	}
 
+	/**
+	 * 오늘 날짜 기준으로 day 일 이후(혹은 이전)의 시작 시간(0시 0분 0초) 값을 구한다.
+	 *
+	 * @param day
+	 * @return
+     */
+	public static Calendar getStartTimeBeforeDays(int day) {
+		Calendar cal1 = Calendar.getInstance();
+
+		cal1.add(Calendar.DATE, day);
+		cal1.set(Calendar.HOUR_OF_DAY, 0);
+		cal1.set(Calendar.MINUTE, 0);
+		cal1.set(Calendar.SECOND, 0);
+		cal1.set(Calendar.MILLISECOND, 0);
+
+		return cal1;
+	};
+
+	public static Calendar getStartTimeBeforeMonths(int month) {
+		Calendar cal1 = Calendar.getInstance();
+
+		cal1.add(Calendar.MONTH, month);
+		cal1.set(Calendar.HOUR_OF_DAY, 0);
+		cal1.set(Calendar.MINUTE, 0);
+		cal1.set(Calendar.SECOND, 0);
+		cal1.set(Calendar.MILLISECOND, 0);
+
+		return cal1;
+	};
+
 	public static String toTimeString(Date time) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd aa hh:mm:ss", Locale.KOREAN);
 		String date = format.format(time);
+
+		return date;
+	}
+
+	public static Date stringToDate(String time) {
+		DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd aa hh:mm:ss", Locale.KOREAN);
+		Date date = null;
+		try {
+			date = sdFormat.parse(time);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			date = null;
+		}
 
 		return date;
 	}

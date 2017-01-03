@@ -34,9 +34,11 @@ public abstract class SABaseActivity extends AppCompatSActivity {
     private ImageView menuButton;
     private ImageView optionButton;
     private PopupMenu optionPopup;
+    private Button userStatisticsButton;
     private Button addressSearchButton;
     private Button demolishedSignButton;
     private Button reviewSignButton;
+    private Button mapSearchButton;
 
     private WaitingDialog waitingDialog;
     private AlertDialog.Builder alertDialog;
@@ -120,6 +122,8 @@ public abstract class SABaseActivity extends AppCompatSActivity {
         addressSearchButton = (Button)this.findViewById(R.id.address_search_button);
         demolishedSignButton = (Button)this.findViewById(R.id.demolished_sign_button);
         reviewSignButton = (Button)this.findViewById(R.id.review_sign_button);
+        mapSearchButton = (Button)this.findViewById(R.id.map_search_button);
+        userStatisticsButton = (Button)this.findViewById(R.id.user_statistics_button);
     }
 
     @Override
@@ -207,6 +211,14 @@ public abstract class SABaseActivity extends AppCompatSActivity {
 
     public void setReviewSignButtonOnClickListener(View.OnClickListener listener) {
         reviewSignButton.setOnClickListener(listener);
+    }
+
+    public void setMapSearchButtonOnClickListener(View.OnClickListener listener) {
+        mapSearchButton.setOnClickListener(listener);
+    }
+
+    public void setUserStatisticsButtonOnClickListener(View.OnClickListener listener) {
+        userStatisticsButton.setOnClickListener(listener);
     }
 
     public void showOptionButton() {

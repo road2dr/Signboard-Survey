@@ -20,6 +20,7 @@ public class SummaryStatisticsViewPagerAdapter extends PagerAdapter {
 
     private Context context;
     private LayoutInflater inflater;
+    private PageOnClickListener pageOnClickListener;
 
     public SummaryStatisticsViewPagerAdapter(Context c){
         super();
@@ -33,9 +34,12 @@ public class SummaryStatisticsViewPagerAdapter extends PagerAdapter {
         return MAX_PAGE;
     }
 
+    public void setPageOnClickListener(PageOnClickListener listener) {
+        pageOnClickListener = listener;
+    }
 
     @Override
-    public Object instantiateItem(final ViewGroup container, int position) {
+    public Object instantiateItem(final ViewGroup container, final int position) {
         Log.d("junseo", "instantiateItem: "+position);
         if(position < 0 || position >= MAX_PAGE)
             return null;
@@ -48,7 +52,8 @@ public class SummaryStatisticsViewPagerAdapter extends PagerAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("junseo", "gggggg");
+                if(pageOnClickListener != null)
+                    pageOnClickListener.onPageClicked(position);
             }
         });
 
@@ -81,4 +86,7 @@ public class SummaryStatisticsViewPagerAdapter extends PagerAdapter {
     @Override public void startUpdate(View arg0) {}
     @Override public void finishUpdate(View arg0) {}
 
+    public static interface PageOnClickListener {
+        public void onPageClicked(int position);
+    }
 }

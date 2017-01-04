@@ -6,12 +6,12 @@ import android.graphics.Bitmap;
 import com.mjict.signboardsurvey.database.DatabaseManager;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.BuildingPicture;
+import com.mjict.signboardsurvey.model.DetailBuildingBitmap;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
 import com.mjict.signboardsurvey.model.SignOwnership;
 import com.mjict.signboardsurvey.model.StreetAddress;
 import com.mjict.signboardsurvey.model.UnifiedSearchResult;
-import com.mjict.signboardsurvey.model.ui.BuildingResult;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
 import com.mjict.signboardsurvey.util.Utilities;
 
@@ -57,12 +57,12 @@ public class UnifiedSearchTask extends DefaultAsyncTask<String, Integer, Unified
         List<Building> buildings = dmgr.findBuildingsContain(params[0], maxBuildingsCount);
         List<Shop> shops = dmgr.findShopsContain(params[0], maxShopCount);
 
-        List<BuildingResult> buildingResults = new ArrayList<>();
+        List<DetailBuildingBitmap> buildingResults = new ArrayList<>();
         if(buildings != null) {
             int n = buildings.size();
             for(int i=0; i<n; i++) {
                 Building b = buildings.get(i);
-                BuildingResult info = null;
+                DetailBuildingBitmap info = null;
 
                 // 사진 로드
                 List<BuildingPicture> pics = dmgr.findBuildingPictureByBuildingId(b.getId());
@@ -103,11 +103,7 @@ public class UnifiedSearchTask extends DefaultAsyncTask<String, Integer, Unified
                     }
                 }
 
-                String address = b.getProvince()+" "+b.getCounty()+" "+b.getTown()+" "+b.getStreetName()+" "+b.getFirstBuildingNumber();
-                if(b.getSecondBuildingNumber() != null && b.getSecondBuildingNumber().equals("") == false)
-                    address = address +"-"+b.getSecondBuildingNumber();
-
-                info = new BuildingResult(image, b.getName(), address, null, shopsInBuilding.size(), signs.size());
+                info = new DetailBuildingBitmap(image, b, shops, signs, -1, -1);
                 buildingResults.add(info);
             }
         }

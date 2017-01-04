@@ -1,6 +1,7 @@
 package com.mjict.signboardsurvey.task;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.mjict.signboardsurvey.database.DatabaseManager;
 import com.mjict.signboardsurvey.model.Shop;
@@ -22,7 +23,7 @@ public class LoadShopByBuildingTask extends DefaultAsyncTask<Long, Integer, List
     protected List<Shop> doInBackground(Long... params) {
         if(params == null)
             return null;
-
+        Log.d("junseo", "here 3");
         long buildingId = params[0];
         DatabaseManager dmgr = DatabaseManager.getInstance(context);
 
@@ -32,7 +33,7 @@ public class LoadShopByBuildingTask extends DefaultAsyncTask<Long, Integer, List
             if(shop.getIsDeleted() == true)     // TODO 삭제 기능 관련 해서 한번 얘기를 해보자
                 shops.remove(i);
         }
-
+        Log.d("junseo", "here 4");
         return shops;
     }
 }

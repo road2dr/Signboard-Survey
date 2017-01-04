@@ -57,18 +57,16 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
         activity.setImagePageOnChageListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.d("junseo", "onPageScrolled");
+
             }
             @Override
             public void onPageSelected(int position) {
-                Log.d("junseo", "onPageSelected");
                 activity.showLoading();
 
                 startToLoadImage(position);
             }
             @Override
             public void onPageScrollStateChanged(int state) {
-                Log.d("junseo", "onPageScrollStateChanged");
             }
         });
 

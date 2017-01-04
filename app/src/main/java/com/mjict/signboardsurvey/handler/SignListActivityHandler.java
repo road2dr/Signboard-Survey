@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.mjict.signboardsurvey.MJConstants;
+import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.BasicSignInformationInputActivity;
 import com.mjict.signboardsurvey.activity.SignInformationActivity;
@@ -190,6 +191,8 @@ public class SignListActivityHandler extends SABaseActivityHandler {
                     activity.addToList(si);
 
                     startToLoadSignImage(shopSigns.size()-1, path);
+
+                    MJContext.addRecentSing(sign.getId());
                 }
             }
         });
@@ -216,6 +219,8 @@ public class SignListActivityHandler extends SABaseActivityHandler {
                     shopSigns.set(position, sign);
                     activity.setSignInfo(position, si);
                     startToLoadSignImage(position, path);
+
+                    MJContext.addRecentSing(sign.getId());
                 }
             }
         });
@@ -284,6 +289,7 @@ public class SignListActivityHandler extends SABaseActivityHandler {
 
     private void goToSignInformation(int position) {
         Sign sign = shopSigns.get(position);
+        MJContext.addRecentSing(sign.getId());
 
         Intent intent = new Intent(activity, SignInformationActivity.class);
         intent.putExtra(HANDLER_CLASS, SignInformationActivityHandler.class);

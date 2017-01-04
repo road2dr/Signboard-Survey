@@ -1,20 +1,19 @@
 package com.mjict.signboardsurvey.activity;
 
-import android.content.Intent;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.adapter.RecentBuildingListAdapter;
 import com.mjict.signboardsurvey.adapter.RecentSignListAdapter;
 import com.mjict.signboardsurvey.adapter.SummaryStatisticsViewPagerAdapter;
-import com.mjict.signboardsurvey.handler.LocalStatisticsActivityHandler;
 import com.mjict.signboardsurvey.model.ui.RecentBuilding;
 import com.mjict.signboardsurvey.model.ui.RecentSign;
-import com.mjict.signboardsurvey.sframework.SActivityHandler;
 import com.mjict.signboardsurvey.widget.CircleIndicator;
 import com.mjict.signboardsurvey.widget.HorizontalListView;
 
@@ -26,10 +25,10 @@ public class SummaryActivity extends SABaseActivity {
     private View searchEditText;
     private ImageButton searchButton;
 
-    private Button addressSearchButton;
-    private Button mapSearchButton;
+    private ImageButton summaryMenuButton;
+    private DrawerArrowDrawable drawerArrowDrawable;
     private ViewPager statisticsViewPager;
-    private SummaryStatisticsViewPagerAdapter vpAdapter;
+    private SummaryStatisticsViewPagerAdapter statisticsViewPagerAdapter;
     private CircleIndicator circleIndicator;
 
     private HorizontalListView recentBuildingListView;
@@ -37,21 +36,19 @@ public class SummaryActivity extends SABaseActivity {
     private HorizontalListView recentSignListView;
     private RecentSignListAdapter recentSignAdapter;
 
-    private View statisticsView;
-
     @Override
     protected void init() {
         super.init();
         this.hideToolBar();
-        this.disableNavigation();
+//        this.disableNavigation();
 
         statisticsViewPager = (ViewPager)this.findViewById(R.id.statistics_view_pager);
-        vpAdapter = new SummaryStatisticsViewPagerAdapter(this);
-        statisticsViewPager.setAdapter(vpAdapter);
+        statisticsViewPagerAdapter = new SummaryStatisticsViewPagerAdapter(this);
+        statisticsViewPager.setAdapter(statisticsViewPagerAdapter);
 
         circleIndicator = (CircleIndicator)this.findViewById(R.id.circle_indicator);
         circleIndicator.setViewPager(statisticsViewPager);
-        vpAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
+        statisticsViewPagerAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
 
         recentBuildingListView = (HorizontalListView)this.findViewById(R.id.recent_building_list_view);
         recentBuildingAdapter = new RecentBuildingListAdapter(this);
@@ -64,39 +61,42 @@ public class SummaryActivity extends SABaseActivity {
         searchEditText = (View)this.findViewById(R.id.search_edit_text);
         searchButton = (ImageButton)this.findViewById(R.id.search_button);
 
-        addressSearchButton = (Button)this.findViewById(R.id.address_search_summary_button);
-        mapSearchButton = (Button)this.findViewById(R.id.map_search_summary_button);
-
-        statisticsView = this.findViewById(R.id.statistics_view);
-
-
-
-//        searchButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(SummaryActivity.this, SearchResultActivity.class);
-//                intent.putExtra(SActivityHandler.HANDLER_CLASS, SummaryActivityHandler.class);
-//                startActivity(intent);
-//            }
-//        });
-
-        statisticsView.setOnClickListener(new View.OnClickListener() {
+        summaryMenuButton = (ImageButton)this.findViewById(R.id.summary_menu_button);
+        drawerArrowDrawable = new DrawerArrowDrawable(this);
+        summaryMenuButton.setImageDrawable(drawerArrowDrawable);
+        summaryMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int page = statisticsViewPager.getCurrentItem();
-                switch (page) {
-                    case 0:
-                        Intent intent = new Intent(SummaryActivity.this, LocalStatisticsActivity.class);
-                        intent.putExtra(SActivityHandler.HANDLER_CLASS, LocalStatisticsActivityHandler.class);
-                        startActivity(intent);
-                        break;
+                if(drawer.getDrawerLockMode(GravityCompat.START) == DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    return;
 
-                    case 1:
-
-                        break;
-                }
+                if(drawer.isDrawerOpen(GravityCompat.START) == false)
+                    drawer.openDrawer(GravityCompat.START);
             }
         });
+
+        this.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                drawerArrowDrawable.setProgress(slideOffset);
+            }
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                drawerArrowDrawable.setProgress(1.0f);
+            }
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                drawerArrowDrawable.setProgress(0f);
+            }
+            @Override
+            public void onDrawerStateChanged(int newState) {
+            }
+        });
+
+
+
+
+
 
 
     }
@@ -134,11 +134,15 @@ public class SummaryActivity extends SABaseActivity {
         searchEditText.setOnClickListener(listener);
     }
 
-    public void setAddressSearchSummaryButtonOnClickListener(View.OnClickListener listener) {
-        addressSearchButton.setOnClickListener(listener);
+    public void setStatisticsViewPagerOnClickListener(SummaryStatisticsViewPagerAdapter.PageOnClickListener listener) {
+        statisticsViewPagerAdapter.setPageOnClickListener(listener);
     }
-
-    public void setMapSearchSummaryButtonOnClickListener(View.OnClickListener listener) {
-        mapSearchButton.setOnClickListener(listener);
-    }
+//
+//    public void setAddressSearchSummaryButtonOnClickListener(View.OnClickListener listener) {
+//        addressSearchButton.setOnClickListener(listener);
+//    }
+//
+//    public void setMapSearchSummaryButtonOnClickListener(View.OnClickListener listener) {
+//        mapSearchButton.setOnClickListener(listener);
+//    }
 }

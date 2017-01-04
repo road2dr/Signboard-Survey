@@ -43,6 +43,10 @@ public class MJContext {
     }
 
     public static void addRecentSing(long id) {
+        boolean contains = recentBuildings.contains(id);
+        if(contains)
+            recentBuildings.remove(id);
+
         int max = AppDataConfiguration.MAX_RECENT_SIGN_COUNT;
         if(recentSigns.size() >= max)
             recentSigns.remove();
@@ -58,6 +62,10 @@ public class MJContext {
     }
 
     public static void addRecentBuilding(long id) {
+        boolean contains = recentBuildings.contains(id);
+        if(contains)
+            recentBuildings.remove(id);
+
         int max = AppDataConfiguration.MAX_RECENT_BUILDING_COUNT;
         if(recentBuildings.size() >= max)
             recentBuildings.remove();
@@ -73,6 +81,10 @@ public class MJContext {
     }
 
     public static void addRecentKeyword(String keyword) {
+        boolean contains = recentBuildings.contains(keyword);
+        if(contains)
+            recentBuildings.remove(keyword);
+
         int max = AppDataConfiguration.MAX_RECENT_KEYWORD_COUNT;
         if(recentKeywords.size() >= max)
             recentKeywords.remove();

@@ -1,5 +1,6 @@
 package com.mjict.signboardsurvey.handler;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.View;
 import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.BuildingProfileActivity;
+import com.mjict.signboardsurvey.activity.ShopInputActivity;
 import com.mjict.signboardsurvey.activity.ShopListActivity;
 import com.mjict.signboardsurvey.activity.SignListActivity;
 import com.mjict.signboardsurvey.model.Building;
@@ -52,6 +54,13 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
             }
         });
 
+        activity.setOptionMenuItemClickListener(new ShopListActivity.OnOptionMenuItemClickListener() {
+            @Override
+            public void addShopClicked() {
+                goToShopInput(null);
+            }
+        });
+
         // init
         currentBuilding = (Building)activity.getIntent().getSerializableExtra(MJConstants.BUILDING);
         if(currentBuilding == null) {
@@ -81,6 +90,41 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
 
         // do first job
         startLoadBuildingImage();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == MJConstants.REQUEST_SHOP_INFORMATION) {
+            if(resultCode == Activity.RESULT_OK) {
+                Shop shop = (Shop) data.getSerializableExtra(MJConstants.SHOP);
+                if(shop == null) {
+                    // TODO someting is wrong
+                    return;
+                }
+
+                // find out whether new or exist
+                int index = -1;
+                for(int i=0; i<currentShops.size(); i++) {
+                    Shop s = currentShops.get(i);
+                    if(s.getId().equals(shop.getId())) {
+                        index = i;
+                        break;
+                    }
+                }
+
+                if(index == -1) {
+                    // new shop
+//                    startToRegisterShop(shop);
+                } else {
+//                    startToModifyShop(shop);
+                }
+            }
+        }
     }
 
     private void buildingInfoViewClicked() {
@@ -148,5 +192,12 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
         intent.putExtra(HANDLER_CLASS, SignListActivityHandler.class);
         intent.putExtra(MJConstants.SHOP, shop);
         activity.startActivity(intent);
+    }
+
+    private void goToShopInput(Shop shop) {
+        Intent intent = new Intent(activity, ShopInputActivity.class);
+        intent.putExtra(HANDLER_CLASS, ShopInputActivityHandler.class);
+        intent.putExtra(MJConstants.SHOP, shop);
+        activity.startActivityForResult(intent, MJConstants.REQUEST_SHOP_INFORMATION);
     }
 }

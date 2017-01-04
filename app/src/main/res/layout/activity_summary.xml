@@ -5,18 +5,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?attr/actionBarSize"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:background="?attr/colorPrimary"-->
+        <!--android:paddingLeft="5dp"-->
+        <!--android:paddingRight="5dp"-->
+        <!--app:popupTheme="@style/AppTheme.PopupOverlay">-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/menu_button"-->
+            <!--android:layout_width="?attr/actionBarSize"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:background="@null"/>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/title_text_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginRight="?attr/actionBarSize"-->
+            <!--android:layout_toRightOf="@+id/menu_button"-->
+            <!--android:gravity="center"-->
+            <!--android:textSize="20sp"/>-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/option_button"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:paddingTop="5dp"-->
+            <!--android:paddingBottom="5dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:background="@null"-->
+            <!--android:src="@drawable/btn_option_sel"/>-->
+
+    <!--</RelativeLayout>-->
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="?attr/actionBarSize"
         android:orientation="horizontal"
-        android:padding="7dp">
+        android:background="?attr/colorPrimary"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+        <ImageButton
+            android:id="@+id/summary_menu_button"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:background="@null"/>
+
         <RelativeLayout
             android:id="@+id/search_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
             android:clickable="false"
-            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/summary_menu_button"
+            android:layout_alignParentRight="true"
             android:background="@drawable/bg_edt_tv_simple">
             <ImageButton
                 android:id="@+id/search_button"
@@ -37,39 +87,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-                <Button
-                    android:id="@+id/address_search_summary_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_below="@+id/review_sign_button"
-                    android:drawableLeft="@drawable/btn_location_search_sel"
-                    android:paddingLeft="25dp"
-                    android:paddingRight="25dp"
-                    android:background="@drawable/bg_gray_border"
-                    android:textAlignment="textStart"
-                    android:drawablePadding="30dp"
-                    android:textSize="16sp"
-                    android:text="주소 검색"/>
-                <Button
-                    android:id="@+id/map_search_summary_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_below="@+id/address_search_button"
-                    android:drawableLeft="@drawable/btn_map_sel"
-                    android:paddingLeft="25dp"
-                    android:paddingRight="25dp"
-                    android:background="@drawable/bg_gray_border"
-                    android:textAlignment="textStart"
-                    android:drawablePadding="30dp"
-                    android:textSize="16sp"
-                    android:text="지도 검색"/>
-            </LinearLayout>
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:orientation="horizontal">-->
+                <!--<Button-->
+                    <!--android:id="@+id/address_search_summary_button"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_below="@+id/review_sign_button"-->
+                    <!--android:drawableLeft="@drawable/btn_location_search_sel"-->
+                    <!--android:paddingLeft="25dp"-->
+                    <!--android:paddingRight="25dp"-->
+                    <!--android:background="@drawable/bg_gray_border"-->
+                    <!--android:textAlignment="textStart"-->
+                    <!--android:drawablePadding="30dp"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:text="주소 검색"/>-->
+                <!--<Button-->
+                    <!--android:id="@+id/map_search_summary_button"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_below="@+id/address_search_button"-->
+                    <!--android:drawableLeft="@drawable/btn_map_sel"-->
+                    <!--android:paddingLeft="25dp"-->
+                    <!--android:paddingRight="25dp"-->
+                    <!--android:background="@drawable/bg_gray_border"-->
+                    <!--android:textAlignment="textStart"-->
+                    <!--android:drawablePadding="30dp"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:text="지도 검색"/>-->
+            <!--</LinearLayout>-->
             <LinearLayout
                 android:id="@+id/statistics_view"
                 android:layout_width="match_parent"

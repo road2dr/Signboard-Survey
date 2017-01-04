@@ -1,12 +1,18 @@
 package com.mjict.signboardsurvey.handler;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import com.mjict.signboardsurvey.MJConstants;
+import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.BuildingSearchActivity;
 import com.mjict.signboardsurvey.activity.SearchResultActivity;
+import com.mjict.signboardsurvey.activity.ShopListActivity;
+import com.mjict.signboardsurvey.activity.SignListActivity;
+import com.mjict.signboardsurvey.model.Building;
+import com.mjict.signboardsurvey.model.DetailBuildingBitmap;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.StreetAddress;
 import com.mjict.signboardsurvey.model.UnifiedSearchResult;
@@ -26,7 +32,7 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
     public static final int MAX_SHOP_RESULT = 10;
 
     private List<StreetAddress> addressResults;
-    private List<BuildingResult> buildingResults;
+    private List<DetailBuildingBitmap> buildingResults;
     private List<Shop> shopResults;
 
     private SearchResultActivity activity;
@@ -93,20 +99,23 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
                     }
                 }
 
-                if(unifiedSearchResult.buildings != null) {
-                    int size = unifiedSearchResult.buildings.size();
+                if(buildingResults != null) {
+                    int size = buildingResults.size();
                     boolean visible = (size > 0);
                     activity.setBuildingResultVisible(visible);
-                    for(int i=0; i<size; i++)
-                        activity.addBuildingResult(unifiedSearchResult.buildings.get(i));
+                    for(int i=0; i<size; i++) {
+                        DetailBuildingBitmap dbp = buildingResults.get(i);
+                        BuildingResult br = detailBuildingToBuildingResult(dbp);
+                        activity.addBuildingResult(br);
+                    }
                 }
 
-                if(unifiedSearchResult.shops != null) {
-                    int size = unifiedSearchResult.shops.size();
+                if(shopResults != null) {
+                    int size = shopResults.size();
                     boolean visible = (size > 0);
                     activity.setShopResultVisible(visible);
                     for(int i=0; i<size; i++) {
-                        Shop shop = unifiedSearchResult.shops.get(i);
+                        Shop shop = shopResults.get(i);
                         String text = shop.getName()+" "+shop.getPhoneNumber();
                         int index = text.indexOf(keyword);
                         activity.addShopResult(text, index, keyword.length());
@@ -133,10 +142,49 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
     }
 
     private void buildingItemClicked(int index) {
+        Building building = buildingResults.get(index).building;
+        MJContext.addRecentBuilding(building.getId());
 
+        goToShopList(building);
     }
 
     private void shopItemClicked(int index) {
+        Shop shop = shopResults.get(index);
 
+        goToSignList(shop);
+    }
+
+    private void goToSignList(Shop shop) {
+        Intent intent = new Intent(activity, SignListActivity.class);
+        intent.putExtra(HANDLER_CLASS, SignListActivityHandler.class);
+        intent.putExtra(MJConstants.SHOP, shop);
+        activity.startActivity(intent);
+    }
+
+    private void goToShopList(Building building) {
+        Intent intent = new Intent(activity, ShopListActivity.class);
+        intent.putExtra(HANDLER_CLASS, ShopListActivityHandler.class);
+        intent.putExtra(MJConstants.BUILDING, building);
+        activity.startActivity(intent);
+    }
+
+    private BuildingResult detailBuildingToBuildingResult(DetailBuildingBitmap detailBuilding) {
+        Building building = detailBuilding.building;
+
+        String buildingNumber = building.getFirstBuildingNumber();
+        if(building.getSecondBuildingNumber().equals("") == false)
+            buildingNumber = buildingNumber + "_" +building.getSecondBuildingNumber();
+        String baseAddress = building.getProvince()+" "+building.getCounty()+" "+building.getTown();
+        String streetAddress = baseAddress + building.getStreetName() + " "+buildingNumber;
+        String houseAddress = baseAddress + " "+building.getVillage() + building.getHouseNumber();
+        String title = building.getName().equals("") ? buildingNumber : building.getName();
+
+        Bitmap image = detailBuilding.image;
+        String name = title;
+        int shopCount = detailBuilding.shops.size();
+        int signCount = detailBuilding.signs.size();
+
+        BuildingResult br = new BuildingResult(image, name, streetAddress, houseAddress, shopCount, signCount);
+        return br;
     }
 }

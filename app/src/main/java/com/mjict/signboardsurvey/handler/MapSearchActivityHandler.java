@@ -21,7 +21,7 @@ import com.mjict.signboardsurvey.activity.MapSearchActivity;
 import com.mjict.signboardsurvey.activity.ShopListActivity;
 import com.mjict.signboardsurvey.model.Address;
 import com.mjict.signboardsurvey.model.Building;
-import com.mjict.signboardsurvey.model.DetailBuildingInfo;
+import com.mjict.signboardsurvey.model.DetailBuildingBitmap;
 import com.mjict.signboardsurvey.model.GpsStatus;
 import com.mjict.signboardsurvey.model.LocationInformation;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
@@ -205,20 +205,20 @@ public class MapSearchActivityHandler extends SABaseActivityHandler {
             return;
 
         buildingDetailTask = new LoadBuildingDetailTask(activity.getApplicationContext());
-        buildingDetailTask.setDefaultAsyncTaskListener(new AsyncTaskListener<DetailBuildingInfo, Boolean>() {
+        buildingDetailTask.setDefaultAsyncTaskListener(new AsyncTaskListener<DetailBuildingBitmap, Boolean>() {
             @Override
             public void onTaskStart() {
                 activity.clearAllBuildingMarkers();
                 buildingMarkerCount = 0;
             }
             @Override
-            public void onTaskProgressUpdate(DetailBuildingInfo... values) {
+            public void onTaskProgressUpdate(DetailBuildingBitmap... values) {
                 if(values == null)
                     return;
 
                 Log.d("junseo", "빌딩정보 받음");
 
-                DetailBuildingInfo info = values[0];
+                DetailBuildingBitmap info = values[0];
                 Building b = info.building;
 
 //                long id, Bitmap image, int type, String address, String name, String information, Building building

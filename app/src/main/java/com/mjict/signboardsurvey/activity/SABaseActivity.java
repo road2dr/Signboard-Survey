@@ -27,7 +27,7 @@ import com.mjict.signboardsurvey.widget.WaitingDialog;
 public abstract class SABaseActivity extends AppCompatSActivity {
 
     private View toolbar;
-    private DrawerLayout drawer;
+    protected DrawerLayout drawer;
     private AppBarLayout appBarLayout;
 //    private NavigationView navigationView;
     private TextView titleTextView;
@@ -191,6 +191,10 @@ public abstract class SABaseActivity extends AppCompatSActivity {
         waitingDialog.dismiss();
         
         super.onPause();
+    }
+
+    public void addDrawerListener(DrawerLayout.DrawerListener listener) {
+        drawer.addDrawerListener(listener);
     }
 
     public void inflateOptionMenu(int resId) {

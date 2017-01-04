@@ -157,7 +157,6 @@
     <string name="failed_to_delete">삭제 실패</string>
     <string name="succeeded_to_modify">변경 완료</string>
     <string name="failed_to_modify">변경 실패</string>
-    <string name="input_shop_name">업소명을 입력 하세요.</string>
     <string name="shop_deletion">업소 정보 삭제</string>
     <string name="do_you_want_to_delete_shop_data">해당 업소 정보와 간판 정보를 모두 삭제 합니다. 삭제 하겠습니까?</string>
     <string name="no_building_or_shop_information">건물 및 업소 정보가 없어 작업이 취소 됩니다. 시스템 관리자에게 문의 하세요.</string>
@@ -194,6 +193,7 @@
     <string name="input_sign_length">간판 세로 규격을 입력해 주세요.</string>
     <string name="input_placed_floor">간판 설치 층수를 입력해 주세요.</string>
     <string name="input_total_floor">전체 층수를 입력해 주세요.</string>
+    <string name="input_shop_name">업소명을 입력해 주세요.</string>
     <string name="failed_to_save_sign_information">간판 정보 저장에 실패 했습니다. 시스템 관리자에게 문의 하세요.</string>
     <string name="add_new_sign">새 간판 추가</string>
     <string name="demolished_signs">철거 간판</string>

@@ -8,7 +8,7 @@ import android.util.Log;
 import com.mjict.signboardsurvey.database.DatabaseManager;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.BuildingPicture;
-import com.mjict.signboardsurvey.model.DetailBuildingInfo;
+import com.mjict.signboardsurvey.model.DetailBuildingBitmap;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
 import com.mjict.signboardsurvey.model.SignOwnership;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Created by Junseo on 2016-08-01.
  */
-public class LoadBuildingDetailTask extends DefaultAsyncTask<List<Building>, DetailBuildingInfo, Boolean> {
+public class LoadBuildingDetailTask extends DefaultAsyncTask<List<Building>, DetailBuildingBitmap, Boolean> {
 
     private Context context;
 
@@ -46,7 +46,7 @@ public class LoadBuildingDetailTask extends DefaultAsyncTask<List<Building>, Det
         for(int i=0; i<n; i++) {
             Building b = buildings.get(i);
             Log.d("junseo", "building: "+i+" "+b.getPlcd());
-            DetailBuildingInfo info = null;
+            DetailBuildingBitmap info = null;
 
             //
             if(isCancelled())
@@ -120,7 +120,7 @@ public class LoadBuildingDetailTask extends DefaultAsyncTask<List<Building>, Det
 //                e.printStackTrace();
 //            }
 
-            info = new DetailBuildingInfo(image, b, signs, lat, lon);
+            info = new DetailBuildingBitmap(image, b, shops, signs, lat, lon);
             publishProgress(info);
 
         }

@@ -70,11 +70,19 @@ public class ShopInputActivity extends SABaseActivity {
         return conditionSpinner.getSelectedData();
     }
 
+    public void setConditionSelection(int id) {
+        conditionSpinner.setSpinnerSelection(id);
+    }
+
     public void addToCategorySpinner(int id, Object data) {
         categorySpinner.addSpinnerData(id, data);
     }
 
     public Object getSelectedCategory() {
         return categorySpinner.getSelectedData();
+    }
+
+    public void setCategorySelection(int id) {
+        categorySpinner.setSpinnerSelection(id);
     }
 }

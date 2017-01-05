@@ -13,7 +13,6 @@
         android:layout_width="100dp"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/test_building1"
         android:background="@drawable/bg_gray_border"/>
     <LinearLayout
         android:layout_width="match_parent"

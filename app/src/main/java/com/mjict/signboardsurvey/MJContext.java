@@ -1,10 +1,13 @@
 package com.mjict.signboardsurvey;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.mjict.signboardsurvey.model.User;
 import com.mjict.signboardsurvey.util.AppDataConfiguration;
 
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -100,11 +103,49 @@ public class MJContext {
         return keywords;
     }
 
-    public static boolean save() {
-        return true;
+    public static boolean save(Context context) {
+        AppDataConfiguration.clearRecent();
+
+        Iterator<Long> signsIterator = recentSigns.iterator();
+        int smax = AppDataConfiguration.MAX_RECENT_SIGN_COUNT;
+        while(signsIterator.hasNext()) {
+            smax--;
+            long id = signsIterator.next();
+            AppDataConfiguration.setRecentSign(smax, id);
+        }
+
+        Iterator<Long> buildingIterator = recentBuildings.iterator();
+        int bmax = AppDataConfiguration.MAX_RECENT_BUILDING_COUNT;
+        while(buildingIterator.hasNext()) {
+            bmax--;
+            long id = buildingIterator.next();
+            AppDataConfiguration.setRecentBuilding(bmax, id);
+        }
+
+        Iterator<String> keywordIterator = recentKeywords.iterator();
+        int kmax = AppDataConfiguration.MAX_RECENT_KEYWORD_COUNT;
+        while(keywordIterator.hasNext()) {
+            kmax--;
+            String keyword = keywordIterator.next();
+            AppDataConfiguration.setRecentKeyword(kmax, keyword);
+        }
+
+        boolean answer = true;
+
+        try {
+            AppDataConfiguration.save(context);
+        } catch (IOException e) {
+            e.printStackTrace();
+            answer = false;
+        }
+        return answer;
     }
 
     public static boolean load(Context context) {
+        recentKeywords.clear();
+        recentBuildings.clear();
+        recentSigns.clear();
+
         boolean answer = AppDataConfiguration.load(context);
         int smax = AppDataConfiguration.MAX_RECENT_SIGN_COUNT;
         for(int i=(smax-1); i>=0; i--) {
@@ -123,6 +164,12 @@ public class MJContext {
             String keyword = AppDataConfiguration.getRecentKeyword(i);
             recentKeywords.offer(keyword);
         }
+
+        // test
+        String[] keywords = new String[recentKeywords.size()];
+        keywords = recentKeywords.toArray(keywords);
+        for(int i=0; i<keywords.length; i++)
+            Log.d("junseo", "load keyword"+i+": "+keywords[i]);
 
         return answer;
     }

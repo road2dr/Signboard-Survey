@@ -193,8 +193,13 @@ public class ShopListActivity extends SABaseActivity {
         threeShopListAdapter.add(info);
     }
 
+    public void replaceListItem(int index, ShopInfo info) {
+        twoShopAdapter.replaceItem(index, info);
+        threeShopListAdapter.replaceItem(index, info);
+    }
+
     public void clearList() {
-        twoShopAdapter.clear();;
+        twoShopAdapter.clear();
         threeShopListAdapter.clear();
     }
 

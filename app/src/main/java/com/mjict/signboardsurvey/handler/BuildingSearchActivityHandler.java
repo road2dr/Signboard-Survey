@@ -13,7 +13,6 @@ import com.mjict.signboardsurvey.model.Address;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.model.ui.BuildingResult;
-import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
 import com.mjict.signboardsurvey.task.LoadValidBuildingImageTask;
 import com.mjict.signboardsurvey.task.SearchBuildingByAddressTask;
@@ -113,7 +112,7 @@ public class BuildingSearchActivityHandler extends SABaseActivityHandler {
 
                     String name = b.getName().equals("") ? buildingNumber : b.getName();
 
-                    BuildingResult br = new BuildingResult(null, name, streetAddress, houseAddress, 0, 0);
+                    BuildingResult br = new BuildingResult(null, name, streetAddress, houseAddress, "", "");
                     activity.addToList(br);
                 }
 

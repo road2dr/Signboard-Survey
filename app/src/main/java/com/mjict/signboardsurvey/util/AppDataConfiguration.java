@@ -51,18 +51,55 @@ public class AppDataConfiguration {
         return sign;
     }
 
+    public static void clearRecent() {
+        properties.clear();
+    }
+
     public static String getRecentKeyword(int order) {
         String name = RECENT_KEYWORD+order;
 
         String value = null;
         try {
-            value = new String(properties.getProperty(name).getBytes("ISO-8859-1"), "UTF-8");
+            String p = properties.getProperty(name);
+            if(p != null)
+                value = new String(p.getBytes("ISO-8859-1"), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             value = null;
         }
 
         return value;
+    }
+
+    public static void setRecentKeyword(int order, String keyword) {
+        if(keyword == null)
+            return;
+
+        String name = RECENT_KEYWORD+order;
+
+        String value = null;
+        try {
+            value = new String(keyword.getBytes("UTF-8"), "ISO-8859-1");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            value = null;
+        }
+
+        properties.setProperty(name, value);
+    }
+
+    public static void setRecentBuilding(int order, long id) {
+        String name = RECENT_BUILDING_PREFIX+order;
+
+        String value = String.valueOf(id);
+        properties.setProperty(name, value);
+    }
+
+    public static void setRecentSign(int order, long id) {
+        String name = RECENT_SIGN_PREFIX+order;
+
+        String value = String.valueOf(id);
+        properties.setProperty(name, value);
     }
 
     public static boolean load(Context context) {
@@ -97,6 +134,8 @@ public class AppDataConfiguration {
 
         properties.store(fos, null);
     }
+
+
 
     public static boolean hasPropertyFile(Context context) {
         // TODO 나중에 파일 경로 내부로 변경 =>

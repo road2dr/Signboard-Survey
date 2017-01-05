@@ -49,6 +49,21 @@ public class ThreeShopListAdapter extends ArrayAdapter<ThreeShopInfo> {
         notifyDataSetChanged();
     }
 
+    public void replaceItem(int position, ShopInfo data) {
+        if(position < 0 || position >= getCount())
+            return;
+
+        ThreeShopInfo row = getItem(position/3);
+        if(position % 3 == 0)
+            row.first = data;
+        else if(position % 3 == 1)
+            row.second = data;
+        else
+            row.third = data;
+
+        notifyDataSetChanged();
+    }
+
     public ShopInfo getColumnItem(int index) {
         if(index < 0 || index >= getCount()*3)
             return null;

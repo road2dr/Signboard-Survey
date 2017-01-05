@@ -86,8 +86,10 @@ public class SearchResultActivity extends SABaseActivity {
         TextView shopCountTextView = (TextView)view.findViewById(R.id.shop_count_text_view);
         TextView signCountTextView = (TextView)view.findViewById(R.id.sign_count_text_view);
 
-        String shopCountText = getString(R.string.number_of_case, result.shopCount);
-        String signCountText = getString(R.string.number_of_case, result.signCount);
+//        String shopCountText = getString(R.string.number_of_case, result.shopCount);
+//        String signCountText = getString(R.string.number_of_case, result.signCount);
+        String shopCountText = result.shopCountText;
+        String signCountText = result.signCountText;
 
         imageView.setImageBitmap(result.image);
         nameTextView.setText(result.name);
@@ -160,6 +162,18 @@ public class SearchResultActivity extends SABaseActivity {
 
     public void setSearchResultItemOnClickListener(SearchResultItemOnClickListener listener) {
         searchResultItemOnClickListener = listener;
+    }
+
+    public void setAddressResultMoreButtonOnClickListener(View.OnClickListener listener) {
+        addressResultMoreButton.setOnClickListener(listener);
+    }
+
+    public void setBuildingResultMoreButtonOnClickListener(View.OnClickListener listener) {
+        buildingResultMoreButton.setOnClickListener(listener);
+    }
+
+    public void setShopResultMoreButtonOnClickListener(View.OnClickListener listener) {
+        shopResultMoreButton.setOnClickListener(listener);
     }
 
     @Override

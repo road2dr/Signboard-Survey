@@ -178,6 +178,23 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".activity.ShopInputActivity"
+            android:theme="@style/AppTheme.Base"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".activity.TextListActivity"
+            android:theme="@style/AppTheme.Base"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".activity.BuildingListActivity"
+            android:theme="@style/AppTheme.Base"
+            android:screenOrientation="portrait">
+        </activity>
 
     </application>
 </manifest>

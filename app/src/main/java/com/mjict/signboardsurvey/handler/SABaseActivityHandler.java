@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.AddressSearchActivity;
 import com.mjict.signboardsurvey.activity.DemolishedSignActivity;
 import com.mjict.signboardsurvey.activity.MapSearchActivity;
@@ -11,6 +12,8 @@ import com.mjict.signboardsurvey.activity.ReviewSignActivity;
 import com.mjict.signboardsurvey.activity.SABaseActivity;
 import com.mjict.signboardsurvey.activity.UserDataSearchActivity;
 import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
+import com.mjict.signboardsurvey.task.QuitTask;
+import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 
 /**
  * Created by Junseo on 2016-12-23.
@@ -92,5 +95,21 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
         intent.putExtra(HANDLER_CLASS, UserDataSearchActivityHandler.class);
 
         activity.startActivity(intent);
+    }
+
+    protected void startToQuit() {
+        QuitTask task = new QuitTask(activity.getApplicationContext());
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Void>() {
+            @Override
+            public void onTaskStart() {
+                activity.showWaitingDialog(R.string.saving_changes);
+            }
+            @Override
+            public void onTaskFinished(Void aVoid) {
+                activity.hideWaitingDialog();
+                activity.finishAffinity();
+            }
+        });
+        task.execute();
     }
 }

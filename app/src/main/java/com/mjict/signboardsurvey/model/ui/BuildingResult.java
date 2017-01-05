@@ -10,15 +10,15 @@ public class BuildingResult {
     public String name;
     public String streetAddress;
     public String houseAddress;
-    public int shopCount;
-    public int signCount;
+    public String shopCountText;
+    public String signCountText;
 
-    public BuildingResult(Bitmap image, String name, String streetAddress, String houseAddress, int shopCount, int signCount) {
+    public BuildingResult(Bitmap image, String name, String streetAddress, String houseAddress, String shopCount, String signCount) {
         this.image = image;
         this.name = name;
         this.streetAddress = streetAddress;
         this.houseAddress = houseAddress;
-        this.shopCount = shopCount;
-        this.signCount = signCount;
+        this.shopCountText = shopCount;
+        this.signCountText = signCount;
     }
 }

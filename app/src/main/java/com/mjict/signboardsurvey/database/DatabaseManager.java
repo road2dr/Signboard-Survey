@@ -122,7 +122,8 @@ public class DatabaseManager {
 		List<StreetAddress> addresses = null;
 		try {
 			QueryBuilder<StreetAddress, Void> qb = helper.getStreetAddressDao().queryBuilder();
-			qb.limit(limit);
+			if(limit > 0)
+				qb.limit(limit);
 			qb.where().like("street", "%"+filterKey+"%").or().like("town", filterKey);
 			qb.orderBy("town", true);
 			PreparedQuery<StreetAddress> pq = qb.prepare();
@@ -138,7 +139,9 @@ public class DatabaseManager {
 		List<Building> buildings = null;
 		try {
 			QueryBuilder<Building, Long> qb = helper.getBuildingDao().queryBuilder();
-			qb.limit(limit);
+			if(limit > 0)
+				qb.limit(limit);
+
 			qb.where().like("name", "%"+filterKey+"%");
 			qb.orderBy("name", true);
 			PreparedQuery<Building> pq = qb.prepare();
@@ -154,7 +157,9 @@ public class DatabaseManager {
 		List<Shop> shops = null;
 		try {
 			QueryBuilder<Shop, String> qb = helper.getShopDao().queryBuilder();
-			qb.limit(limit);
+			if(limit > 0)
+				qb.limit(limit);
+
 			qb.where().like("name", "%"+filterKey+"%");
 			qb.orderBy("name", true);
 			PreparedQuery<Shop> pq = qb.prepare();

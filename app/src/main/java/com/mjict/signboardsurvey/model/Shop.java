@@ -82,6 +82,7 @@ public class Shop implements Serializable {
 		this.inputDate = inputDate;
 		this.tblNumber = tblNumber;
 		this.addressId = addressId;
+		this.isDeleted = isDeleted;
 //		this.placedFloor = placedFloor;
 //		this.totalFloor = totalFloor;
 	}

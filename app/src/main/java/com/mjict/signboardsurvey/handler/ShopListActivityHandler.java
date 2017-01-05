@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.R;
@@ -19,6 +20,8 @@ import com.mjict.signboardsurvey.model.ui.ShopInfo;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
 import com.mjict.signboardsurvey.task.LoadShopByBuildingTask;
 import com.mjict.signboardsurvey.task.LoadValidBuildingImageTask;
+import com.mjict.signboardsurvey.task.ModifyShopTask;
+import com.mjict.signboardsurvey.task.RegisterShopTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 import com.mjict.signboardsurvey.util.SettingDataManager;
 
@@ -103,7 +106,7 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
             if(resultCode == Activity.RESULT_OK) {
                 Shop shop = (Shop) data.getSerializableExtra(MJConstants.SHOP);
                 if(shop == null) {
-                    // TODO someting is wrong
+                    // TODO something is wrong
                     return;
                 }
 
@@ -119,9 +122,9 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
 
                 if(index == -1) {
                     // new shop
-//                    startToRegisterShop(shop);
+                    startToRegisterShop(shop);
                 } else {
-//                    startToModifyShop(shop);
+                    startToModifyShop(index, shop);
                 }
             }
         }
@@ -172,17 +175,64 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
                 if(shops != null) {
                     for(int i=0; i<shops.size(); i++) {
                         Shop shop = shops.get(i);
-                        String name = shop.getName();
-                        Setting categorySetting = smgr.getShopCategory(shop.getCategory());
-                        String category = categorySetting == null ? smgr.getDefaultShopCategoty() : categorySetting.getName();
-                        String phone = shop.getPhoneNumber();
+                        ShopInfo info = shopToShopInfo(shop);
 
-                        activity.addToList(new ShopInfo(name, phone, category));
+                        activity.addToList(info);
                     }
                 }
             }
         });
         task.execute(currentBuilding.getId());
+    }
+
+    private void startToRegisterShop(final Shop shop) {
+        shop.setBuildingId(currentBuilding.getId());
+        shop.setAddressId(currentBuilding.getAddressId());
+        RegisterShopTask task = new RegisterShopTask(activity.getApplicationContext());
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
+            @Override
+            public void onTaskStart() {
+                activity.showWaitingDialog(R.string.saving);
+            }
+            @Override
+            public void onTaskFinished(Boolean result) {
+                activity.hideWaitingDialog();
+                if(result == false) {
+                    Toast.makeText(activity, R.string.failed_to_save, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                currentShops.add(shop);
+                ShopInfo info = shopToShopInfo(shop);
+                activity.addToList(info);
+            }
+        });
+        task.execute(shop);
+    }
+
+    private void startToModifyShop(final int index, final Shop shop) {
+        shop.setBuildingId(currentBuilding.getId());
+        shop.setAddressId(currentBuilding.getAddressId());
+        ModifyShopTask task = new ModifyShopTask(activity.getApplicationContext());
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
+            @Override
+            public void onTaskStart() {
+                activity.showWaitingDialog(R.string.saving);
+            }
+            @Override
+            public void onTaskFinished(Boolean result) {
+                activity.hideWaitingDialog();
+                if(result == false) {
+                    Toast.makeText(activity, R.string.failed_to_modify, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                currentShops.set(index, shop);
+                ShopInfo info = shopToShopInfo(shop);
+                activity.replaceListItem(index, info);
+            }
+        });
+        task.execute(shop);
     }
 
     private void shopItemClicked(int index) {
@@ -199,5 +249,15 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
         intent.putExtra(HANDLER_CLASS, ShopInputActivityHandler.class);
         intent.putExtra(MJConstants.SHOP, shop);
         activity.startActivityForResult(intent, MJConstants.REQUEST_SHOP_INFORMATION);
+    }
+
+    private ShopInfo shopToShopInfo(Shop shop) {
+        SettingDataManager smgr = SettingDataManager.getInstance();
+        String name = shop.getName();
+        Setting categorySetting = smgr.getShopCategory(shop.getCategory());
+        String category = categorySetting == null ? smgr.getDefaultShopCategoty() : categorySetting.getName();
+        String phone = shop.getPhoneNumber();
+
+        return new ShopInfo(name, phone, category);
     }
 }

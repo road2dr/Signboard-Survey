@@ -342,7 +342,10 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
         int shopCount = shopList.size();
         int signCount = signList.size();
 
-        return new BuildingResult(null, name, streetAddress, houseAddress, shopCount, signCount);
+        String shopCountText = activity.getString(R.string.number_of_case, shopCount);
+        String signCountText = activity.getString(R.string.number_of_case, signCount);
+
+        return new BuildingResult(null, name, streetAddress, houseAddress, shopCountText, signCountText);
     }
 
 

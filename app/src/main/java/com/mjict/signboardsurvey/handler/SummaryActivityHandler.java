@@ -1,15 +1,18 @@
 package com.mjict.signboardsurvey.handler;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.MJContext;
+import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.AddressSearchActivity;
 import com.mjict.signboardsurvey.activity.KeywordSearchActivity;
 import com.mjict.signboardsurvey.activity.MapSearchActivity;
@@ -51,6 +54,7 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
         super.onActivityCreate(savedInstanceState);
 
         activity = (SummaryActivity)this.getActivity();
+        activity.setFinishWithBackButton(false);
 
         // register listener
         activity.setSearchViewOnclickListener(new View.OnClickListener() {
@@ -114,6 +118,29 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
         startToLoadRecentBuilding();
 
         super.onActivityStart();
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.quit)
+                .setMessage(R.string.do_you_want_to_quit)
+                .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener(){
+                    // 확인 버튼 클릭시 설정
+                    public void onClick(DialogInterface dialog, int whichButton){
+                        startToQuit();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int whichButton){
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();    // 알림창 객체 생성
+        dialog.show();    // 알림창 띄우기
+
     }
 
     private void startToLoadRecentSigns() {

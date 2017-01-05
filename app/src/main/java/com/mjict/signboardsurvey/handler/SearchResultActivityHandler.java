@@ -3,14 +3,17 @@ package com.mjict.signboardsurvey.handler;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
 
 import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.R;
+import com.mjict.signboardsurvey.activity.BuildingListActivity;
 import com.mjict.signboardsurvey.activity.BuildingSearchActivity;
 import com.mjict.signboardsurvey.activity.SearchResultActivity;
 import com.mjict.signboardsurvey.activity.ShopListActivity;
 import com.mjict.signboardsurvey.activity.SignListActivity;
+import com.mjict.signboardsurvey.activity.TextListActivity;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.DetailBuildingBitmap;
 import com.mjict.signboardsurvey.model.Shop;
@@ -34,6 +37,8 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
     private List<StreetAddress> addressResults;
     private List<DetailBuildingBitmap> buildingResults;
     private List<Shop> shopResults;
+
+    private String keyword;
 
     private SearchResultActivity activity;
 
@@ -61,8 +66,29 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
             }
         });
 
+        activity.setBuildingResultMoreButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMoreBuildingResult();
+            }
+        });
+
+        activity.setShopResultMoreButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMoreShopResult();
+            }
+        });
+
+        activity.setAddressResultMoreButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMoreAddressResult();
+            }
+        });
+
         // init
-        String keyword = activity.getIntent().getStringExtra(MJConstants.KEYWORD);
+        keyword = activity.getIntent().getStringExtra(MJConstants.KEYWORD);
         if(keyword == null) {
             // TODO 메세지 추가
             activity.finish();
@@ -168,6 +194,27 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
         activity.startActivity(intent);
     }
 
+    private void goToMoreAddressResult() {
+        Intent intent = new Intent(activity, TextListActivity.class);
+        intent.putExtra(HANDLER_CLASS, MoreAddressResultActivityHandler.class);
+        intent.putExtra(MJConstants.KEYWORD, keyword);
+        activity.startActivity(intent);
+    }
+
+    private void goToMoreShopResult() {
+        Intent intent = new Intent(activity, TextListActivity.class);
+        intent.putExtra(HANDLER_CLASS, MoreShopResultActivityHandler.class);
+        intent.putExtra(MJConstants.KEYWORD, keyword);
+        activity.startActivity(intent);
+    }
+
+    private void goToMoreBuildingResult() {
+        Intent intent = new Intent(activity, BuildingListActivity.class);
+        intent.putExtra(HANDLER_CLASS, MoreBuildingResultActivityHandler.class);
+        intent.putExtra(MJConstants.KEYWORD, keyword);
+        activity.startActivity(intent);
+    }
+
     private BuildingResult detailBuildingToBuildingResult(DetailBuildingBitmap detailBuilding) {
         Building building = detailBuilding.building;
 
@@ -181,10 +228,14 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
 
         Bitmap image = detailBuilding.image;
         String name = title;
+
         int shopCount = detailBuilding.shops.size();
         int signCount = detailBuilding.signs.size();
+        String shopCountText = activity.getString(R.string.number_of_case, shopCount);
+        String signCountText = activity.getString(R.string.number_of_case, signCount);
 
-        BuildingResult br = new BuildingResult(image, name, streetAddress, houseAddress, shopCount, signCount);
+
+        BuildingResult br = new BuildingResult(image, name, streetAddress, houseAddress, shopCountText, signCountText);
         return br;
     }
 }

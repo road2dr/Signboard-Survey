@@ -99,12 +99,18 @@ public class ShopInputActivityHandler extends SABaseActivityHandler {
     }
 
     private void updateUI() {
+        if(currentShop == null)
+            return;
 
+        activity.setShopNameText(currentShop.getName());
+        activity.setPhoneText(currentShop.getPhoneNumber());
+        activity.setConditionSelection(currentShop.getBusinessCondition());
+        activity.setCategorySelection(currentShop.getCategory());
     }
 
     private Shop createNewShop() {
-        String currentTime =Utilities.getCurrentTimeAsString();
-        String id = MJContext.getCurrentUser().getUserId()+MJContext.getDeviceNumber()+Utilities.hash(currentTime);
+        String currentTime = Utilities.getCurrentTimeAsString();
+        String id = String.valueOf(MJContext.getDeviceNumber()+Utilities.hash(currentTime));
         String businessLicenseNumber = "";
         String ssn = "";
         String name = "";

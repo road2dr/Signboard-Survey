@@ -220,6 +220,10 @@
     <string name="loading_all_user_sign_data">사용자의 모든 간판 데이터를 불러오는 중...</string>
     <string name="applying_filter">검색 조건 적용 중... </string>
     <string name="filtered_signs_count">검색 조건에 부합한 간판의 수: %1$d 건</string>
+    <string name="more_address_search_result">주소 검색 결과 더보기</string>
+    <string name="more_shop_search_result">업소 검색 결과 더보기</string>
+    <string name="more_building_search_result">건물 검색 결과 더보기</string>
+    <string name="search_result_count">검색 결과: %1$d건</string>
 
     <!-- !!!!!!!!!!!!!!!!!!!!!! -->
     <string name="local_statistics">지역 통계</string>

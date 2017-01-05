@@ -48,6 +48,19 @@ public class TwoShopListAdapter extends ArrayAdapter<TwoShopInfo> {
         notifyDataSetChanged();
     }
 
+    public void replaceItem(int position, ShopInfo data) {
+        if(position < 0 || position >= getCount())
+            return;
+
+        TwoShopInfo row = getItem(position/2);
+        if(position % 2 == 0)
+            row.first = data;
+        else
+            row.second = data;
+
+        notifyDataSetChanged();
+    }
+
     public ShopInfo getColumnItem(int index) {
         if(index < 0 || index >= getCount()*2)
             return null;

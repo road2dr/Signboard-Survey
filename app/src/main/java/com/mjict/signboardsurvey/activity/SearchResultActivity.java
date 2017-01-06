@@ -139,6 +139,35 @@ public class SearchResultActivity extends SABaseActivity {
         shopResultLayout.addView(tv, params);
     }
 
+    public void clearAddressResult() {
+//        int childCount = addressResultLayout.getChildCount();
+//        for(int i=0; i<childCount; i++) {
+//            View child = addressResultLayout.getChildAt(i);
+//            addressResultLayout.removeView(child);
+//        }
+        addressResultLayout.removeAllViews();
+//        addressResultLayout.requestLayout();
+    }
+
+    public void clearBuildingResult() {
+//        int childCount = buildingResultLayout.getChildCount();
+//        for(int i=0; i<childCount; i++) {
+//            View child = buildingResultLayout.getChildAt(i);
+//            buildingResultLayout.removeView(child);
+//        }
+//        buildingResultLayout.requestLayout();
+        buildingResultLayout.removeAllViews();
+    }
+
+    public void clearShopResult() {
+//        int childCount = shopResultLayout.getChildCount();
+//        for(int i=0; i<childCount; i++) {
+//            View child = shopResultLayout.getChildAt(i);
+//            shopResultLayout.removeView(child);
+//        }
+        shopResultLayout.removeAllViews();
+    }
+
     public void setAddressResultVisible(boolean visible) {
         int visibility = visible ? View.VISIBLE : View.GONE;
         addressResultLabel.setVisibility(visibility);

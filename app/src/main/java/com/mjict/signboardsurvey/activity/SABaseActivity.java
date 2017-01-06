@@ -188,9 +188,16 @@ public abstract class SABaseActivity extends AppCompatSActivity {
 
     @Override
     protected void onPause() {
-        waitingDialog.dismiss();
+        waitingDialog.hide();
         
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        waitingDialog.dismiss();
+
+        super.onDestroy();
     }
 
     public void addDrawerListener(DrawerLayout.DrawerListener listener) {

@@ -144,7 +144,7 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
     }
 
     private void startToLoadRecentSigns() {
-        Long[] ids = MJContext.getRecentBuildings();
+        Long[] ids = MJContext.getRecentSings();
         recentSignSearchTask.setDefaultAsyncTaskListener(new AsyncTaskListener<BitmapSign, Boolean>() {
             @Override
             public void onTaskStart() {

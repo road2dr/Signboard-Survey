@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.R;
@@ -14,6 +16,7 @@ import com.mjict.signboardsurvey.adapter.ImageViewPagerAdapter;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.BuildingPicture;
 import com.mjict.signboardsurvey.model.IndexBitmap;
+import com.mjict.signboardsurvey.model.Setting;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
@@ -21,7 +24,9 @@ import com.mjict.signboardsurvey.task.LoadBuildingPictureTask;
 import com.mjict.signboardsurvey.task.LoadImageTask;
 import com.mjict.signboardsurvey.task.LoadShopByBuildingTask;
 import com.mjict.signboardsurvey.task.LoadSignsByShopTask;
+import com.mjict.signboardsurvey.task.ModifyBuildingTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
+import com.mjict.signboardsurvey.util.SettingDataManager;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
 
 import java.util.ArrayList;
@@ -38,7 +43,7 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
     private List<Sign> signs;
     private ArrayList<BuildingPicture> pictures;
 
-
+    private int responseCode = Activity.RESULT_CANCELED;
 
     @Override
     public void onActivityCreate(Bundle savedInstanceState) {
@@ -57,7 +62,6 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
         activity.setImagePageOnChageListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
             @Override
             public void onPageSelected(int position) {
@@ -77,6 +81,13 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
             }
         });
 
+        activity.setApplyButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startToModifyBuilding();
+            }
+        });
+
         // init
         pictures = new ArrayList<>();
         currentBuilding = (Building)activity.getIntent().getSerializableExtra(MJConstants.BUILDING);
@@ -85,6 +96,8 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
             activity.finish();
             return;
         }
+
+        initSpinner();
 
         // do first job
         startToLoadDetailInformation();
@@ -144,6 +157,16 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
 //        task.execute(bp);
 //    }
 
+
+    @Override
+    public void onBackPressed() {
+        Intent responseIntent = new Intent();
+        responseIntent.putExtra(MJConstants.BUILDING, currentBuilding);
+        activity.setResult(responseCode, responseIntent);
+
+        super.onBackPressed();
+    }
+
     private void startToLoadDetailInformation() {
         LoadShopByBuildingTask task = new LoadShopByBuildingTask(activity.getApplicationContext());
         task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<List<Shop>>() {
@@ -163,6 +186,30 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
             }
         });
         task.execute(currentBuilding.getId());
+    }
+
+    private void startToModifyBuilding() {
+        Setting areaTypeSetting = (Setting) activity.getSelectedAreaType();
+        currentBuilding.setAreaType(areaTypeSetting.getCode());
+        ModifyBuildingTask task = new ModifyBuildingTask(activity.getApplicationContext());
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
+            @Override
+            public void onTaskStart() {
+                activity.showWaitingDialog(R.string.saving);
+            }
+            @Override
+            public void onTaskFinished(Boolean result) {
+                activity.hideWaitingDialog();
+
+                int resId = result ? R.string.succeeded_to_save : R.string.failed_to_save;
+                Toast.makeText(activity, resId, Toast.LENGTH_SHORT).show();
+
+                if(result)
+                    responseCode = Activity.RESULT_OK;
+            }
+        });
+        task.execute(currentBuilding);
+
     }
 
     private void startToLoadSignList() {
@@ -186,22 +233,7 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
                 activity.hideWaitingDialog();
 
                 //
-                String buildingNumber = currentBuilding.getFirstBuildingNumber();
-                if(currentBuilding.getSecondBuildingNumber().equals("") == false)
-                    buildingNumber = buildingNumber + "_" +currentBuilding.getSecondBuildingNumber();
-
-                String baseAddress = currentBuilding.getProvince()+" "+currentBuilding.getCounty()+" "+currentBuilding.getTown();
-                String streetAddress = baseAddress + currentBuilding.getStreetName() + " "+buildingNumber;
-                String houseAddress = baseAddress + " "+currentBuilding.getVillage() + currentBuilding.getHouseNumber();
-                String title = currentBuilding.getName().equals("") ? buildingNumber : currentBuilding.getName();
-                String signInfoText = activity.getString(R.string.number_of_case, signs.size());
-                String shopInfoText = activity.getString(R.string.number_of_case, shops.size());
-
-                activity.setBuildingName(title);
-                activity.setHouseAddressText(houseAddress);
-                activity.setStreetAddressText(streetAddress);
-                activity.setSignInfoText(signInfoText);
-                activity.setShopInfoText(shopInfoText);
+                updateUI();
 
                 startToLoadPictureInformation();
             }
@@ -269,6 +301,33 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
 //
 //        activity.startActivityForResult(intent, MJConstants.REQUEST_TAKE_AND_SAVE);
 //    }
+
+    private void initSpinner() {
+        SettingDataManager smgr = SettingDataManager.getInstance();
+        Setting[] areaTypes = smgr.getAreaTypeCodes();
+        for(int i=0; i<areaTypes.length; i++)
+            activity.addToAreaTypeSpinner(areaTypes[i].getCode(), areaTypes[i]);
+    }
+
+    private void updateUI() {
+        String buildingNumber = currentBuilding.getFirstBuildingNumber();
+        if(currentBuilding.getSecondBuildingNumber().equals("") == false)
+            buildingNumber = buildingNumber + "_" +currentBuilding.getSecondBuildingNumber();
+
+        String baseAddress = currentBuilding.getProvince()+" "+currentBuilding.getCounty()+" "+currentBuilding.getTown();
+        String streetAddress = baseAddress + currentBuilding.getStreetName() + " "+buildingNumber;
+        String houseAddress = baseAddress + " "+currentBuilding.getVillage() + currentBuilding.getHouseNumber();
+        String title = currentBuilding.getName().equals("") ? buildingNumber : currentBuilding.getName();
+        String signInfoText = activity.getString(R.string.number_of_case, signs.size());
+        String shopInfoText = activity.getString(R.string.number_of_case, shops.size());
+
+        activity.setBuildingName(title);
+        activity.setHouseAddressText(houseAddress);
+        activity.setStreetAddressText(streetAddress);
+        activity.setSignInfoText(signInfoText);
+        activity.setShopInfoText(shopInfoText);
+        activity.setAreaTypeSelection(currentBuilding.getAreaType());
+    }
 
     private void goToBuildingPicture() {
         Intent intent = new Intent(activity, PictureActivity.class);

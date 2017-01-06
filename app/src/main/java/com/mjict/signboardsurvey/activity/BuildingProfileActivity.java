@@ -2,11 +2,14 @@ package com.mjict.signboardsurvey.activity;
 
 import android.graphics.Bitmap;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.adapter.ImageViewPagerAdapter;
 import com.mjict.signboardsurvey.widget.CircleIndicator;
+import com.mjict.signboardsurvey.widget.SimpleSpinner;
 
 /**
  * Created by Junseo on 2016-11-15.
@@ -14,16 +17,15 @@ import com.mjict.signboardsurvey.widget.CircleIndicator;
 public class BuildingProfileActivity extends SABaseActivity {
 
     // TODO 건물 사진 갯수에 따라 다른 UI를 쓸 수도 있음. 확인 해볼 것
-
     private TextView titleTextView;
     private ViewPager imagePager;
     private CircleIndicator imageIndicator;
-    // TODO 얘가 여기 있으니 쬐끔 이상하다.
-//    private ImageButton addPicButton;
     private TextView streetAddressTextView;
     private TextView houseAddressTextView;
     private TextView shopInfoTextView;
     private TextView signInfoTextView;
+    private SimpleSpinner areaTypeSpinner;
+    private Button applyButton;
     private ImageViewPagerAdapter imageAdapter;
 
     @Override
@@ -44,6 +46,8 @@ public class BuildingProfileActivity extends SABaseActivity {
         houseAddressTextView = (TextView)this.findViewById(R.id.house_address_text_view);
         shopInfoTextView = (TextView)this.findViewById(R.id.shop_info_text_view);
         signInfoTextView = (TextView) this.findViewById(R.id.sign_info_text_view);
+        areaTypeSpinner = (SimpleSpinner)this.findViewById(R.id.area_type_spinner);
+        applyButton = (Button)this.findViewById(R.id.apply_button);
 
         imageAdapter = new ImageViewPagerAdapter(this);
         imagePager.setAdapter(imageAdapter);
@@ -123,6 +127,23 @@ public class BuildingProfileActivity extends SABaseActivity {
     public void setShopInfoText(String text) {
         shopInfoTextView.setText(text);
     }
+
+    public void addToAreaTypeSpinner(int id, Object data) {
+        areaTypeSpinner.addSpinnerData(id, data);
+    }
+
+    public void setAreaTypeSelection(int id) {
+        areaTypeSpinner.setSpinnerSelection(id);
+    }
+
+    public Object getSelectedAreaType() {
+        return areaTypeSpinner.getSelectedData();
+    }
+
+    public void setApplyButtonOnClickListener(View.OnClickListener listener) {
+        applyButton.setOnClickListener(listener);
+    }
+
 
 
 }

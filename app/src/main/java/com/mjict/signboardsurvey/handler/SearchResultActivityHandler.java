@@ -99,6 +99,21 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
         startToFindResult(keyword);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO 그냥 화면 깨긋이 하고 새로 로딩 하는게 나아 보인다.
+        activity.clearAddressResult();
+        activity.clearBuildingResult();
+        activity.clearShopResult();
+        activity.setAddressResultVisible(false);
+        activity.setBuildingResultVisible(false);
+        activity.setShopResultVisible(false);
+
+        startToFindResult(keyword);
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void startToFindResult(final String keyword) {
         UnifiedSearchTask task = new UnifiedSearchTask(activity.getApplicationContext());
         task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<UnifiedSearchResult>() {
@@ -184,14 +199,14 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
         Intent intent = new Intent(activity, SignListActivity.class);
         intent.putExtra(HANDLER_CLASS, SignListActivityHandler.class);
         intent.putExtra(MJConstants.SHOP, shop);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, MJConstants.REQUEST_SHOP_INFORMATION);
     }
 
     private void goToShopList(Building building) {
         Intent intent = new Intent(activity, ShopListActivity.class);
         intent.putExtra(HANDLER_CLASS, ShopListActivityHandler.class);
         intent.putExtra(MJConstants.BUILDING, building);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, MJConstants.REQUEST_BUILDING_INFORMATION);
     }
 
     private void goToMoreAddressResult() {

@@ -127,6 +127,16 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
                     startToModifyShop(index, shop);
                 }
             }
+        } else if(requestCode == MJConstants.REQUEST_BUILDING_INFORMATION) {
+            if(resultCode == Activity.RESULT_OK) {
+                Building building = (Building) data.getSerializableExtra(MJConstants.BUILDING);
+                if(building == null) {
+                    // TODO something is wrong
+                    return;
+                }
+                currentBuilding = building;
+                // ui update 는 할게 없어 보임
+            }
         }
     }
 
@@ -134,7 +144,7 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
         Intent intent = new Intent(activity, BuildingProfileActivity.class);
         intent.putExtra(HANDLER_CLASS, BuildingProfileActivityHandler.class);
         intent.putExtra(MJConstants.BUILDING, currentBuilding);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, MJConstants.REQUEST_BUILDING_INFORMATION);
     }
 
     private void startLoadBuildingImage() {

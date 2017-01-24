@@ -9,7 +9,6 @@ import com.mjict.signboardsurvey.model.BuildingPicture;
 import com.mjict.signboardsurvey.model.DetailBuildingBitmap;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
-import com.mjict.signboardsurvey.model.SignOwnership;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
 import com.mjict.signboardsurvey.util.Utilities;
 
@@ -47,7 +46,7 @@ public class SearchDetailBuildingBitmapByKeywordTask extends DefaultAsyncTask<St
             List<BuildingPicture> pics = dmgr.findBuildingPictureByBuildingId(b.getId());
             Bitmap image = null;
             if (pics != null && pics.size() > 0) {
-                String path = SyncConfiguration.getDirectoryForBuildingPicture() + pics.get(0).getPath();
+                String path = SyncConfiguration.getDirectoryForBuildingPicture(b.isSync()) + pics.get(0).getPath();
                 image = Utilities.loadImage(path, 8);
             }
 
@@ -55,7 +54,6 @@ public class SearchDetailBuildingBitmapByKeywordTask extends DefaultAsyncTask<St
 //                if(pics != null) {
 //                    for(int j=0; j<pics.size(); j++) {
 //                        String path = SyncConfiguration.getDirectoryForBuildingPicture()+pics.get(j).getPath();
-//                        // TODO 건물마다 무슨 사진이 이렇게 많나.. 이것만 아니면 빠르겠는데.. 데이터 맞는지 확인 해봐
 //                        // 첫 번째 사진으로 하던지
 //                        image = Utilities.loadImage(path, 8);
 //                        if(image != null)
@@ -66,23 +64,21 @@ public class SearchDetailBuildingBitmapByKeywordTask extends DefaultAsyncTask<St
             // 총 정보 로드
             List<Shop> shopsInBuilding = dmgr.findShopByBuildingId(b.getId());
 
-            // TODO 나중에 SignOwnership 이 없어지면 바뀌겠지
-            List<Sign> signs = new ArrayList<>();
+            List<Sign> allSigns = new ArrayList<>();
             for (int j = 0; j < shopsInBuilding.size(); j++) {
                 Shop shop = shopsInBuilding.get(j);
-                if (shop.getIsDeleted() == true)
+                if (shop.isDeleted() == true)
                     continue;
 
-                List<SignOwnership> ownerships = dmgr.findSignOwnershipByShopId(shop.getId());
-
-                for (int k = 0; k < ownerships.size(); k++) {
-                    Sign s = dmgr.getSign(ownerships.get(k).getSignId());
+                List<Sign> signs = dmgr.findSignsByShopId(shop.getId());
+                for(int k=0; k<signs.size(); k++) {
+                    Sign s = signs.get(k);
                     if (s.isDeleted() == false)
-                        signs.add(s);
+                        allSigns.add(s);
                 }
             }
 
-            info = new DetailBuildingBitmap(image, b, shopsInBuilding, signs, -1, -1);
+            info = new DetailBuildingBitmap(image, b, shopsInBuilding, allSigns, -1, -1);
 
             publishProgress(info);
         }

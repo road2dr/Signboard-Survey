@@ -11,13 +11,11 @@ import com.mjict.signboardsurvey.model.BuildingPicture;
 import com.mjict.signboardsurvey.model.DetailBuildingBitmap;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
-import com.mjict.signboardsurvey.model.SignOwnership;
 import com.mjict.signboardsurvey.util.GeoPoint;
 import com.mjict.signboardsurvey.util.GeoTrans;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,7 +55,7 @@ public class LoadBuildingDetailTask extends DefaultAsyncTask<List<Building>, Det
             Bitmap image = null;
             if(pics != null) {
                 for(int j=0; j<pics.size(); j++) {
-                    String path = SyncConfiguration.getDirectoryForBuildingPicture()+pics.get(j).getPath();
+                    String path = SyncConfiguration.getDirectoryForBuildingPicture(b.isSync())+pics.get(j).getPath();
                     File file = new File(path);
                     if(file.exists()) {
                         try {
@@ -77,20 +75,13 @@ public class LoadBuildingDetailTask extends DefaultAsyncTask<List<Building>, Det
             // 총 정보 로드
             List<Shop> shops = dmgr.findShopByBuildingId(b.getId());
 
-            // TODO 나중에 SignOwnership 이 없어지면 바뀌겠지
-            List<Sign> signs = new ArrayList<>();
+            List<Sign> signs = null;
             for(int j=0; j<shops.size(); j++) {
                 Shop shop = shops.get(j);
-                if(shop.getIsDeleted() == true)
+                if(shop.isDeleted() == true)
                     continue;
 
-                List<SignOwnership> ownerships = dmgr.findSignOwnershipByShopId(shop.getId());
-
-                for(int k=0; k<ownerships.size(); k++) {
-                    Sign s = dmgr.getSign(ownerships.get(k).getSignId());
-                    if(s.isDeleted() == false)
-                        signs.add(s);
-                }
+                signs = dmgr.findSignsByShopId(shop.getId());
             }
 
             double lat = -1;

@@ -281,9 +281,9 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
         int n = searchList.size();
         String[] signImagePaths = new String[n];
         String[] demolitionImagePaths = new String[n];
-        String signPicDir = SyncConfiguration.getDirectoryForSingPicture();
         for(int i=0; i<n; i++) {
             Sign sign = searchList.get(i);
+            String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isSynchronized());
             String signImagePath = signPicDir+sign.getPicNumber();
             String demolitionImagePath = null;
             if(sign.getDemolitionPicPath() != null && sign.getDemolitionPicPath().isEmpty() == false)
@@ -370,9 +370,9 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
 
         SettingDataManager sdmgr = SettingDataManager.getInstance();
 
-        if(sign.getStatusCode() == 1)
+        if(sign.getStatsCode() == 1)        // TODO 상수를 파일이나 다른 어딘가에 지정
             status = SignStatus.DEMOLISHED;
-        else if(sign.getStatusCode() == 2)
+        else if(sign.getStatsCode() == 2)
             status = SignStatus.TO_BE_DEMOLISH;
         else
             status = SignStatus.NORMAL;
@@ -386,7 +386,7 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
         else
             labelColor = Color.BLACK;
 
-        Setting statusSetting = sdmgr.getSignStatus(sign.getStatusCode());
+        Setting statusSetting = sdmgr.getSignStatus(sign.getStatsCode());
         labelText = (statusSetting == null) ? sdmgr.getDefaultSignStatus() : statusSetting.getName();
         content = sign.getContent();
         Setting typeSetting = sdmgr.getSignType(sign.getType());

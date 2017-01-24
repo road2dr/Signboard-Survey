@@ -59,6 +59,10 @@ public abstract class SABaseActivity extends AppCompatSActivity {
         toolbar = this.findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
+        // 화면 캡쳐 방지
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+//                WindowManager.LayoutParams.FLAG_SECURE);
+
         // junseo
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
         int resid = getContentLayout();

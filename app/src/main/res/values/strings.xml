@@ -61,6 +61,9 @@
     <string name="letter_width">문자 가로</string>
     <string name="letter_length">문자 세로</string>
     <string name="size">규격</string>
+    <string name="auto_judgement">자동 판정</string>
+    <string name="village">리</string>
+    <string name="house_number">지번</string>
 
     <string name="id">ID</string>
     <string name="password">비밀번호</string>
@@ -79,6 +82,7 @@
     <string name="shop_information">업소 정보</string>
     <string name="demolition_pic">철거 사진</string>
     <string name="demolition_date">철거 날짜</string>
+    <string name="demolition_information">철거 정보</string>
     <string name="select_time">시간 선택</string>
 
     <string name="failed_to_initialize">초기화 작업중 오류가 발생 했습니다. 시스템 관리자에게 연락하세요.</string>
@@ -133,6 +137,7 @@
     <string name="brn">사업자 등록번호</string>
     <string name="business_conditions">업태</string>
     <string name="business_item">종목</string>
+    <string name="refresh">새로고침</string>
 
     <string name="searching_building">건물 검색 중...</string>
     <string name="error_occurred_while_search_building">건물 데이터 검색 중 오류가 발생 했습니다. 시스템 관리자에게 연락하세요.</string>
@@ -224,6 +229,16 @@
     <string name="more_shop_search_result">업소 검색 결과 더보기</string>
     <string name="more_building_search_result">건물 검색 결과 더보기</string>
     <string name="search_result_count">검색 결과: %1$d건</string>
+    <string name="wifi_is_prohibited">WIFI 사용을 금지 합니다.</string>
+    <string name="rooting_trace_is_found">루팅된 단말기로 의심이 됩니다. 프로그램을 종료 합니다.</string>
+    <string name="search_by_street_address">도로명 주소로 찾기</string>
+    <string name="search_by_house_address">지번 주소로 찾기</string>
+    <string name="all_signs_status">전체 간판 현황</string>
+    <string name="loading_all_signs_status">현황 데이터 불러오는 중...</string>
+    <string name="etc_sign_type">기타 간판</string>
+    <string name="lawful_sign_type">적법 간판</string>
+    <string name="illegal_sign_type">불법 간판</string>
+
 
     <!-- !!!!!!!!!!!!!!!!!!!!!! -->
     <string name="local_statistics">지역 통계</string>
@@ -236,6 +251,7 @@
     <string name="demolished_sign">철거된 간판</string>
     <string name="review_sign">재조사 간판</string>
     <string name="surveyed_sign">조사한 간판</string>
+    <string name="today_inspected_sign">오늘 조사한 간판</string>
     <string name="remained_review_sign">남은 재조사 간판</string>
     <string name="visited_building_count">알아 본 건물</string>
     <string name="register_shop_count">등록한 업소 정보</string>
@@ -260,6 +276,13 @@
     <string name="intersection">교차로</string>
     <string name="front_back">전후도로</string>
     <string name="street_collision">도로 저촉</string>
+    <string name="height_from_land">지상에서의 높이</string>
+    <string name="whether_collision">저촉 여부</string>
+    <string name="installed_side">설치된 면</string>
+    <string name="uniqueness">특이 사항</string>
+    <string name="memo">메모</string>
+
 
 
 </resources>
+

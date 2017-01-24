@@ -132,7 +132,7 @@ public class BuildingPictureActivityHandler extends SABaseActivityHandler {
         // 건물 사진 파일 이름 만듬
         String time = Utilities.getCurrentTimeAsString();
         int hash = Math.abs((int)Utilities.hash(time));
-        String dir = SyncConfiguration.getDirectoryForBuildingPicture();
+        String dir = SyncConfiguration.getDirectoryForBuildingPicture(building.isSync());
         final String fileName = String.format("building_%d_%d.jpg", building.getId(), hash);
         String path = dir + fileName;
 
@@ -236,7 +236,7 @@ public class BuildingPictureActivityHandler extends SABaseActivityHandler {
             return;
 
         BuildingPicture pic = buildingPictures.get(imageIndex);
-        String path = SyncConfiguration.getDirectoryForBuildingPicture()+pic.getPath();
+        String path = SyncConfiguration.getDirectoryForBuildingPicture(building.isSync())+pic.getPath();
         LoadImageTask task = new LoadImageTask();
         task.setSampleSize(1);
         task.setDefaultAsyncTaskListener(new AsyncTaskListener<IndexBitmap, Boolean>() {

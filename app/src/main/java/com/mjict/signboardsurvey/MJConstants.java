@@ -27,6 +27,8 @@ public class MJConstants {
     public static final String CAMERA_ZOOM = "camera_zoom";
     public static final String SIZE_X = "size_x";
     public static final String SIZE_Y = "size_y";
+    public static final String AUTO_JUDGEMENT_VALUE = "auto_judgement_value";
+    public static final String SIGN_LIST = "sign_list";
 
     public static final String RESPONSE = "response";
     public static final String PATH = "path";

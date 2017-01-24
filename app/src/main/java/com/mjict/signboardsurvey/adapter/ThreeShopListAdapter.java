@@ -116,6 +116,16 @@ public class ThreeShopListAdapter extends ArrayAdapter<ThreeShopInfo> {
                 }
             }
         });
+        holder.getFirstLayout().setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(columnClickListener != null) {
+                    int index = (Integer)v.getTag();
+                    columnClickListener.onLongClick(index);
+                }
+                return true;
+            }
+        });
 
         holder.getFirstNameTextView().setText(first.name);
         holder.getFirstCategoryTextView().setText(first.category);
@@ -134,6 +144,16 @@ public class ThreeShopListAdapter extends ArrayAdapter<ThreeShopInfo> {
                         int index = (Integer)v.getTag();
                         columnClickListener.onClick(index);
                     }
+                }
+            });
+            holder.getSecondLayout().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if(columnClickListener != null) {
+                        int index = (Integer)v.getTag();
+                        columnClickListener.onLongClick(index);
+                    }
+                    return true;
                 }
             });
 
@@ -158,6 +178,16 @@ public class ThreeShopListAdapter extends ArrayAdapter<ThreeShopInfo> {
                     }
                 }
             });
+            holder.getThirdLayout().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if(columnClickListener != null) {
+                        int index = (Integer)v.getTag();
+                        columnClickListener.onLongClick(index);
+                    }
+                    return true;
+                }
+            });
 
             holder.getThirdNameTextView().setText(third.name);
             holder.getThirdCategoryTextView().setText(third.category);
@@ -169,5 +199,6 @@ public class ThreeShopListAdapter extends ArrayAdapter<ThreeShopInfo> {
 
     public static interface OnColumnClickListener {
         public void onClick(int index);
+        public void onLongClick(int index);
     }
 }

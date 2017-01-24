@@ -32,6 +32,7 @@
                     android:gravity="left|center_vertical"
                     android:text="@string/surveyed_sign"/>
                 <TextView
+                    android:id="@+id/first_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:gravity="right|center_vertical"
@@ -45,8 +46,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:gravity="left|center_vertical"
-                    android:text="@string/remained_review_sign"/>
+                    android:text="@string/today_inspected_sign"/>
                 <TextView
+                    android:id="@+id/second_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:gravity="right|center_vertical"
@@ -60,8 +62,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:gravity="left"
-                    android:text="@string/visited_building_count"/>
+                    android:text="@string/remained_review_sign"/>
                 <TextView
+                    android:id="@+id/third_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:gravity="right|center_vertical"
@@ -85,6 +88,7 @@
                     android:gravity="left|center_vertical"
                     android:text="@string/register_shop_count"/>
                 <TextView
+                    android:id="@+id/fourth_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:gravity="right|center_vertical"
@@ -100,6 +104,7 @@
                     android:gravity="left|center_vertical"
                     android:text="@string/shut_down_shop_count"/>
                 <TextView
+                    android:id="@+id/fifth_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:gravity="right|center_vertical"
@@ -115,6 +120,7 @@
                     android:gravity="left"
                     android:text=""/>
                 <TextView
+                    android:id="@+id/sixth_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:gravity="right|center_vertical"

@@ -8,14 +8,12 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.BuildingPicture;
-import com.mjict.signboardsurvey.model.Inspection;
 import com.mjict.signboardsurvey.model.Mobile;
 import com.mjict.signboardsurvey.model.Setting;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
-import com.mjict.signboardsurvey.model.SignOwnership;
 import com.mjict.signboardsurvey.model.StreetAddress;
-import com.mjict.signboardsurvey.model.TownForInspection;
+import com.mjict.signboardsurvey.model.TownAddress;
 import com.mjict.signboardsurvey.model.User;
 
 import java.sql.SQLException;
@@ -44,8 +42,32 @@ public class DatabaseManager {
 		return instance;
 	}
 
-	public DatabaseHelper getHelper() {
-		return helper;
+	public long getSignsCountByResult(String type) {
+		long numRows = 0;
+		try {
+			Dao<Sign, Long> signDao = helper.getSignDao();
+			QueryBuilder<Sign, Long> queryBuilder = signDao.queryBuilder();
+			queryBuilder.setCountOf(true);
+			queryBuilder.setWhere(queryBuilder.where().eq("inspectionResult", type));
+			numRows = signDao.countOf(queryBuilder.prepare());
+
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return numRows;
+	}
+
+	public List<Sign> getSignsByResult(String result) {
+		HashMap<String, Object> argMap = new HashMap<String, Object>(1);
+		argMap.put("inspectionResult", result);
+		List<Sign> signs = null;
+		try {
+			signs = helper.getSignDao().queryForFieldValuesArgs(argMap);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return signs;
 	}
 
 	public long getAllSignsCount() {
@@ -54,6 +76,28 @@ public class DatabaseManager {
 		try {
 			Dao<Sign, Long> signDao = helper.getSignDao();
 			numRows = signDao.countOf();
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return numRows;
+	}
+
+	public long getAllBuildingsCount() {
+		long numRows = 0;
+		try {
+			Dao<Building, Long> buildingDao = helper.getBuildingDao();
+			numRows = buildingDao.countOf();
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return numRows;
+	}
+
+	public long getAllShopsCount() {
+		long numRows = 0;
+		try {
+			Dao<Shop, Long> shopDao = helper.getShopDao();
+			numRows = shopDao.countOf();
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
@@ -156,7 +200,7 @@ public class DatabaseManager {
 	public List<Shop> findShopsContain(String filterKey, int limit) {
 		List<Shop> shops = null;
 		try {
-			QueryBuilder<Shop, String> qb = helper.getShopDao().queryBuilder();
+			QueryBuilder<Shop, Long> qb = helper.getShopDao().queryBuilder();
 			if(limit > 0)
 				qb.limit(limit);
 
@@ -192,7 +236,7 @@ public class DatabaseManager {
 	 * @param id ã�� Shop�� id
 	 * @return Shop, �ش� �����Ͱ� ���ų� ���� �߻� �� null
 	 */
-	public Shop getShop(String id) {
+	public Shop getShop(long id) {
 		Shop shop = null;
 		
 		try {
@@ -210,7 +254,7 @@ public class DatabaseManager {
 		try {
 			QueryBuilder<Sign, Long> qb = helper.getSignDao().queryBuilder();
 			Where<Sign, Long> where = qb.where().eq("inputor", userId).or().eq("modifier", userId);
-			PreparedQuery<Sign> pq = qb.prepare();
+			PreparedQuery<Sign> pq = where.prepare();
 			signs = helper.getSignDao().query(pq);
 
 //			qb.
@@ -222,22 +266,18 @@ public class DatabaseManager {
 
 		return signs;
 	}
-	
-	/**
-	 * �ش� id �� Inspection �����͸� ��ȸ
-	 * @param id ã�� Inspection�� id
-	 * @return Inspection, �ش� �����Ͱ� ���ų� ���� �߻� �� null
-	 */
-	public Inspection getInspection(long id) {
-		Inspection inspection = null;
-		
+
+	public List<Sign> findSignsByShopId(long shopId) {
+		HashMap<String, Object> argMap = new HashMap<String, Object>(1);
+		argMap.put("shopId", shopId);
+		List<Sign> signs = null;
 		try {
-			inspection = helper.getInspectionDao().queryForId(id);
+			signs = helper.getSignDao().queryForFieldValuesArgs(argMap);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		return inspection;
+
+		return signs;
 	}
 	
 	/**
@@ -348,6 +388,20 @@ public class DatabaseManager {
 		
 		return shops;
 	}
+
+	public List<Shop> findShopByUserId(String userId) {
+		HashMap<String, Object> argMap = new HashMap<String, Object>(1);
+		argMap.put("name", userId);
+
+		List<Shop> shops = null;
+		try {
+			shops = helper.getShopDao().queryForFieldValuesArgs(argMap);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return shops;
+	}
 	
 	public List<Shop> findShopByNameAndAddress(String shopName, int addressId) {
 		HashMap<String, Object> argMap = new HashMap<String, Object>(2);
@@ -408,12 +462,12 @@ public class DatabaseManager {
 //	
 	
 	
-	public List<TownForInspection> findTown(String province, String county) {
+	public List<TownAddress> findTown(String province, String county) {
 		HashMap<String, Object> argMap = new HashMap<String, Object>(2);
 		argMap.put("province", province);
 		argMap.put("county", county);
 		
-		List<TownForInspection> addr = null;
+		List<TownAddress> addr = null;
 		
 		try {
 			addr = helper.getTownForInspectionDao().queryForFieldValues(argMap);
@@ -582,55 +636,7 @@ public class DatabaseManager {
 		return result;
 	}
 	
-	public List<SignOwnership> findSignOwnershipByShopId(String id) {
-		HashMap<String, Object> argMap = new HashMap<String, Object>(1);
-		argMap.put("shopId", id);
-		
-		List<SignOwnership> result = null;
-		
-		try {
-			result = helper.getSignOwnershipDao().queryForFieldValuesArgs(argMap);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-//		helper.getSignDao().q
-		
-		return result;
-	}
-	
-	public List<SignOwnership> findSignOwnershipBySignId(long id) {
-		HashMap<String, Object> argMap = new HashMap<String, Object>(1);
-		argMap.put("signId", id);
-		
-		List<SignOwnership> result = null;
-		
-		try {
-			result = helper.getSignOwnershipDao().queryForFieldValuesArgs(argMap);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return result;
-	}
-	
-	public List<Inspection> findInspectionBySignId(long id) {
-		HashMap<String, Object> argMap = new HashMap<String, Object>(1);
-		argMap.put("signId", id);
-		
-		List<Inspection> result = null;
-		
-		try {
-			result = helper.getInspectionDao().queryForFieldValues(argMap);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-//		helper.getInspectionDao().queryBuilder().
-		
-		return result;
-	}
-	
+
 	public List<Setting> getSettingByItem(String item) {
 		HashMap<String, Object> argMap = new HashMap<String, Object>(1);
 		argMap.put("item", item);
@@ -662,18 +668,7 @@ public class DatabaseManager {
 		
 		return result;
 	}
-	
-	public SignOwnership insertSignOwnership(SignOwnership swnership) {
-		SignOwnership owership = null;
-		try {
-			owership = helper.getSignOwnershipDao().createIfNotExists(swnership);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-		
-		return owership;
-	}
+
 	
 	public List<BuildingPicture> findBuildingPictureByBuildingId(long buildingId) {
 		HashMap<String, Object> argMap = new HashMap<String, Object>(1);
@@ -741,21 +736,7 @@ public class DatabaseManager {
 		
 		return result;
 	}
-	
-	public long insertInspection(Inspection inspection) {
-		long result = -1;
-		
-		try {
-			Inspection s = helper.getInspectionDao().createIfNotExists(inspection);
-			if(s != null)
-				result = s.getId();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return result;
-	}
-	
+
 	public Mobile getMobile(int id) {
 		
 		Mobile mobile = null;
@@ -803,18 +784,6 @@ public class DatabaseManager {
 		return (result == 1);
 	}
 	
-	public boolean modifyInspection(Inspection inspection) {
-		int result = -1;
-		
-		try {
-			result = helper.getInspectionDao().update(inspection);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return (result == 1);
-	}
-	
 	public boolean deleteSign(long signId) {
 		int result = -1;
 		
@@ -826,35 +795,7 @@ public class DatabaseManager {
 		
 		return (result == 1);
 	}
-	
-	public boolean deleteSignOwnershipsBySignId(long signId) {
-//		HashMap<String, Object> argMap = new HashMap<String, Object>(1);
-//		argMap.put("signId", signId);
-		
-		int result = -1;
-		List<SignOwnership> target = findSignOwnershipBySignId(signId);
-		try {			
-			result = helper.getSignOwnershipDao().delete(target);
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return (target.size() == result);		
-	}
-	
-	public boolean deleteInspectionsBySignId(long signId) {
-		int result = -1;
-		List<Inspection> target = findInspectionBySignId(signId);
-		
-		try {
-			result = helper.getInspectionDao().delete(target);
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return (target.size() == result);
-	}
-	
+
 	public int findAddressId(String province, String county, String town) {
 		HashMap<String, Object> argMap = new HashMap<String, Object>(3);
 		argMap.put("province", province);
@@ -864,7 +805,7 @@ public class DatabaseManager {
 		int id = -1;		
 		
 		try {
-			List<TownForInspection> addr = helper.getTownForInspectionDao().queryForFieldValues(argMap);
+			List<TownAddress> addr = helper.getTownForInspectionDao().queryForFieldValues(argMap);
 			if(addr != null && addr.size() > 0)
 				id = addr.get(0).getId();
 			

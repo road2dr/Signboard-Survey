@@ -47,15 +47,6 @@ public class Building implements Serializable {
 	private boolean isMountain;
 	
 	@DatabaseField
-	private String lotNumber;
-	
-	@DatabaseField
-	private int floorCount;
-	
-	@DatabaseField
-	private String mapNumber;
-	
-	@DatabaseField
 	private String plcd;
 	
 	@DatabaseField
@@ -70,6 +61,14 @@ public class Building implements Serializable {
 	@DatabaseField
 	private double longitude;
 
+	@DatabaseField(columnName = "sgcode")
+	private String sgCode;
+
+	@DatabaseField
+	private boolean isSync;
+
+	@DatabaseField
+	private String syncDate;
 	
 	public Building() {
 		
@@ -77,7 +76,7 @@ public class Building implements Serializable {
 
 	public Building(long id, String province, String county, String town, String village, String additionalAddress, String houseNumber,
 			String streetName, String firstBuildingNumber, String secondBuildingNumber, String name, boolean isMountain,
-			String lotNumber, int floorCount, String mapNumber, String plcd, int addressId, int areaType, double latitude, double longitude) {
+			String plcd, int addressId, int areaType, double latitude, double longitude, String sgCode, boolean isSync, String syncDate) {
 		super();
 		this.id = id;
 		this.province = province;
@@ -91,14 +90,14 @@ public class Building implements Serializable {
 		this.secondBuildingNumber = secondBuildingNumber;
 		this.name = name;
 		this.isMountain = isMountain;
-		this.lotNumber = lotNumber;
-		this.floorCount = floorCount;
-		this.mapNumber = mapNumber;
 		this.plcd = plcd;
 		this.addressId = addressId;
 		this.areaType = areaType;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.sgCode = sgCode;
+		this.isSync = isSync;
+		this.syncDate = syncDate;
 	}
 
 	public long getId() {
@@ -197,30 +196,6 @@ public class Building implements Serializable {
 		this.isMountain = isMountain;
 	}
 
-	public String getLotNumber() {
-		return lotNumber;
-	}
-
-	public void setLotNumber(String lotNumber) {
-		this.lotNumber = lotNumber;
-	}
-
-	public int getFloorCount() {
-		return floorCount;
-	}
-
-	public void setFloorCount(int floorCount) {
-		this.floorCount = floorCount;
-	}
-
-	public String getMapNumber() {
-		return mapNumber;
-	}
-
-	public void setMapNumber(String mapNumber) {
-		this.mapNumber = mapNumber;
-	}
-
 	public String getPlcd() {
 		return plcd;
 	}
@@ -259,5 +234,29 @@ public class Building implements Serializable {
 
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
+	}
+
+	public String getSgCode() {
+		return sgCode;
+	}
+
+	public void setSgCode(String sgCode) {
+		this.sgCode = sgCode;
+	}
+
+	public boolean isSync() {
+		return isSync;
+	}
+
+	public void setIsSync(boolean isSync) {
+		this.isSync = isSync;
+	}
+
+	public String getSyncDate() {
+		return syncDate;
+	}
+
+	public void setSyncDate(String syncDate) {
+		this.syncDate = syncDate;
 	}
 }

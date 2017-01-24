@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class TownForInspection {
+public class TownAddress {
 	
 	@DatabaseField
 	private int id;
@@ -18,11 +18,11 @@ public class TownForInspection {
 	@DatabaseField
 	private String town;
 	
-	public TownForInspection() {
+	public TownAddress() {
 
 	}
 	
-	public TownForInspection(int id, String province, String county, String town) {
+	public TownAddress(int id, String province, String county, String town) {
 		super();
 		this.id = id;
 		this.province = province;

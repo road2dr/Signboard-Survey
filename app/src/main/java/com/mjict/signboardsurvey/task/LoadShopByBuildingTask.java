@@ -30,7 +30,7 @@ public class LoadShopByBuildingTask extends DefaultAsyncTask<Long, Integer, List
         List<Shop> shops = dmgr.findShopByBuildingId(buildingId);
         for(int i=0; i<shops.size(); i++) {
             Shop shop = shops.get(i);
-            if(shop.getIsDeleted() == true)     // TODO 삭제 기능 관련 해서 한번 얘기를 해보자
+            if(shop.isDeleted() == true)
                 shops.remove(i);
         }
         Log.d("junseo", "here 4");

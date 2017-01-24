@@ -29,8 +29,11 @@ import com.mjict.signboardsurvey.model.Sign;
 import com.mjict.signboardsurvey.model.ui.RecentBuilding;
 import com.mjict.signboardsurvey.model.ui.RecentSign;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
+import com.mjict.signboardsurvey.task.LoadAllSignStatusTask;
+import com.mjict.signboardsurvey.task.LoadSignResultStatusTask;
 import com.mjict.signboardsurvey.task.SearchBitmapBuildingsByIdTask;
 import com.mjict.signboardsurvey.task.SearchBitmapSignsByIdTask;
+import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 import com.mjict.signboardsurvey.util.SettingDataManager;
 
 import java.util.ArrayList;
@@ -45,6 +48,8 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
 
     private SearchBitmapSignsByIdTask recentSignSearchTask;
     private SearchBitmapBuildingsByIdTask recentBuildingSearchTask;
+    private LoadSignResultStatusTask signResultStatusTask;
+    private LoadAllSignStatusTask allSignStatusTask;
 
     private List<Building> recentBuildings;
     private List<Sign> recentSigns;
@@ -88,6 +93,20 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
             }
         });
 
+        activity.setRefreshStatisticsButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startToLoadAllSignStatus();
+            }
+        });
+
+        activity.setRefreshPieChartButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startToLoadSignResultStatus();
+            }
+        });
+
 //        activity.setAddressSearchSummaryButtonOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -116,6 +135,10 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
 
         startToLoadRecentSigns();
         startToLoadRecentBuilding();
+        startToLoadSignResultStatus();
+        startToLoadAllSignStatus();
+
+
 
         super.onActivityStart();
     }
@@ -166,7 +189,7 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
                     Setting typeSetting = smgr.getSignType(s.sign.getType());
                     String type = (typeSetting == null) ? smgr.getDefaultSignTypeName() : typeSetting.getName();
                     Setting resultSetting = smgr.getResult(s.sign.getInspectionResult());
-                    String result = (resultSetting == null) ? smgr.getDefaultResultName() : typeSetting.getName();
+                    String result = (resultSetting == null) ? smgr.getDefaultResultName() : resultSetting.getName();
 
                     RecentSign bs = new RecentSign(s.image, s.sign, name, type, result);
                     recentSigns.add(s.sign);
@@ -217,10 +240,91 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
         recentBuildingSearchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, ids);
     }
 
+    private void startToLoadSignResultStatus() {
+        signResultStatusTask = new LoadSignResultStatusTask(activity.getApplicationContext());
+        signResultStatusTask.setLawfulSignTypes("01", "02", "04", "06", "03");
+        signResultStatusTask.setIllegalSignTypes("08", "09", "10", "11");
+        signResultStatusTask.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<long[]>() {
+            @Override
+            public void onTaskStart() {
+                activity.clearSignResultStatusPieChart();
+                activity.setSignStatusLoadingViewVisible(true);
+                activity.setSignStatusPieChartVisible(false);
+            }
+
+            @Override
+            public void onTaskFinished(long[] result) {
+                if(signResultStatusTask.isCancelled())
+                    return;
+
+                activity.setSignStatusLoadingViewVisible(false);
+                activity.setSignStatusPieChartVisible(true);
+
+                if(result == null)
+                    return;
+
+                if(result.length != 3)
+                    return;
+
+                String etcSignType = activity.getString(R.string.etc_sign_type);
+                String lawfulSignType = activity.getString(R.string.lawful_sign_type);
+                String illegalSignType = activity.getString(R.string.illegal_sign_type);
+
+                activity.addToSignResultStatusPieChart(lawfulSignType, result[0]);
+                activity.addToSignResultStatusPieChart(illegalSignType, result[1]);
+                activity.addToSignResultStatusPieChart(etcSignType, result[2]);
+
+            }
+        });
+        signResultStatusTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void startToLoadAllSignStatus() {
+        allSignStatusTask = new LoadAllSignStatusTask(activity.getApplicationContext());
+        allSignStatusTask.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Long[]>() {
+            @Override
+            public void onTaskStart() {
+
+            }
+
+            @Override
+            public void onTaskFinished(Long[] result) {
+                if(allSignStatusTask.isCancelled())
+                    return;
+
+                if(result == null)
+                    return;
+
+                if(result.length != 10)
+                    return;
+
+                String allBuildingCountText = activity.getString(R.string.number_of_case, result[0]);
+                String allShopCountText = activity.getString(R.string.number_of_case, result[1]);
+                String allSignCountText = activity.getString(R.string.number_of_case, result[2]);
+                String reviewSignCountText = activity.getString(R.string.number_of_case, result[3]);
+                String demolishSignCountText = activity.getString(R.string.number_of_case, result[4]);
+
+                String userAllSignCountText = activity.getString(R.string.number_of_case, result[5]);
+                String userTodaySignCountText = activity.getString(R.string.number_of_case, result[6]);
+                String userReviewSignCountText = activity.getString(R.string.number_of_case, result[7]);
+                String userShopCountText = activity.getString(R.string.number_of_case, result[8]);
+                String userDemolishSignCountText = activity.getString(R.string.number_of_case, result[9]);
+
+                activity.setFirstAllSignPageText(allBuildingCountText, allShopCountText, allSignCountText,
+                        reviewSignCountText, demolishSignCountText);
+                activity.setSecondAllSignPageText(userAllSignCountText, userTodaySignCountText, userReviewSignCountText,
+                        userShopCountText, userDemolishSignCountText);
+            }
+        });
+        allSignStatusTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, MJContext.getCurrentUser().getUserId());
+    }
+
     @Override
     public void onActivityStop() {
         recentSignSearchTask.cancel(true);
         recentBuildingSearchTask.cancel(true);
+        signResultStatusTask.cancel(true);
+        allSignStatusTask.cancel(true);
 
         super.onActivityStop();
     }

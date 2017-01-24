@@ -9,7 +9,6 @@ import com.mjict.signboardsurvey.model.BuildingPicture;
 import com.mjict.signboardsurvey.model.DetailBuildingBitmap;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
-import com.mjict.signboardsurvey.model.SignOwnership;
 import com.mjict.signboardsurvey.model.StreetAddress;
 import com.mjict.signboardsurvey.model.UnifiedSearchResult;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
@@ -68,7 +67,7 @@ public class UnifiedSearchTask extends DefaultAsyncTask<String, Integer, Unified
                 List<BuildingPicture> pics = dmgr.findBuildingPictureByBuildingId(b.getId());
                 Bitmap image = null;
                 if(pics != null && pics.size() > 0) {
-                    String path = SyncConfiguration.getDirectoryForBuildingPicture() + pics.get(0).getPath();
+                    String path = SyncConfiguration.getDirectoryForBuildingPicture(b.isSync()) + pics.get(0).getPath();
                     image = Utilities.loadImage(path, 8);
                 }
 
@@ -87,23 +86,22 @@ public class UnifiedSearchTask extends DefaultAsyncTask<String, Integer, Unified
                 // 총 정보 로드
                 List<Shop> shopsInBuilding = dmgr.findShopByBuildingId(b.getId());
 
-                // TODO 나중에 SignOwnership 이 없어지면 바뀌겠지
-                List<Sign> signs = new ArrayList<>();
+                List<Sign> signsInBuilding = new ArrayList<>();
                 for(int j=0; j<shopsInBuilding.size(); j++) {
                     Shop shop = shopsInBuilding.get(j);
-                    if(shop.getIsDeleted() == true)
+                    if(shop.isDeleted() == true)
                         continue;
 
-                    List<SignOwnership> ownerships = dmgr.findSignOwnershipByShopId(shop.getId());
+                    List<Sign> signs= dmgr.findSignsByShopId(shop.getId());
 
-                    for(int k=0; k<ownerships.size(); k++) {
-                        Sign s = dmgr.getSign(ownerships.get(k).getSignId());
+                    for(int k=0; k<signs.size(); k++) {
+                        Sign s = signs.get(k);
                         if(s.isDeleted() == false)
-                            signs.add(s);
+                            signsInBuilding.add(s);
                     }
                 }
 
-                info = new DetailBuildingBitmap(image, b, shops, signs, -1, -1);
+                info = new DetailBuildingBitmap(image, b, shops, signsInBuilding, -1, -1);
                 buildingResults.add(info);
             }
         }

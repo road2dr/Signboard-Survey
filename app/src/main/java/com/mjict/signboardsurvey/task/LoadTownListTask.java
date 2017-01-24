@@ -3,7 +3,7 @@ package com.mjict.signboardsurvey.task;
 import android.content.Context;
 
 import com.mjict.signboardsurvey.database.DatabaseManager;
-import com.mjict.signboardsurvey.model.TownForInspection;
+import com.mjict.signboardsurvey.model.TownAddress;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class LoadTownListTask extends DefaultAsyncTask<String, Integer, String[]
         String county = params[1];
 
         DatabaseManager dmgr = DatabaseManager.getInstance(context);
-        List<TownForInspection> ts = dmgr.findTown(province, county);
+        List<TownAddress> ts = dmgr.findTown(province, county);
         if(ts == null)
             return null;
 

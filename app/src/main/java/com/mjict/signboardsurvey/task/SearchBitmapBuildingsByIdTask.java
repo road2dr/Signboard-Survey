@@ -44,7 +44,7 @@ public class SearchBitmapBuildingsByIdTask extends DefaultAsyncTask<Long, Bitmap
 
             if (pics != null) {
                 for (int j = 0; j < pics.size(); j++) {
-                    String path = SyncConfiguration.getDirectoryForBuildingPicture() + pics.get(j).getPath();
+                    String path = SyncConfiguration.getDirectoryForBuildingPicture(building.isSync()) + pics.get(j).getPath();
                     image = Utilities.loadImage(path, 8);
                     if (image != null)
                         break;

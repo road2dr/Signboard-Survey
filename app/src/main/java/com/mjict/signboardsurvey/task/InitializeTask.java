@@ -5,13 +5,14 @@ import android.util.Log;
 
 import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.R;
+import com.mjict.signboardsurvey.autojudgement.AutoJudgementRuleManager;
 import com.mjict.signboardsurvey.database.DatabaseManager;
 import com.mjict.signboardsurvey.model.TaskResult;
 import com.mjict.signboardsurvey.util.AppDataConfiguration;
-import com.mjict.signboardsurvey.util.SyncConfiguration;
 import com.mjict.signboardsurvey.util.FileManager;
 import com.mjict.signboardsurvey.util.SdNotMountedException;
 import com.mjict.signboardsurvey.util.SettingDataManager;
+import com.mjict.signboardsurvey.util.SyncConfiguration;
 import com.mjict.signboardsurvey.util.Utilities;
 
 import java.io.IOException;
@@ -143,7 +144,14 @@ public class InitializeTask extends DefaultAsyncTask<Void, Integer, TaskResult> 
 
         SettingDataManager.getInstance().load(context);
 
-//        Utilities.loadInspectionRules();
+        // 자동 판정룰 파일 로드
+        boolean ruleLoad = AutoJudgementRuleManager.loadRuleFromXml();
+        if(ruleLoad == false) {
+            // TODO do something?
+            Log.d("junseo", "자동 판정 룰 불러오기 실패");
+        } else {
+            Log.d("junseo", "자동 판정 룰 불러오기 성공");
+        }
 
         return new TaskResult(true, null, -1);
     }

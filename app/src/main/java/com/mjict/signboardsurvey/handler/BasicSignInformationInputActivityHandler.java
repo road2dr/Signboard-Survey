@@ -14,6 +14,7 @@ import com.mjict.signboardsurvey.activity.CameraActivity;
 import com.mjict.signboardsurvey.activity.ExtraSignInformationInputActivity;
 import com.mjict.signboardsurvey.activity.PictureActivity;
 import com.mjict.signboardsurvey.activity.SignMeasureActivity;
+import com.mjict.signboardsurvey.model.AutoJudgementValue;
 import com.mjict.signboardsurvey.model.IconItem;
 import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.model.Setting;
@@ -40,6 +41,8 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
     private Setting[] statusSettings;
     private Setting[] lightSettings;
 
+    // value for auto judgement
+    private AutoJudgementValue autoJudgementValue;
 
     @Override
     public void onActivityCreate(Bundle savedInstanceState) {
@@ -53,9 +56,13 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
             // 새 간판 입력
             currentSign = createNewSign();
         }
+        autoJudgementValue = (AutoJudgementValue)intent.getSerializableExtra(MJConstants.AUTO_JUDGEMENT_VALUE);
+        if(autoJudgementValue == null)
+            autoJudgementValue = new AutoJudgementValue();
+
 
         if(currentSign.getPicNumber() != null && currentSign.getPicNumber().equals("") == false)
-            imagePath = SyncConfiguration.getDirectoryForSingPicture()+currentSign.getPicNumber();
+            imagePath = SyncConfiguration.getDirectoryForSingPicture(currentSign.isSynchronized())+currentSign.getPicNumber();
 
         SettingDataManager smgr = SettingDataManager.getInstance();
         statusSettings = smgr.getSignStatus();
@@ -188,6 +195,12 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         String length = String.format("%.2f", currentSign.getLength());
         String height = String.format("%.2f", currentSign.getHeight());
 
+        String placedFloorText = String.valueOf(currentSign.getPlacedFloor());
+        String totalFloorText = String.valueOf(currentSign.getTotalFloor());
+        boolean frontChecked = currentSign.isFront();
+        boolean intersectionChecked = currentSign.isIntersection();
+        boolean frontBackChecked = currentSign.isFrontBackRoad();
+
         int lightIndex = -1;
         for(int i=0; i<lightSettings.length; i++) {
             if(lightSettings[i].getCode() == currentSign.getLightType()) {
@@ -201,7 +214,13 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         activity.setLengthText(length);
         activity.setHeightText(height);
         activity.setLightSpinnerSelection(lightIndex);
-        activity.setStatusSpinnerSelection(currentSign.getStatusCode());
+        activity.setStatusSpinnerSelection(currentSign.getStatsCode());
+
+        activity.setPlacedFloorText(placedFloorText);
+        activity.setTotalFloorText(totalFloorText);
+        activity.setFrontChecked(frontChecked);
+        activity.setIntersectionChecked(intersectionChecked);
+        activity.setFrontBackChecked(frontBackChecked);
     }
 
     private void nextButtonClicked() {
@@ -213,9 +232,15 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         Setting lightSetting = (Setting)activity.getSelectedLight().obj;
         String picName = (imagePath == null) ? "" : imagePath.substring(imagePath.lastIndexOf("/")+1);
 
+        String placedFloorText = activity.setInputPlacedFloor();
+        String totalFloorText = activity.getInputTotalFloor();
+        boolean isFront = activity.getFrontChecked();
+        boolean isIntersection = activity.getIntersectionChecked();
+        boolean isFrontBack = activity.getFrontBackChecked();
+
         // 필수 내용 체크
         try {
-            checkCriticalItems(content, widthText, lengthText);
+            checkCriticalItems(content, widthText, lengthText, placedFloorText, totalFloorText);
         } catch(WrongDataInputtedException e) {
             Toast.makeText(activity, e.getCauseString(), Toast.LENGTH_SHORT).show();
             return;
@@ -223,7 +248,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
 
         // 숫자값 체크
         try {
-            checkNumberValue(widthText, lengthText, heightText);
+            checkNumberValue(widthText, lengthText, heightText, placedFloorText, totalFloorText);
         } catch (WrongNumberFormatException e) {
             String cause = activity.getString(R.string.wrong_number_type_input, e.getCauseValue());
             Toast.makeText(activity, cause, Toast.LENGTH_SHORT).show();
@@ -235,17 +260,22 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
 
         //
         currentSign.setContent(content);
-        currentSign.setStatusCode(statusSetting.getCode());
+        currentSign.setStatsCode(statusSetting.getCode());
         currentSign.setWidth(Float.parseFloat(widthText));
         currentSign.setLength(Float.parseFloat(lengthText));
         currentSign.setHeight(Float.parseFloat(heightText));
         currentSign.setLightType(lightSetting.getCode());
+        currentSign.setPlacedFloor(Integer.parseInt(placedFloorText));
+        currentSign.setTotalFloor(Integer.parseInt(totalFloorText));
+        currentSign.setFront(isFront);
+        currentSign.setIntersection(isIntersection);
+        currentSign.setFrontBackRoad(isFrontBack);
         currentSign.setPicNumber(picName);
 
         goToSignExtraInformation();
     }
 
-    private void checkCriticalItems(String content, String width, String length) throws WrongDataInputtedException {
+    private void checkCriticalItems(String content, String width, String length, String placedFloor, String totalFloor) throws WrongDataInputtedException {
         if(content.equals("")) {
             throw new WrongDataInputtedException(-1, R.string.input_sign_content);
         }
@@ -255,12 +285,19 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         if(length.equals("")) {
             throw new WrongDataInputtedException(-1, R.string.input_sign_length);
         }
+        if(placedFloor.equals(""))
+            throw new WrongDataInputtedException(-1, R.string.input_placed_floor);
+        if(totalFloor.equals(""))
+            throw new WrongDataInputtedException(-1, R.string.input_total_floor);
     }
 
-    private void checkNumberValue(String widthText, String lengthText, String heightText) throws WrongNumberFormatException, WrongNumberScopeException {
+    private void checkNumberValue(String widthText, String lengthText, String heightText, String placedFloorText,
+                                    String totalFloorText) throws WrongNumberFormatException, WrongNumberScopeException {
         float width = 0;
         float length = 0;
         float height = 0;
+        int placedFloor = 0;
+        int totalFloor = 0;
 
         if(widthText.equals("") == false)
             width = Utilities.stringToFloat(widthText);
@@ -268,11 +305,15 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
             length = Utilities.stringToFloat(lengthText);
         if(heightText.equals("") == false)
             height = Utilities.stringToFloat(heightText);
+        if(placedFloorText.equals("") == false)
+            placedFloor = Utilities.stringToInt(placedFloorText);
+        if(totalFloorText.equals("") == false)
+            totalFloor = Utilities.stringToInt(totalFloorText);
 
-        if(width < 0 || length < 0 || height < 0 )
+        if(width < 0 || length < 0 || height < 0 || placedFloor < 0 || totalFloor < 0)
             throw new WrongNumberScopeException(-1);
 
-        if(width > MAX_INPUT_VALUE || length > MAX_INPUT_VALUE || height > MAX_INPUT_VALUE )
+        if(width > MAX_INPUT_VALUE || length > MAX_INPUT_VALUE || height > MAX_INPUT_VALUE || placedFloor > MAX_INPUT_VALUE || totalFloor > MAX_INPUT_VALUE)
             throw new WrongNumberScopeException(-1);
 
     }
@@ -281,12 +322,13 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         Intent intent = new Intent(activity, ExtraSignInformationInputActivity.class);
         intent.putExtra(HANDLER_CLASS, ExtraSignInformationInputActivityHandler.class);
         intent.putExtra(MJConstants.SIGN, currentSign);
+        intent.putExtra(MJConstants.AUTO_JUDGEMENT_VALUE, autoJudgementValue);
 
         activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_INFORMATION);
     }
 
     private void goToSignPicture() {
-        String path = SyncConfiguration.getDirectoryForSingPicture()+currentSign.getPicNumber();
+        String path = SyncConfiguration.getDirectoryForSingPicture(currentSign.isSynchronized())+currentSign.getPicNumber();
 
         Intent intent = new Intent(activity, PictureActivity.class);
         intent.putExtra(HANDLER_CLASS, SignPictureActivityHandler.class);
@@ -298,7 +340,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
     private void goToCamera() {
         String time = Utilities.getCurrentTimeAsString();
         int hash = Math.abs((int)Utilities.hash(time));
-        String dir = SyncConfiguration.getDirectoryForSingPicture();
+        String dir = SyncConfiguration.getDirectoryForSingPicture(currentSign.isSynchronized());
         final String fileName = String.format("sign_%d_%d.jpg", currentSign.getId(), hash);
         String path = dir + fileName;
 
@@ -356,49 +398,95 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
     private Sign createNewSign() {
         String currentTime = Utilities.getCurrentTimeAsString();
 
-        long id = -1;
+//        long id = -1;
+//        int type = -1;
+//        float width = 0f;
+//        float length = 0f;
+//        float height = 0f;
+//        String area = "";   // 안쓰는거 같음
+//        float extraSize = 0f;   // 안쓰는거 같음
+//        int quantity = 0;   // 안쓰는거 같음
+//        String content = "";
+//        int placedFloor = 0;
+//        String placedSide = "N";
+//        int lightType = -1;
+//        String placement = "";  // 안쓰는거 같음 - 나중에 쓸줄 모름
+//        boolean streetInfringement = false;
+//        float collisionWidth = 0f;
+//        float collisionLength = 0f;
+//        int inspectionResult = -1;
+//        String permissionNumber = "";   // 안쓰는거 같음
+//        String inputor = MJContext.getCurrentUser().getUserId();
+//        String inputDate = currentTime;
+//        String needReinspection = "";   // 안쓰는거 같음 - reviewCode로 대체 될 듯
+//        int statusCode = -1;
+//        String picNumber = "";
+//        String modifier = "";
+//        String modifyDate = currentTime;
+//        int totalFloor = 0;
+//        String isIntersection = "N";
+//        int tblNumber = 510;
+//        int addressId = -1;
+//        String demolitionPicPath = "";
+//        String demolishedDate = "";
+//        boolean isDeleted = false;
+//        int reviewCode = -1;
+//        boolean isFrontBackRoad = false;
+
+        long id = -1;		// id
+        String inspectionNumber = "";
+        String inspectionDate = "";
+        String mobileId = String.valueOf(MJContext.getDeviceNumber());
+        boolean isSynchronized = false;
+        String syncDate = "";
         int type = -1;
         float width = 0f;
         float length = 0f;
         float height = 0f;
-        String area = "";   // 안쓰는거 같음
-        float extraSize = 0f;   // 안쓰는거 같음
-        int quantity = 0;   // 안쓰는거 같음
+        String area = "";
+        float extraSize = 0f;
+        int quantity = 0;
         String content = "";
-        int placedFloor = 0;
-        String placedSide = "N";
+        int placedFloor = -1;
+        boolean isFront = false;
         int lightType = -1;
-        String placement = "";  // 안쓰는거 같음 - 나중에 쓸줄 모름
-        boolean streetInfringement = false;
+        String placement = "";
+        boolean isCollision = false;
         float collisionWidth = 0f;
         float collisionLength = 0f;
         int inspectionResult = -1;
-        String permissionNumber = "";   // 안쓰는거 같음
-        String inputor = MJContext.getCurrentUser().getUserId();
-        String inputDate = currentTime;
-        String needReinspection = "";   // 안쓰는거 같음 - reviewCode로 대체 될 듯
-        int statusCode = -1;
+        String permissionNumber = "";
+        String needReinspection = "";
+        String inputter = MJContext.getCurrentUser().getUserId();
+        String inputDate = "";
+        int statsCode = -1;
         String picNumber = "";
-        String modifier = "";
-        String modifyDate = currentTime;
-        int totalFloor = 0;
-        String isIntersection = "N";
+        String modifier = MJContext.getCurrentUser().getUserId();;
+        String modifyDate = "";
+        int totalFloor = -1;
+        boolean isIntersection = false;
         int tblNumber = 510;
-        int addressId = -1;
+        boolean isDeleted = false;
+        boolean isFrontBackRoad = false;
         String demolitionPicPath = "";
         String demolishedDate = "";
-        boolean isDeleted = false;
         int reviewCode = -1;
-        boolean isFrontBackRoad = false;
+        long shopId = -1;
+        int addressId = -1;
+        String sgCode = "";
+        int placedSide = -1;
+        int uniqueness = -1;
+        String memo = "";
 
-        Sign sign = new Sign(id, type, width, length, height, area, extraSize, quantity,
-        content, placedFloor, placedSide, lightType, placement,
-        streetInfringement, collisionWidth, collisionLength,
-        inspectionResult, permissionNumber, inputor, inputDate, needReinspection,
-        statusCode, picNumber, modifier, modifyDate, totalFloor,
-        isIntersection, tblNumber, addressId, demolitionPicPath, demolishedDate,
-        isDeleted, reviewCode, isFrontBackRoad);
+        Sign sign = new Sign(id, inspectionNumber,inspectionDate,mobileId,isSynchronized,syncDate,
+                type,width,length,height,area,extraSize,quantity,content,placedFloor,isFront,lightType,
+                placement,isCollision,collisionWidth,collisionLength,inspectionResult,permissionNumber,
+                needReinspection,inputter,inputDate, statsCode,picNumber,modifier,modifyDate,
+                totalFloor,isIntersection,tblNumber,isDeleted,isFrontBackRoad,demolitionPicPath,
+                demolishedDate,reviewCode,addressId,addressId,sgCode,placedSide,uniqueness,memo);
 
         return sign;
     }
+
+
 }

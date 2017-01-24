@@ -13,6 +13,7 @@ import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.adapter.ThreeShopListAdapter;
 import com.mjict.signboardsurvey.adapter.TwoShopListAdapter;
 import com.mjict.signboardsurvey.model.ui.ShopInfo;
+import com.mjict.signboardsurvey.widget.ShopOptionDialog;
 
 /**
  * Created by Junseo on 2016-11-14.
@@ -28,7 +29,7 @@ public class ShopListActivity extends SABaseActivity {
     private TwoShopListAdapter twoShopAdapter;
     private ThreeShopListAdapter threeShopListAdapter;
     private RadioGroup listOptionRadioGroup;
-
+    private ShopOptionDialog shopOptionDialog;
 
 //    private ImageButton addButton;
 
@@ -69,6 +70,9 @@ public class ShopListActivity extends SABaseActivity {
         threeShopListAdapter = new ThreeShopListAdapter(this);
         shopListView.setAdapter(twoShopAdapter);
 
+        shopOptionDialog = new ShopOptionDialog(this);
+        shopOptionDialog.create();
+
         listOptionRadioGroup = (RadioGroup)this.findViewById(R.id.list_option_radio_group);
         listOptionRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -91,6 +95,12 @@ public class ShopListActivity extends SABaseActivity {
                 if(listItemClickListener != null)
                     listItemClickListener.onShopItemClicked(index);
             }
+
+            @Override
+            public void onLongClick(int index) {
+                if(listItemClickListener != null)
+                    listItemClickListener.onShopItemLongClicked(index);
+            }
         });
 
         threeShopListAdapter.setOnColumnClickListener(new ThreeShopListAdapter.OnColumnClickListener() {
@@ -98,6 +108,12 @@ public class ShopListActivity extends SABaseActivity {
             public void onClick(int index) {
                 if(listItemClickListener != null)
                     listItemClickListener.onShopItemClicked(index);
+            }
+
+            @Override
+            public void onLongClick(int index) {
+                if(listItemClickListener != null)
+                    listItemClickListener.onShopItemLongClicked(index);
             }
         });
 
@@ -165,6 +181,14 @@ public class ShopListActivity extends SABaseActivity {
         super.onPause();
     }
 
+    @Override
+    protected void onDestroy() {
+        if(shopOptionDialog != null)
+            shopOptionDialog.dismiss();
+
+        super.onDestroy();
+    }
+
     public void setBuildingInfoViewOnClickListener(View.OnClickListener listener) {
         buildingInfoView.setOnClickListener(listener);
     }
@@ -207,6 +231,15 @@ public class ShopListActivity extends SABaseActivity {
         listItemClickListener = listener;
     }
 
+    public void showShopOptionDialog(ShopOptionDialog.ShopOptionDialogOnClickListener listener) {
+        shopOptionDialog.setShopOptionDailogOnClickListener(listener);
+        shopOptionDialog.show();
+    }
+
+    public void hideShopOptionDialog() {
+        shopOptionDialog.hide();
+    }
+
 //    private void attachFloatingButton() {
 //        int size = getResources().getDimensionPixelSize(R.dimen.floating_button_size);
 //        int margin = getResources().getDimensionPixelSize(R.dimen.floating_button_margin);
@@ -234,5 +267,6 @@ public class ShopListActivity extends SABaseActivity {
 
     public static interface OnShopListItemClickListener {
         public void onShopItemClicked(int index);
+        public void onShopItemLongClicked(int index);
     }
 }

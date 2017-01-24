@@ -1,10 +1,13 @@
 package com.mjict.signboardsurvey.handler;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -15,6 +18,7 @@ import com.mjict.signboardsurvey.model.TaskResult;
 import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
 import com.mjict.signboardsurvey.task.InitializeTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
+import com.mjict.signboardsurvey.util.Utilities;
 
 import java.util.ArrayList;
 
@@ -30,6 +34,26 @@ public class SplashActivityHandler extends DefaultSActivityHandler {
 
         activity = (SplashActivity)this.getActivity();
 
+        // 루팅 검사
+        boolean answer = Utilities.checkRootingFiles();
+        if(answer == true) {
+            Toast.makeText(activity, R.string.rooting_trace_is_found, Toast.LENGTH_SHORT).show();
+            activity.finishAffinity();
+            return;
+        }
+
+        // wifi 체크
+        WifiManager wifiManager = (WifiManager)activity.getSystemService(Context.WIFI_SERVICE);
+        if(wifiManager.isWifiEnabled() == true) {
+            wifiManager.setWifiEnabled(false);
+            Toast.makeText(activity, R.string.wifi_is_prohibited, Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    @Override
+    public void onActivityStart() {
         PermissionListener permissionListener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
@@ -41,6 +65,7 @@ public class SplashActivityHandler extends DefaultSActivityHandler {
             }
         };
 
+        // 권한 설정
         TedPermission tedPermission = new TedPermission(activity);
         tedPermission.setPermissionListener(permissionListener);
         tedPermission.setDeniedMessage(R.string.you_need_to_turn_on_permission_to_use_this_service);
@@ -48,8 +73,7 @@ public class SplashActivityHandler extends DefaultSActivityHandler {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION);
         tedPermission.check();
 
-
-
+        super.onActivityStart();
     }
 
     private void quitOnPermissionDenied() {

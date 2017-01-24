@@ -275,9 +275,10 @@ public class UserDataSearchActivityHandler extends SABaseActivityHandler {
     private void startToLoadImages(int firstVisibleItem, int lastVisibleItem) {
         int n = lastVisibleItem - firstVisibleItem + 1;
         String[] signImagePaths = new String[n];
-        String signPicDir = SyncConfiguration.getDirectoryForSingPicture();
+
         for(int i=0; i<n; i++) {
             Sign sign = filteredSigns.get(firstVisibleItem+i);
+            String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isSynchronized());
             String signImagePath = signPicDir+sign.getPicNumber();
             signImagePaths[i] = signImagePath;
         }
@@ -314,7 +315,7 @@ public class UserDataSearchActivityHandler extends SABaseActivityHandler {
 
         Sign s = sign;
         SettingDataManager smgr = SettingDataManager.getInstance();
-        Setting statusSetting = smgr.getSignStatus(s.getStatusCode());
+        Setting statusSetting = smgr.getSignStatus(s.getStatsCode());
         status = statusSetting == null ? smgr.getDefaultSignStatus() : statusSetting.getName();
         Setting typeSetting = smgr.getSignType(s.getType());
         type = typeSetting == null ? smgr.getDefaultSignTypeName() : typeSetting.getName();

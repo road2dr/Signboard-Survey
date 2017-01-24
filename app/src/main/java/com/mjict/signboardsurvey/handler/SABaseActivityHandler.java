@@ -1,6 +1,8 @@
 package com.mjict.signboardsurvey.handler;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
 
@@ -11,6 +13,7 @@ import com.mjict.signboardsurvey.activity.MapSearchActivity;
 import com.mjict.signboardsurvey.activity.ReviewSignActivity;
 import com.mjict.signboardsurvey.activity.SABaseActivity;
 import com.mjict.signboardsurvey.activity.UserDataSearchActivity;
+import com.mjict.signboardsurvey.receiver.WiFiMonitor;
 import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
 import com.mjict.signboardsurvey.task.QuitTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
@@ -20,6 +23,8 @@ import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
  */
 public class SABaseActivityHandler extends DefaultSActivityHandler {
     private SABaseActivity activity;
+
+    private static WiFiMonitor wiFiMonitor = null;
 
     @Override
     public void onActivityCreate(Bundle savedInstanceState) {
@@ -60,6 +65,27 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
                 goToUserStatistics();
             }
         });
+
+        if(wiFiMonitor == null) {
+            wiFiMonitor = new WiFiMonitor(activity);
+//            activity.registerReceiver(wiFiMonitor, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+        }
+
+        activity.registerReceiver(wiFiMonitor, new IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION));
+    }
+
+    @Override
+    public void onActivityDestroy() {
+
+//        if(wi)
+        // TODO 카메라 찍기 화면 에서 뒤로 갈 때 exception 발생 나중에 고쳐
+        // : Unable to destroy activity {com.mjict.signboardsurvey/com.mjict.signboardsurvey.activity.CameraActivity}: java.lang.NullPointerException: Attempt to invoke virtual method 'void com.mjict.signboardsurvey.activity.SABaseActivity.unregisterReceiver(android.content.BroadcastReceiver)' on a null object reference
+//        at android.app.ActivityThread.performDestroyActivity(ActivityThread.java:5145)
+        if(activity != null)
+            activity.unregisterReceiver(wiFiMonitor);
+
+        super.onActivityDestroy();
     }
 
     private void goToAddressSearch() {
@@ -112,4 +138,14 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
         });
         task.execute();
     }
+
+
+
+
+
+
+
+
+
+
 }

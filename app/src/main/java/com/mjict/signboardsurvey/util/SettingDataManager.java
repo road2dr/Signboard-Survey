@@ -17,13 +17,13 @@ import java.util.List;
  */
 public class SettingDataManager {
 
-	public static final int SHOP_CONDITON = 95;	//
+	public static final int SHOP_CONDITON = 90;	//
 	public static final int SHOP_CATEGORY = 60;	//
 	public static final int SIGN_TYPE = 40;		//
 	public static final int LIGHT_TYPE = 35;		//
 	public static final int RESULT = 50;			//
 
-	public static final int SIGN_STATUS = 105;
+	public static final int SIGN_STATUS = 90;
 	public static final int REVIEW_CODE = 115;
 	public static final int AREA_TYPE = 15;
 

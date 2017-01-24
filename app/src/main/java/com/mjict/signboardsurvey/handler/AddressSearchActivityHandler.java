@@ -80,12 +80,20 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
             }
         });
 
-        activity.setSearchButtonOnClickListener(new View.OnClickListener() {
+        activity.setStreetAddressSearchButtonOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchButtonClicked();
+                findStreetAddress();
             }
         });
+
+        activity.setHouseAddressSearchButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findHouseAddress();
+            }
+        });
+
 //        activity.setStreetSpinnerrOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
 //            @Override
 //            public void onItemSelectionChanged(int position, Object data) {
@@ -140,7 +148,7 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
 //        activity.startActivityForResult(intent, REQUEST_BUILDING_INFO);
     }
 
-    private void searchButtonClicked() {
+    private void findStreetAddress() {
         String province = SyncConfiguration.getProvinceForSync();
         String county = SyncConfiguration.getCountyForSync();
         String town = (String) activity.getSelectedTownSpinnerItem();
@@ -148,11 +156,26 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
         String firstNumber = activity.getInputFirstBuildingNumber();
         String secondNumber = activity.getInputSecondBuildingNumber();
 
-//        if(imageLoadTask != null && imageLoadTask.getStatus() == AsyncTask.Status.RUNNING)
-//            imageLoadTask.cancel(true);
-
         Address cond = new Address(province, county,
                 town, street, firstNumber, secondNumber, null, null);
+
+        findAddressAndShow(cond);
+    }
+
+    private void findHouseAddress() {
+        String province = SyncConfiguration.getProvinceForSync();
+        String county = SyncConfiguration.getCountyForSync();
+        String town = (String) activity.getSelectedTownSpinnerItem();
+        String village = activity.getInputVillage();
+        String houseNumber = activity.getInputHouseNumber();
+
+        Address cond = new Address(province, county,
+                town, null, null, null, village, houseNumber);
+
+        findAddressAndShow(cond);
+    }
+
+    private void findAddressAndShow(Address cond) {
         SearchBuildingByAddressTask task = new SearchBuildingByAddressTask(activity.getApplicationContext());
         task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<List<Building>>() {
             @Override
@@ -340,7 +363,7 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
         String streetAddress = baseAddress + buildingNumber;
 
         int shopCount = shopList.size();
-        int signCount = signList.size();
+        int signCount = (signList == null) ? 0 : signList.size();
 
         String shopCountText = activity.getString(R.string.number_of_case, shopCount);
         String signCountText = activity.getString(R.string.number_of_case, signCount);

@@ -9,6 +9,8 @@ import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.BasicSignInformationInputActivity;
 import com.mjict.signboardsurvey.activity.SignInformationActivity;
+import com.mjict.signboardsurvey.autojudgement.InputType;
+import com.mjict.signboardsurvey.model.AutoJudgementValue;
 import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.model.Setting;
 import com.mjict.signboardsurvey.model.Sign;
@@ -17,6 +19,8 @@ import com.mjict.signboardsurvey.task.LoadImageTask;
 import com.mjict.signboardsurvey.util.SettingDataManager;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
 
+import java.util.ArrayList;
+
 /**
  * Created by Junseo on 2016-11-17.
  */
@@ -24,7 +28,7 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
     private SignInformationActivity activity;
 
     private Sign currentSign;
-
+    private ArrayList<Sign> shopSigns;
 
     @Override
     public void onActivityCreate(Bundle savedInstanceState) {
@@ -38,6 +42,10 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
             // TODO 에러
             activity.finish();
             return;
+        }
+        shopSigns = (ArrayList<Sign>)intent.getSerializableExtra(MJConstants.SIGN_LIST);
+        if(shopSigns == null) {
+            // TODO 간판 정보를 불러와야 함.
         }
 
         // register listener
@@ -94,7 +102,7 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
         // TODO 건물 위치 값에 대한 정의 필요 함. 기존의 isFront isIntersection 와의 값도 고려 해야 함.
 
         Setting typeSetting =  smgr.getSignType(currentSign.getType());
-        Setting statusSetting = smgr.getSignStatus(currentSign.getStatusCode());
+        Setting statusSetting = smgr.getSignStatus(currentSign.getStatsCode());
 
         String content = currentSign.getContent();
         String displayLocation = activity.getString(R.string.display_location_format, currentSign.getPlacedFloor(), currentSign.getTotalFloor());
@@ -104,9 +112,9 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
         if(currentSign.getHeight() != 0)
             size = size + currentSign.getHeight();
 
-        boolean isFront = currentSign.getPlacedSide().equals("Y") ? false : true;   // TODO 정면 도로. 확인 필요
+        boolean isFront = currentSign.isFront();
         boolean isFrontBack = currentSign.isFrontBackRoad();
-        boolean isIntersection = currentSign.getIsIntersection().equals("Y") ? true : false;
+        boolean isIntersection = currentSign.isIntersection();
 
         activity.setContentText(content);
         activity.setDisplayLocationText(displayLocation);
@@ -147,7 +155,7 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
 //    }
 
     private void startToLoadSignImage() {
-        String path = SyncConfiguration.getDirectoryForSingPicture()+currentSign.getPicNumber();
+        String path = SyncConfiguration.getDirectoryForSingPicture(currentSign.isSynchronized())+currentSign.getPicNumber();
         LoadImageTask task = new LoadImageTask();
         task.setSampleSize(8);
         task.setDefaultAsyncTaskListener(new AsyncTaskListener<IndexBitmap, Boolean>() {
@@ -173,13 +181,66 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
     }
 
     private void goToSignInput() {
+        AutoJudgementValue value = null;
+        if(shopSigns != null)
+            value = makeAutoJudgementValue(currentSign);
+
         Intent intent = new Intent(activity, BasicSignInformationInputActivity.class);
         intent.putExtra(HANDLER_CLASS, BasicSignInformationInputActivityHandler.class);
         intent.putExtra(MJConstants.SIGN, currentSign);
+        intent.putExtra(MJConstants.AUTO_JUDGEMENT_VALUE, value);
         activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_INFORMATION);
     }
 
     private void goToSignPicture() {
 
+    }
+
+    // 자동판단 값 생성
+    private AutoJudgementValue makeAutoJudgementValue(Sign target) {
+        InputType[] types = InputType.values();
+        AutoJudgementValue autoJudgementValue = new AutoJudgementValue();
+
+        for(int i=0; i<types.length; i++) {     // TODO 상수 지정 및 값 지정 방식에 대해 나중에 수정필요 파일로 지정 할 수 있으면 좋겠지
+            InputType type = types[i];
+            int value = -1;
+            switch(type) {
+                case SCOPE_HORIZONTAL_SIGN_COUNT:
+                    value = getSignCount(1);  // TODO 가로형 간판 - 나중에 상수는 따로
+                    break;
+
+                case SCOPE_ROOFTOP_SIGN_COUNT:
+                    value = getSignCount(5);    // TODO 옥상 간판 - 나중에 상수는 따로
+                    break;
+
+                case SCOPE_PILLAR_SIGN_COUNT:
+                    value = getSignCount(6);    // TODO 지주 이용 간판 - 나중에 상수는 따로
+                    break;
+
+                case SCOPE_PROJECTED_SIGN_COUNT:
+                    value = getSignCount(3);    // TODO 돌출 간판 - 나중에 상수는 따로
+                    break;
+
+                default:
+                    value = -1;
+            }
+            autoJudgementValue.putValue(type, value);
+        }
+
+        return autoJudgementValue;
+    }
+
+    private int getSignCount(int type) {
+        if(type == -1)
+            return shopSigns.size();
+
+        int value = 0;
+        for(int j=0; j<shopSigns.size(); j++) {
+            Sign s = shopSigns.get(j);
+            if(s.getType() == type)
+                value++;
+        }
+
+        return value;
     }
 }

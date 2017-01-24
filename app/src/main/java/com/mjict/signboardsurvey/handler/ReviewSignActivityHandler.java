@@ -224,9 +224,10 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
 
         int n = searchResult.size();
         String[] signImagePaths = new String[n];
-        String signPicDir = SyncConfiguration.getDirectoryForSingPicture();
+
         for(int i=0; i<n; i++) {
             Sign sign = searchResult.get(i);
+            String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isSynchronized());
             String signImagePath = signPicDir+sign.getPicNumber();
             signImagePaths[i] = signImagePath;
         }

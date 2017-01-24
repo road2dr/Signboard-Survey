@@ -5,9 +5,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Environment;
 import android.util.Log;
 
+import com.mjict.signboardsurvey.autojudgement.AutoJudgementRule;
+import com.mjict.signboardsurvey.autojudgement.AutoJudgementRuleManager;
+import com.mjict.signboardsurvey.autojudgement.Condition;
+import com.mjict.signboardsurvey.autojudgement.InputType;
+import com.mjict.signboardsurvey.autojudgement.Rule;
+import com.mjict.signboardsurvey.autojudgement.Type;
 import com.mjict.signboardsurvey.model.Address;
+import com.mjict.signboardsurvey.model.AutoJudgementValue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,6 +27,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -27,6 +37,42 @@ public class Utilities {
 
 	private static final String FIRST_TIME_CHECK_FILE = "sign";
 
+	public static boolean checkRootingFiles() {
+		final String ROOT_PATH = Environment.getExternalStorageDirectory() + "";
+		final String ROOTING_PATH_1 = "/system/bin/su";
+		final String ROOTING_PATH_2 = "/system/xbin/su";
+		final String ROOTING_PATH_3 = "/system/app/SuperUser.apk";
+		final String ROOTING_PATH_4 = "/data/data/com.noshufou.android.su";
+
+		String[] rootFilesPath = new String[]{
+				ROOT_PATH + ROOTING_PATH_1 ,
+				ROOT_PATH + ROOTING_PATH_2 ,
+				ROOT_PATH + ROOTING_PATH_3 ,
+				ROOT_PATH + ROOTING_PATH_4
+		};
+
+		boolean isRootingFlag = false;
+
+		try {
+			Runtime.getRuntime().exec("su");
+			isRootingFlag = true;
+		} catch ( Exception e) {
+			// Exception 나면 루팅 false;
+			isRootingFlag = false;
+		}
+
+		if(isRootingFlag == false){
+			for(int i=0; i<rootFilesPath.length; i++) {
+				File file = new File(rootFilesPath[i]);
+				if(file.exists() == true) {
+					isRootingFlag = true;
+					break;
+				}
+			}
+		}
+
+		return isRootingFlag;
+	}
 
 	public static boolean isFirstTimeLaunch(Context context) throws IOException {
 		
@@ -270,6 +316,62 @@ public class Utilities {
 		return hash;
 	}
 
+//	public static void updateInputValue(JudgementValue... values) {
+//		if(values == null)
+//			return;
+//
+//		// 입력값 업데이트
+//		for(int i=0; i<values.length; i++) {
+//			JudgementValue value = values[i];
+//			AutoJudgementRuleManager.putInputValue(value.type.getName(), value.value);
+//		}
+//	}
+
+//	public static void initInputValue() {
+//
+//		AutoJudgementRuleManager.initInputValue();
+//
+//	}
+
+	public static int autoJudgement(int signType, AutoJudgementValue value) {
+		AutoJudgementRule signRule = AutoJudgementRuleManager.findAutoJudgementRule(signType);
+		if(signRule == null)	// 해당 간판을 위한 룰 정보가 없음
+			return -1;
+
+		// 각 값을 룰에 대입 함
+		int n = signRule.sizeOfRules();
+		for(int i=0; i<n; i++) {
+			Rule rule = signRule.getRule(i);
+			int soc = rule.sizeOfConditions();
+			for(int j=0; j<soc; j++) {
+				Condition cond = rule.getCondition(j);
+				Type valueType = cond.getValueType();
+
+				int conditionValue = -1;
+				InputType inputType = InputType.get(valueType.getName());
+				Integer tv = value.getValue(inputType);
+				if(tv != null)
+					conditionValue = tv;
+
+				cond.setInputValue(conditionValue);
+			}
+		}
+
+		// 조건에 맞는 룰 찾기
+		List<Rule> rules = signRule.getRules();
+		Collections.sort(rules, new RuleComparator());
+		int judgement = signRule.getDefaultResult();
+		for(int i=0; i<rules.size(); i++) {
+			Rule rule = rules.get(i);
+			if(rule.checkConditions()) {
+				judgement = rule.getResult();
+				break;
+			}
+		}
+
+		return judgement;
+	}
+
 //	int areaType, int areaCode, int signType, int signStatus, float width,
 //	float length, float height, boolean isFront, boolean isIntersection,
 //	int lightType, int placedFloor, int totalFloor, int signCount
@@ -418,5 +520,13 @@ public class Utilities {
 		}
 
 		return image;
+	}
+
+	// 오름차순 정렬
+	public static class RuleComparator implements Comparator<Rule> {
+		@Override
+		public int compare(Rule lhs, Rule rhs) {
+			return lhs.getOrder() < rhs.getOrder() ? -1 : lhs.getOrder() > rhs.getOrder() ? 1:0;
+		}
 	}
 }

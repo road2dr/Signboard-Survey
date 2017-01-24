@@ -11,14 +11,12 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.BuildingPicture;
-import com.mjict.signboardsurvey.model.Inspection;
 import com.mjict.signboardsurvey.model.Mobile;
 import com.mjict.signboardsurvey.model.Setting;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
-import com.mjict.signboardsurvey.model.SignOwnership;
 import com.mjict.signboardsurvey.model.StreetAddress;
-import com.mjict.signboardsurvey.model.TownForInspection;
+import com.mjict.signboardsurvey.model.TownAddress;
 import com.mjict.signboardsurvey.model.User;
 
 import java.sql.SQLException;
@@ -30,13 +28,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	
 	private Dao<Sign, Long> signsDao;
 	private Dao<User, String> userDao;
-	private Dao<TownForInspection, Void> addressDao;
+	private Dao<TownAddress, Void> addressDao;
 	private Dao<StreetAddress, Void> streetAddressDao;
 	private Dao<Building, Long> buildingDao;
-	private Dao<Shop, String> shopDao;
-	private Dao<Inspection, Long> inspectionDao;
+	private Dao<Shop, Long> shopDao;
 	private Dao<Setting, Void> settingDao;
-	private Dao<SignOwnership, Long> signOwnershipDao;
 	private Dao<BuildingPicture, Long> buildingPictureDao;
 	private Dao<Mobile, Integer> mobileDao;
 	
@@ -74,11 +70,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.dropTable(connectionSource, Sign.class, true);
 			TableUtils.dropTable(connectionSource, Building.class, true);
 			TableUtils.dropTable(connectionSource, Shop.class, true);
-			TableUtils.dropTable(connectionSource, Inspection.class, true);
 			TableUtils.dropTable(connectionSource, StreetAddress.class, true);
-			TableUtils.dropTable(connectionSource, TownForInspection.class, true);
+			TableUtils.dropTable(connectionSource, TownAddress.class, true);
 			TableUtils.dropTable(connectionSource, Setting.class, true);
-			TableUtils.dropTable(connectionSource, SignOwnership.class, true);
 			TableUtils.dropTable(connectionSource, BuildingPicture.class, true);
 			TableUtils.dropTable(connectionSource, Notification.class, true);
 			
@@ -120,9 +114,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return userDao;
 	}
 	
-	public Dao<TownForInspection, Void> getTownForInspectionDao() throws SQLException {
+	public Dao<TownAddress, Void> getTownForInspectionDao() throws SQLException {
 		if(addressDao == null) {
-			addressDao = getDao(TownForInspection.class);
+			addressDao = getDao(TownAddress.class);
 		}
 		
 		return addressDao;
@@ -143,18 +137,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return buildingDao;
 	}
 	
-	public Dao<Shop, String> getShopDao() throws SQLException {
+	public Dao<Shop, Long> getShopDao() throws SQLException {
 		if(shopDao == null)
 			shopDao = getDao(Shop.class);
 		
 		return shopDao;
-	}
-	
-	public Dao<Inspection, Long> getInspectionDao() throws SQLException {
-		if(inspectionDao == null)
-			inspectionDao = getDao(Inspection.class);
-		
-		return inspectionDao;
 	}
 	
 	public Dao<Setting, Void> getSettingDao() throws SQLException {
@@ -162,13 +149,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			settingDao = getDao(Setting.class);
 		
 		return settingDao;
-	}
-	
-	public Dao<SignOwnership, Long> getSignOwnershipDao() throws SQLException {
-		if(signOwnershipDao == null)
-			signOwnershipDao = getDao(SignOwnership.class);
-		
-		return signOwnershipDao;
 	}
 	
 	public Dao<BuildingPicture, Long> getBuildingPictureDao() throws SQLException {

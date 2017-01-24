@@ -13,10 +13,10 @@ public class Shop implements Serializable {
 	private static final long serialVersionUID = -1989796112959429983L;
 
 	@DatabaseField(id=true)
-	private String id; 	// id	// TODO 얘는 long 타입을 되는지 물어 봐
+	private long id;
 	
 	@DatabaseField
-	private String businessLicenseNumber;
+	private String licenseNumber;
 	
 	@DatabaseField
 	private String ssn;
@@ -40,12 +40,12 @@ public class Shop implements Serializable {
 	private long buildingId;
 
 	@DatabaseField
-	private String inputor;
+	private String inputter;
 	
 	@DatabaseField
 	private String inputDate;
 	
-	@DatabaseField(columnName="tblNum")
+	@DatabaseField(columnName="tblNumer")
 	private int tblNumber;
 	
 	@DatabaseField
@@ -54,23 +54,27 @@ public class Shop implements Serializable {
 	@DatabaseField
 	private boolean isDeleted;
 
-//	@DatabaseField
-//	private int placedFloor;
+	@DatabaseField(columnName = "sgcode")
+	private String sgCode;
 
-//	@DatabaseField
-//	private int totalFloor;
+	@DatabaseField(columnName = "isSync")
+	private boolean isSynchronized;
+
+	@DatabaseField
+	private String syncDate;
 
 
 	public Shop() {
 		
 	}
 
-	public Shop(String id, String businessLicenseNumber, String ssn, String name, String representative,
-			String phoneNumber, int businessCondition, int category, long buildingId, String inputor,
-			String inputDate, int tblNumber, int addressId, boolean isDeleted/*, int placedFloor, int totalFloor*/) {
-		super();
+
+	public Shop(long id, String licenseNumber, String ssn, String name, String representative,
+				String phoneNumber, int businessCondition, int category, long buildingId,
+				String inputter, String inputDate, int tblNumber, int addressId, boolean isDeleted,
+				String sgCode, boolean isSynchronized, String syncDate) {
 		this.id = id;
-		this.businessLicenseNumber = businessLicenseNumber;
+		this.licenseNumber = licenseNumber;
 		this.ssn = ssn;
 		this.name = name;
 		this.representative = representative;
@@ -78,29 +82,34 @@ public class Shop implements Serializable {
 		this.businessCondition = businessCondition;
 		this.category = category;
 		this.buildingId = buildingId;
-		this.inputor = inputor;
+		this.inputter = inputter;
 		this.inputDate = inputDate;
 		this.tblNumber = tblNumber;
 		this.addressId = addressId;
 		this.isDeleted = isDeleted;
-//		this.placedFloor = placedFloor;
-//		this.totalFloor = totalFloor;
+		this.sgCode = sgCode;
+		this.isSynchronized = isSynchronized;
+		this.syncDate = syncDate;
 	}
 
-	public String getId() {
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	public long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
-	public String getBusinessLicenseNumber() {
-		return businessLicenseNumber;
+	public String getLicenseNumber() {
+		return licenseNumber;
 	}
 
-	public void setBusinessLicenseNumber(String businessLicenseNumber) {
-		this.businessLicenseNumber = businessLicenseNumber;
+	public void setLicenseNumber(String licenseNumber) {
+		this.licenseNumber = licenseNumber;
 	}
 
 	public String getSsn() {
@@ -159,12 +168,12 @@ public class Shop implements Serializable {
 		this.buildingId = buildingId;
 	}
 
-	public String getInputor() {
-		return inputor;
+	public String getInputter() {
+		return inputter;
 	}
 
-	public void setInputor(String inputor) {
-		this.inputor = inputor;
+	public void setInputter(String inputter) {
+		this.inputter = inputter;
 	}
 
 	public String getInputDate() {
@@ -175,43 +184,51 @@ public class Shop implements Serializable {
 		this.inputDate = inputDate;
 	}
 
-	public void setTblNumber(int tblNumber) {
-		this.tblNumber = tblNumber;
-	}
-	
 	public int getTblNumber() {
 		return tblNumber;
 	}
-	
-	public void setAddressId(int addressId) {
-		this.addressId = addressId;
+
+	public void setTblNumber(int tblNumber) {
+		this.tblNumber = tblNumber;
 	}
-	
+
 	public int getAddressId() {
 		return addressId;
 	}
 
-	public void setIsDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setAddressId(int addressId) {
+		this.addressId = addressId;
 	}
 
-	public boolean getIsDeleted() {
+	public boolean isDeleted() {
 		return isDeleted;
 	}
 
-//	public int getPlacedFloor() {
-//		return placedFloor;
-//	}
-//
-//	public void setPlacedFloor(int placedFloor) {
-//		this.placedFloor = placedFloor;
-//	}
-//
-//	public int getTotalFloor() {
-//		return totalFloor;
-//	}
-//
-//	public void setTotalFloor(int totalFloor) {
-//		this.totalFloor = totalFloor;
-//	}
+	public void setDeleted(boolean deleted) {
+		isDeleted = deleted;
+	}
+
+	public String getSgCode() {
+		return sgCode;
+	}
+
+	public void setSgCode(String sgCode) {
+		this.sgCode = sgCode;
+	}
+
+	public boolean isSynchronized() {
+		return isSynchronized;
+	}
+
+	public void setSynchronized(boolean aSynchronized) {
+		isSynchronized = aSynchronized;
+	}
+
+	public String getSyncDate() {
+		return syncDate;
+	}
+
+	public void setSyncDate(String syncDate) {
+		this.syncDate = syncDate;
+	}
 }

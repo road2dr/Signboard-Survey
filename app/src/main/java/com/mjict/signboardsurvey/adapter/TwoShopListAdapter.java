@@ -103,6 +103,14 @@ public class TwoShopListAdapter extends ArrayAdapter<TwoShopInfo> {
                 }
             }
         });
+        holder.getFirstLayout().setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                int index = (Integer)v.getTag();
+                columnClickListener.onLongClick(index);
+                return true;
+            }
+        });
 
         holder.getFirstNameTextView().setText(first.name);
         holder.getFirstCategoryTextView().setText(first.category);
@@ -123,6 +131,14 @@ public class TwoShopListAdapter extends ArrayAdapter<TwoShopInfo> {
                     }
                 }
             });
+            holder.getSecondLayout().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int index = (Integer)v.getTag();
+                    columnClickListener.onLongClick(index);
+                    return true;
+                }
+            });
 
             holder.getSecondNameTextView().setText(second.name);
             holder.getSecondCategoryTextView().setText(second.category);
@@ -135,5 +151,6 @@ public class TwoShopListAdapter extends ArrayAdapter<TwoShopInfo> {
 
     public static interface OnColumnClickListener {
         public void onClick(int index);
+        public void onLongClick(int index);
     }
 }

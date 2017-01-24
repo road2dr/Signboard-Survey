@@ -1,5 +1,4 @@
 package com.mjict.signboardsurvey.handler;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,10 +19,12 @@ import com.mjict.signboardsurvey.model.ui.ShopInfo;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
 import com.mjict.signboardsurvey.task.LoadShopByBuildingTask;
 import com.mjict.signboardsurvey.task.LoadValidBuildingImageTask;
+import com.mjict.signboardsurvey.task.ModifyShopShutDownTask;
 import com.mjict.signboardsurvey.task.ModifyShopTask;
 import com.mjict.signboardsurvey.task.RegisterShopTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 import com.mjict.signboardsurvey.util.SettingDataManager;
+import com.mjict.signboardsurvey.widget.ShopOptionDialog;
 
 import java.util.List;
 
@@ -47,6 +48,11 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
             @Override
             public void onShopItemClicked(int index) {
                 shopItemClicked(index);
+            }
+
+            @Override
+            public void onShopItemLongClicked(int index) {
+                shopItemLongClicked(index);
             }
         });
 
@@ -114,7 +120,7 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
                 int index = -1;
                 for(int i=0; i<currentShops.size(); i++) {
                     Shop s = currentShops.get(i);
-                    if(s.getId().equals(shop.getId())) {
+                    if(s.getId() == shop.getId()) {
                         index = i;
                         break;
                     }
@@ -248,10 +254,54 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
     private void shopItemClicked(int index) {
         Shop shop = currentShops.get(index);
 
-        Intent intent = new Intent(activity, SignListActivity.class);
-        intent.putExtra(HANDLER_CLASS, SignListActivityHandler.class);
-        intent.putExtra(MJConstants.SHOP, shop);
-        activity.startActivity(intent);
+        goToSignList(shop);
+    }
+
+    private void shopItemLongClicked(final int index) {
+        final Shop shop = currentShops.get(index);
+        activity.showShopOptionDialog(new ShopOptionDialog.ShopOptionDialogOnClickListener() {
+            @Override
+            public void onModifyButtonClicked() {
+                activity.hideShopOptionDialog();
+                goToShopInput(shop);
+            }
+            @Override
+            public void onAddSignButtonClicked() {
+                activity.hideShopOptionDialog();
+            }
+            @Override
+            public void onShutDownButtonClicked() {
+                activity.hideShopOptionDialog();
+                startToShutdown(index);
+            }
+        });
+    }
+
+    private void startToShutdown(final int index) {
+        final Shop shop = currentShops.get(index);
+
+        ModifyShopShutDownTask task = new ModifyShopShutDownTask(activity.getApplicationContext());
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Shop>() {
+            @Override
+            public void onTaskStart() {
+                activity.showWaitingDialog(R.string.saving);
+            }
+
+            @Override
+            public void onTaskFinished(Shop shop) {
+                activity.hideWaitingDialog();
+                int resId = (shop == null) ? R.string.failed_to_save : R.string.succeeded_to_save;
+                Toast.makeText(activity, resId, Toast.LENGTH_SHORT).show();
+
+                if(shop != null) {
+                    currentShops.set(index, shop);
+                    ShopInfo info = shopToShopInfo(shop);
+                    activity.replaceListItem(index, info);
+                }
+            }
+        });
+        task.execute(shop);
+
     }
 
     private void goToShopInput(Shop shop) {
@@ -259,6 +309,13 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
         intent.putExtra(HANDLER_CLASS, ShopInputActivityHandler.class);
         intent.putExtra(MJConstants.SHOP, shop);
         activity.startActivityForResult(intent, MJConstants.REQUEST_SHOP_INFORMATION);
+    }
+
+    private void goToSignList(Shop shop) {
+        Intent intent = new Intent(activity, SignListActivity.class);
+        intent.putExtra(HANDLER_CLASS, SignListActivityHandler.class);
+        intent.putExtra(MJConstants.SHOP, shop);
+        activity.startActivity(intent);
     }
 
     private ShopInfo shopToShopInfo(Shop shop) {

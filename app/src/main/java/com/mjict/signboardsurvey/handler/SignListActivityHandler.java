@@ -20,6 +20,7 @@ import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
 import com.mjict.signboardsurvey.model.ui.SignInfo;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
+import com.mjict.signboardsurvey.task.DeleteSignTask;
 import com.mjict.signboardsurvey.task.LoadImageTask;
 import com.mjict.signboardsurvey.task.LoadSignsByShopTask;
 import com.mjict.signboardsurvey.task.ModifySignTask;
@@ -27,6 +28,7 @@ import com.mjict.signboardsurvey.task.RegisterSignTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 import com.mjict.signboardsurvey.util.SettingDataManager;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
+import com.mjict.signboardsurvey.widget.SignOptionDialog;
 
 import java.util.ArrayList;
 
@@ -50,6 +52,14 @@ public class SignListActivityHandler extends SABaseActivityHandler {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 goToSignInformation(position);
+            }
+        });
+
+        activity.setSignListOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                signListLongClicked(position);
+                return true;
             }
         });
 
@@ -156,7 +166,7 @@ public class SignListActivityHandler extends SABaseActivityHandler {
                 String[] paths = new String[shopSigns.size()];
                 for(int i=0; i<shopSigns.size(); i++) {
                     Sign sign = shopSigns.get(i);
-                    String path = SyncConfiguration.getDirectoryForSingPicture() + sign.getPicNumber();
+                    String path = SyncConfiguration.getDirectoryForSingPicture(sign.isSynchronized()) + sign.getPicNumber();
                     paths[i] = path;
                 }
 
@@ -186,7 +196,7 @@ public class SignListActivityHandler extends SABaseActivityHandler {
                     sign.setId(result);
 
                     SignInfo si = signToSignInfo(sign);
-                    String path = SyncConfiguration.getDirectoryForSingPicture() + sign.getPicNumber();
+                    String path = SyncConfiguration.getDirectoryForSingPicture(sign.isSynchronized()) + sign.getPicNumber();
                     shopSigns.add(sign);
                     activity.addToList(si);
 
@@ -215,7 +225,7 @@ public class SignListActivityHandler extends SABaseActivityHandler {
                     Toast.makeText(activity, R.string.failed_to_save_sign_information, Toast.LENGTH_SHORT);
                 } else {
                     SignInfo si = signToSignInfo(sign);
-                    String path = SyncConfiguration.getDirectoryForSingPicture() + sign.getPicNumber();
+                    String path = SyncConfiguration.getDirectoryForSingPicture(sign.isSynchronized()) + sign.getPicNumber();
                     shopSigns.set(position, sign);
                     activity.setSignInfo(position, si);
                     startToLoadSignImage(position, path);
@@ -236,7 +246,7 @@ public class SignListActivityHandler extends SABaseActivityHandler {
         if(s.getHeight() != 0)
             size = size + " X "+s.getHeight();
 
-        Setting statusSetting = smgr.getSignStatus(s.getStatusCode());
+        Setting statusSetting = smgr.getSignStatus(s.getStatsCode());
         Setting lightSetting = smgr.getLightType(s.getLightType());
         Setting resultSetting = smgr.getResult(s.getInspectionResult());
 
@@ -287,6 +297,49 @@ public class SignListActivityHandler extends SABaseActivityHandler {
         signImageLoadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, path);
     }
 
+    private void startToDeleteSign(final int position) {
+        Sign sign = shopSigns.get(position);
+        DeleteSignTask task = new DeleteSignTask(activity.getApplicationContext());
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
+            @Override
+            public void onTaskStart() {
+                activity.showWaitingDialog(R.string.deleteing);
+            }
+            @Override
+            public void onTaskFinished(Boolean result) {
+                activity.hideWaitingDialog();
+                int resId = result ? R.string.succeeded_to_delete : R.string.failed_to_delete;
+                Toast.makeText(activity, resId, Toast.LENGTH_SHORT).show();
+
+                if(result) {
+                    shopSigns.remove(position);
+                    activity.removeFromList(position);
+                }
+            }
+        });
+        task.execute(sign);
+    }
+
+    private void signListLongClicked(final int position) {
+        Sign sign = shopSigns.get(position);
+        boolean deleteEnabled = sign.isSynchronized() == true ? false : true;
+        activity.setSignDeleteDialogButtonVisible(deleteEnabled);
+
+        activity.showSignOptionDialog(new SignOptionDialog.SignOptionDialogOnClickListener() {
+            @Override
+            public void onShowDetailButtonClicked() {
+                activity.hideSignOptionDialog();
+                goToSignInformation(position);
+            }
+            @Override
+            public void onDeleteButtonClicked() {
+                activity.hideSignOptionDialog();
+                startToDeleteSign(position);
+            }
+        });
+
+    }
+
     private void goToSignInformation(int position) {
         Sign sign = shopSigns.get(position);
         MJContext.addRecentSing(sign.getId());
@@ -294,6 +347,7 @@ public class SignListActivityHandler extends SABaseActivityHandler {
         Intent intent = new Intent(activity, SignInformationActivity.class);
         intent.putExtra(HANDLER_CLASS, SignInformationActivityHandler.class);
         intent.putExtra(MJConstants.SIGN, sign);
+        intent.putExtra(MJConstants.SIGN_LIST, shopSigns);
         activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_INFORMATION);
     }
 
@@ -302,4 +356,8 @@ public class SignListActivityHandler extends SABaseActivityHandler {
         intent.putExtra(HANDLER_CLASS, BasicSignInformationInputActivityHandler.class);
         activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_INFORMATION);
     }
+
+
+
+
 }

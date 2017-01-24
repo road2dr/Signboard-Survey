@@ -2,6 +2,7 @@ package com.mjict.signboardsurvey.activity;
 
 import android.graphics.Bitmap;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,13 +22,18 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
     private ImageButton backImageButton;
     private ImageView signImageView;
     private ImageButton addSignImageButton;
-    private Spinner lightSpinner;
-    private ImageSpinnerAdapter lightSpinnerAdapter;
-    private SimpleSpinner statusSpinner;
     private EditText contentEditText;
+    private SimpleSpinner statusSpinner;
     private EditText widthEditText;
     private EditText lengthEditText;
+    private Spinner lightSpinner;
+    private ImageSpinnerAdapter lightSpinnerAdapter;
+    private EditText placedFloorEditText;
+    private EditText totalFloorEditText;
     private EditText heightEditText;
+    private CheckBox frontCheckBox;
+    private CheckBox intersectionCheckBox;
+    private CheckBox frontBackCheckBox;
 
 //    private LightSpinnerOnItemClickListener lightSpinnerOnItemClickListener;
 
@@ -57,6 +63,11 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
         lengthEditText = (EditText)this.findViewById(R.id.length_edit_text);
         heightEditText = (EditText)this.findViewById(R.id.height_edit_text);
 
+        placedFloorEditText = (EditText)this.findViewById(R.id.placed_floor_eidt_text);
+        totalFloorEditText = (EditText)this.findViewById(R.id.total_floor_edit_text);
+        frontCheckBox = (CheckBox)this.findViewById(R.id.front_check_box);
+        intersectionCheckBox = (CheckBox)this.findViewById(R.id.intersection_check_box);
+        frontBackCheckBox = (CheckBox)this.findViewById(R.id.front_back_check_box);
 
 
 //        nextButton.setOnClickListener(new View.OnClickListener() {
@@ -168,7 +179,51 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
         backImageButton.setOnClickListener(listener);
     }
 
+//    private EditText placedFloorEditText;
+//    private EditText totalFloorEditText;
+//    private CheckBox frontCheckBox;
+//    private CheckBox intersectionCheckBox;
+//    private CheckBox frontBackCheckBox;
 
+    public void setPlacedFloorText(CharSequence text) {
+        placedFloorEditText.setText(text);
+    }
+
+    public String setInputPlacedFloor() {
+        return placedFloorEditText.getText().toString();
+    }
+
+    public void setTotalFloorText(CharSequence text) {
+        totalFloorEditText.setText(text);
+    }
+
+    public String getInputTotalFloor() {
+        return totalFloorEditText.getText().toString();
+    }
+
+    public void setFrontChecked(boolean checked) {
+        frontCheckBox.setChecked(checked);
+    }
+
+    public boolean getFrontChecked() {
+        return frontCheckBox.isChecked();
+    }
+
+    public void setIntersectionChecked(boolean checked) {
+        intersectionCheckBox.setChecked(checked);
+    }
+
+    public boolean getIntersectionChecked() {
+        return intersectionCheckBox.isChecked();
+    }
+
+    public void setFrontBackChecked(boolean checked) {
+        frontBackCheckBox.setChecked(checked);
+    }
+
+    public boolean getFrontBackChecked() {
+        return frontBackCheckBox.isChecked();
+    }
 
 //    public static interface LightSpinnerOnItemClickListener {
 //        public void onItemClicked(int position, IconItem item);

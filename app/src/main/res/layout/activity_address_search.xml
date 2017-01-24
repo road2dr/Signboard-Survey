@@ -49,63 +49,116 @@
         </LinearLayout>
     </LinearLayout>
 
-    <android.support.v7.widget.AppCompatTextView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/street"
-        android:textStyle="bold"
-        android:textSize="14sp"
-        android:textColor="@color/label_text_color"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <com.mjict.signboardsurvey.widget.SimpleSpinner
-            android:id="@+id/consonant_spinner"
-            android:layout_width="150dp"
-            android:layout_height="40dp"/>
-        <com.mjict.signboardsurvey.widget.SimpleSpinner
-            android:id="@+id/street_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"/>
-    </LinearLayout>
-
-    <android.support.v7.widget.AppCompatTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/building_number"
-        android:textStyle="bold"
-        android:textSize="14sp"
-        android:textColor="@color/label_text_color"/>
-    <RelativeLayout
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <LinearLayout
+            android:id="@+id/street_address_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:orientation="horizontal">
-            <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/first_building_number_text_view"
-                android:layout_width="100dp"
-                android:layout_height="40dp"/>
-            <TextView
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/street"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/label_text_color"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.mjict.signboardsurvey.widget.SimpleSpinner
+                    android:id="@+id/consonant_spinner"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"/>
+                <com.mjict.signboardsurvey.widget.SimpleSpinner
+                    android:id="@+id/street_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"/>
+            </LinearLayout>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/building_number"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/label_text_color"/>
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="-"/>
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:orientation="horizontal">
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/first_building_number_text_view"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="-"/>
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/second_building_number_text_view"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"/>
+                </LinearLayout>
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/street_address_search_button"
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/search"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/house_address_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/village"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/label_text_color"/>
             <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/second_building_number_text_view"
+                android:id="@+id/village_edit_text"
                 android:layout_width="100dp"
                 android:layout_height="40dp"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/house_number"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/label_text_color"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/house_number_edit_text"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"/>
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/house_address_search_button"
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/search"/>
+            </RelativeLayout>
         </LinearLayout>
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/search_button"
-            android:layout_width="140dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:text="@string/search"/>
-    </RelativeLayout>
+
+    </FrameLayout>
+
+
 
     </LinearLayout>
 

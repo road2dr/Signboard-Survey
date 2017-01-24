@@ -12,6 +12,21 @@ public class Sign implements Serializable {
 
 	@DatabaseField(generatedId=true)
 	private long id;		// id
+
+	@DatabaseField(columnName="josaNo")
+	private String inspectionNumber;
+
+	@DatabaseField(columnName="josaDate")
+	private String inspectionDate;
+
+	@DatabaseField
+	private String mobileId;
+
+	@DatabaseField(columnName="isSync")
+	private boolean isSynchronized;
+
+	@DatabaseField
+	private String syncDate;
 	
 	@DatabaseField
 	private int type;
@@ -25,7 +40,6 @@ public class Sign implements Serializable {
 	@DatabaseField
 	private float height;
 
-	// TODO 나중에 이 쓸모 없는 필드 빼자
 	@DatabaseField
 	private String area;
 	
@@ -40,11 +54,11 @@ public class Sign implements Serializable {
 	private String content;
 	
 	@DatabaseField
-	private int placedFloor;
+	private int placedFloor;	// 설치 층
 
 	// TODO 나중에 필드 정할때 boolean 타입으로 되는지 물어봐
-	@DatabaseField
-	private String placedSide;
+	@DatabaseField(columnName = "placedSide")
+	private boolean isFront;
 	
 	@DatabaseField
 	private int lightType;
@@ -53,14 +67,14 @@ public class Sign implements Serializable {
 	private String placement;
 
 	// TODO 이 필드도 필요하나..
-	@DatabaseField
-	private boolean streetInfringement;
+	@DatabaseField(columnName = "streetInfringement")
+	private boolean isCollision;
 
 	// TODO 나중에 이름 바꿔
-	@DatabaseField(columnName = "streetInfringementWidth")
+	@DatabaseField(columnName = "collisionWidth")
 	private float collisionWidth;
 	
-	@DatabaseField(columnName = "streetInfringementLength")
+	@DatabaseField(columnName = "collisionLength")
 	private float collisionLength;
 
 	@DatabaseField
@@ -68,19 +82,18 @@ public class Sign implements Serializable {
 	
 	@DatabaseField
 	private String permissionNumber;
-	
-	@DatabaseField
-	private String inputor;		// TODO 철자 틀림 inputter
+
+	@DatabaseField(columnName="needReInspection")
+	private String needReinspection;	// TODO 필요 없어 보이는데
+
+	@DatabaseField(columnName = "inputor")
+	private String inputter;
 	
 	@DatabaseField
 	private String inputDate;
-	
-	@DatabaseField(columnName="needReInspection")
-	private String needReinspection;
 
-	// TODO 얘도 상태(철거/정상) 값인데 네이밍 바꾸자
 	@DatabaseField(columnName="checkCode")
-	private int statusCode;
+	private int statsCode;
 	
 	@DatabaseField
 	private String picNumber;
@@ -94,46 +107,66 @@ public class Sign implements Serializable {
 	@DatabaseField
 	private int totalFloor;	
 
-	// TODO 나중에 필드 정할때 boolean 타입으로 되는지 물어봐
 	@DatabaseField
-	private String isIntersection;
+	private boolean isIntersection;
 	
-	@DatabaseField(columnName="tblNum")
+	@DatabaseField(columnName="tblNumber")
 	private int tblNumber;
 
 	@DatabaseField
-	private int addressId;		// TODO 삭제 하는게 좋지 않나..
-
-	@DatabaseField
-	private boolean isDeleted;
-
-	@DatabaseField(columnName = "reInspectionCode")
-	private int reviewCode;		// TODO 코드 내용에 대해선 서버 & 명진하고 얘기 해봐야 함
-
-	@DatabaseField(columnName = "demolishPicPath")
-	private String demolitionPicPath;
-
-	@DatabaseField(columnName = "demolishDate")
-	private String demolishedDate;
+	private boolean isDeleted;	// TODO 얘도 삭제 하는게 좋아 보이는데
 
 	@DatabaseField(columnName = "frontBackRoad")
 	private boolean isFrontBackRoad;
 
-	// TODO "정면" 을 나타낼 필드가 없다
+	@DatabaseField(columnName = "demolishedPicPath")
+	private String demolitionPicPath;
+
+	@DatabaseField(columnName = "demolishedDate")
+	private String demolishedDate;
+
+	@DatabaseField(columnName = "reInspectionCode")
+	private int reviewCode;		// TODO 코드 내용에 대해선 서버 & 명진하고 얘기 해봐야 함
+
+	@DatabaseField
+	private long shopId;
+
+	@DatabaseField
+	private int addressId;
+
+	@DatabaseField(columnName = "sgcode")
+	private String sgCode;	// 지역 코드 인듯? 서버에서 넣어주길 원함. 없으면 빌딩의 값을 넣어주자
+
+	@DatabaseField(columnName = "placedCode")
+	private int placedSide;
+
+	@DatabaseField(columnName = "placedExt")
+	private int uniqueness;
+
+	@DatabaseField
+	private String memo;
+
 
 
 	public Sign() {
 		
 	}
-	public Sign(long id, int type, float width, float length, float height, String area, float extraSize, int quantity,
-			String content, int placedFloor, String placedSide, int lightType, String placement,
-			boolean streetInfringement, float collisionWidth, float collisionLength,
-			int inspectionResult, String permissionNumber, String inputor, String inputDate, String needReinspection,
-			int statusCode, String picNumber, String modifier, String modifyDate, int totalFloor,
-			String isIntersection, int tblNumber, int addressId, String demolitionPicPath, String demolishedDate,
-				boolean isDeleted, int reviewCode, boolean isFrontBackRoad) {
-		super();
+
+	public Sign(long id, String inspectionNumber, String inspectionDate, String mobileId,
+				boolean isSynchronized, String syncDate, int type, float width, float length,
+				float height, String area, float extraSize, int quantity, String content,
+				int placedFloor, boolean isFront, int lightType, String placement, boolean isCollision,
+				float collisionWidth, float collisionLength, int inspectionResult, String permissionNumber,
+				String needReinspection, String inputter, String inputDate, int statsCode, String picNumber,
+				String modifier, String modifyDate, int totalFloor, boolean isIntersection, int tblNumber, boolean isDeleted,
+				boolean isFrontBackRoad, String demolitionPicPath, String demolishedDate, int reviewCode,
+				int shopId, int addressId, String sgCode, int placedSide, int uniqueness, String memo) {
 		this.id = id;
+		this.inspectionNumber = inspectionNumber;
+		this.inspectionDate = inspectionDate;
+		this.mobileId = mobileId;
+		this.isSynchronized = isSynchronized;
+		this.syncDate = syncDate;
 		this.type = type;
 		this.width = width;
 		this.length = length;
@@ -143,182 +176,203 @@ public class Sign implements Serializable {
 		this.quantity = quantity;
 		this.content = content;
 		this.placedFloor = placedFloor;
-		this.placedSide = placedSide;
+		this.isFront = isFront;
 		this.lightType = lightType;
 		this.placement = placement;
-		this.streetInfringement = streetInfringement;
+		this.isCollision = isCollision;
 		this.collisionWidth = collisionWidth;
 		this.collisionLength = collisionLength;
 		this.inspectionResult = inspectionResult;
 		this.permissionNumber = permissionNumber;
-		this.inputor = inputor;
-		this.inputDate = inputDate;
 		this.needReinspection = needReinspection;
-		this.statusCode = statusCode;
+		this.inputter = inputter;
+		this.inputDate = inputDate;
+		this.statsCode = statsCode;
 		this.picNumber = picNumber;
 		this.modifier = modifier;
 		this.modifyDate = modifyDate;
 		this.totalFloor = totalFloor;
 		this.isIntersection = isIntersection;
 		this.tblNumber = tblNumber;
-		this.addressId = addressId;
+		this.isDeleted = isDeleted;
+		this.isFrontBackRoad = isFrontBackRoad;
 		this.demolitionPicPath = demolitionPicPath;
 		this.demolishedDate = demolishedDate;
 		this.reviewCode = reviewCode;
-		this.isFrontBackRoad = isFrontBackRoad;
+		this.shopId = shopId;
+		this.addressId = addressId;
+		this.sgCode = sgCode;
+		this.placedSide = placedSide;
+		this.uniqueness = uniqueness;
+		this.memo = memo;
 	}
 
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
 
 	public long getId() {
 		return id;
 	}
 
-
 	public void setId(long id) {
 		this.id = id;
 	}
 
+	public String getInspectionNumber() {
+		return inspectionNumber;
+	}
+
+	public void setInspectionNumber(String inspectionNumber) {
+		this.inspectionNumber = inspectionNumber;
+	}
+
+	public String getInspectionDate() {
+		return inspectionDate;
+	}
+
+	public void setInspectionDate(String inspectionDate) {
+		this.inspectionDate = inspectionDate;
+	}
+
+	public String getMobileId() {
+		return mobileId;
+	}
+
+	public void setMobileId(String mobileId) {
+		this.mobileId = mobileId;
+	}
+
+	public boolean isSynchronized() {
+		return isSynchronized;
+	}
+
+	public void setSynchronized(boolean aSynchronized) {
+		isSynchronized = aSynchronized;
+	}
+
+	public String getSyncDate() {
+		return syncDate;
+	}
+
+	public void setSyncDate(String syncDate) {
+		this.syncDate = syncDate;
+	}
 
 	public int getType() {
 		return type;
 	}
 
-
 	public void setType(int type) {
 		this.type = type;
 	}
-
 
 	public float getWidth() {
 		return width;
 	}
 
-
 	public void setWidth(float width) {
 		this.width = width;
 	}
-
 
 	public float getLength() {
 		return length;
 	}
 
-
 	public void setLength(float length) {
 		this.length = length;
 	}
-
 
 	public float getHeight() {
 		return height;
 	}
 
-
 	public void setHeight(float height) {
 		this.height = height;
 	}
-
 
 	public String getArea() {
 		return area;
 	}
 
-
 	public void setArea(String area) {
 		this.area = area;
 	}
-
 
 	public float getExtraSize() {
 		return extraSize;
 	}
 
-
 	public void setExtraSize(float extraSize) {
 		this.extraSize = extraSize;
 	}
-
 
 	public int getQuantity() {
 		return quantity;
 	}
 
-
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-
 
 	public String getContent() {
 		return content;
 	}
 
-
 	public void setContent(String content) {
 		this.content = content;
 	}
-
 
 	public int getPlacedFloor() {
 		return placedFloor;
 	}
 
-
 	public void setPlacedFloor(int placedFloor) {
 		this.placedFloor = placedFloor;
 	}
 
-
-	public String getPlacedSide() {
-		return placedSide;
+	public boolean isFront() {
+		return isFront;
 	}
 
-
-	public void setPlacedSide(String placedSide) {
-		this.placedSide = placedSide;
+	public void setFront(boolean front) {
+		isFront = front;
 	}
-
 
 	public int getLightType() {
 		return lightType;
 	}
 
-
 	public void setLightType(int lightType) {
 		this.lightType = lightType;
 	}
-
 
 	public String getPlacement() {
 		return placement;
 	}
 
-
 	public void setPlacement(String placement) {
 		this.placement = placement;
 	}
 
-
-	public boolean isStreetInfringement() {
-		return streetInfringement;
+	public boolean isCollision() {
+		return isCollision;
 	}
 
-
-	public void setStreetInfringement(boolean streetInfringement) {
-		this.streetInfringement = streetInfringement;
+	public void setCollision(boolean collision) {
+		isCollision = collision;
 	}
-
 
 	public float getCollisionWidth() {
 		return collisionWidth;
 	}
 
-	public float getCollisionLength() {
-		return collisionLength;
-	}
-
 	public void setCollisionWidth(float collisionWidth) {
 		this.collisionWidth = collisionWidth;
+	}
+
+	public float getCollisionLength() {
+		return collisionLength;
 	}
 
 	public void setCollisionLength(float collisionLength) {
@@ -329,125 +383,112 @@ public class Sign implements Serializable {
 		return inspectionResult;
 	}
 
-
 	public void setInspectionResult(int inspectionResult) {
 		this.inspectionResult = inspectionResult;
 	}
-
 
 	public String getPermissionNumber() {
 		return permissionNumber;
 	}
 
-
 	public void setPermissionNumber(String permissionNumber) {
 		this.permissionNumber = permissionNumber;
 	}
-
-
-	public String getInputor() {
-		return inputor;
-	}
-
-
-	public void setInputor(String inputor) {
-		this.inputor = inputor;
-	}
-
-
-	public String getInputDate() {
-		return inputDate;
-	}
-
-
-	public void setInputDate(String inputDate) {
-		this.inputDate = inputDate;
-	}
-
 
 	public String getNeedReinspection() {
 		return needReinspection;
 	}
 
-
 	public void setNeedReinspection(String needReinspection) {
 		this.needReinspection = needReinspection;
 	}
 
-
-	public int getStatusCode() {
-		return statusCode;
+	public String getInputter() {
+		return inputter;
 	}
 
-
-	public void setStatusCode(int statusCode) {
-		this.statusCode = statusCode;
+	public void setInputter(String inputter) {
+		this.inputter = inputter;
 	}
 
+	public String getInputDate() {
+		return inputDate;
+	}
+
+	public void setInputDate(String inputDate) {
+		this.inputDate = inputDate;
+	}
+
+	public int getStatsCode() {
+		return statsCode;
+	}
+
+	public void setStatsCode(int statsCode) {
+		this.statsCode = statsCode;
+	}
 
 	public String getPicNumber() {
 		return picNumber;
 	}
 
-
 	public void setPicNumber(String picNumber) {
 		this.picNumber = picNumber;
 	}
-
 
 	public String getModifier() {
 		return modifier;
 	}
 
-
 	public void setModifier(String modifier) {
 		this.modifier = modifier;
 	}
-
 
 	public String getModifyDate() {
 		return modifyDate;
 	}
 
-
 	public void setModifyDate(String modifyDate) {
 		this.modifyDate = modifyDate;
 	}
-
 
 	public int getTotalFloor() {
 		return totalFloor;
 	}
 
-
 	public void setTotalFloor(int totalFloor) {
 		this.totalFloor = totalFloor;
 	}
 
-
-	public String getIsIntersection() {
+	public boolean isIntersection() {
 		return isIntersection;
 	}
 
-
-	public void setIsIntersection(String isIntersection) {
-		this.isIntersection = isIntersection;
+	public void setIntersection(boolean intersection) {
+		isIntersection = intersection;
 	}
 
 	public int getTblNumber() {
 		return tblNumber;
 	}
-	
-	public void setTblNumber(int tblNumber){ 
+
+	public void setTblNumber(int tblNumber) {
 		this.tblNumber = tblNumber;
 	}
 
-	public int getAddressId() {
-		return addressId;
+	public boolean isDeleted() {
+		return isDeleted;
 	}
-	
-	public void setAddressId(int addressId) {
-		this.addressId = addressId;
+
+	public void setDeleted(boolean deleted) {
+		isDeleted = deleted;
+	}
+
+	public boolean isFrontBackRoad() {
+		return isFrontBackRoad;
+	}
+
+	public void setFrontBackRoad(boolean frontBackRoad) {
+		isFrontBackRoad = frontBackRoad;
 	}
 
 	public String getDemolitionPicPath() {
@@ -466,27 +507,59 @@ public class Sign implements Serializable {
 		this.demolishedDate = demolishedDate;
 	}
 
-	public boolean isDeleted() {
-		return isDeleted;
-	}
-
-	public void setIsDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-
 	public int getReviewCode() {
 		return reviewCode;
 	}
 
-	public void setReviewCodeCode(int reInspectionCode) {
-		this.reviewCode = reInspectionCode;
+	public void setReviewCode(int reviewCode) {
+		this.reviewCode = reviewCode;
 	}
 
-	public boolean isFrontBackRoad() {
-		return isFrontBackRoad;
+	public long getShopId() {
+		return shopId;
 	}
 
-	public void setFrontBackRoad(boolean isFrontBackRoad) {
-		this.isFrontBackRoad = isFrontBackRoad;
+	public void setShopId(long shopId) {
+		this.shopId = shopId;
+	}
+
+	public int getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(int addressId) {
+		this.addressId = addressId;
+	}
+
+	public String getSgCode() {
+		return sgCode;
+	}
+
+	public void setSgCode(String sgCode) {
+		this.sgCode = sgCode;
+	}
+
+	public int getPlacedSide() {
+		return placedSide;
+	}
+
+	public void setPlacedSide(int placedSide) {
+		this.placedSide = placedSide;
+	}
+
+	public int getUniqueness() {
+		return uniqueness;
+	}
+
+	public void setUniqueness(int uniqueness) {
+		this.uniqueness = uniqueness;
+	}
+
+	public String getMemo() {
+		return memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 }

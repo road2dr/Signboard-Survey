@@ -1,6 +1,8 @@
 package com.mjict.signboardsurvey.activity;
 
 import android.graphics.Bitmap;
+import android.support.v7.widget.PopupMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -25,7 +27,15 @@ public class AddressSearchActivity extends SABaseActivity {
     private EditText firstBuildingNumberEditText;
     private EditText secondBuildingNumberEditText;
 
-    private Button searchButton;
+    private EditText villageEditText;
+    private EditText houseNumberEditText;
+
+    private View streetAddressLayout;
+    private View houseAddressLayout;
+
+
+    private Button streetSearchButton;
+    private Button houseSearchButton;
     private ListView buildingListView;
     private BuildingListAdapter listAdapter;
 
@@ -41,6 +51,26 @@ public class AddressSearchActivity extends SABaseActivity {
         super.init();
         this.setTitle(R.string.search_by_address);
 
+        this.inflateOptionMenu(R.menu.option_menu_address_search);
+        this.showOptionButton();
+
+        this.setOnOptionMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.house_search:
+                        streetAddressLayout.setVisibility(View.GONE);
+                        houseAddressLayout.setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.street_search:
+                        streetAddressLayout.setVisibility(View.VISIBLE);
+                        houseAddressLayout.setVisibility(View.GONE);
+                        break;
+                }
+                return true;
+            }
+        });
+
         buildingListView = (ListView)this.findViewById(R.id.building_list_view);
         listAdapter = new BuildingListAdapter(this);
         buildingListView.setAdapter(listAdapter);
@@ -51,8 +81,13 @@ public class AddressSearchActivity extends SABaseActivity {
         streetSpinner = (SimpleSpinner)this.findViewById(R.id.street_spinner);
         firstBuildingNumberEditText = (EditText)this.findViewById(R.id.first_building_number_text_view);
         secondBuildingNumberEditText = (EditText)this.findViewById(R.id.second_building_number_text_view);
+        villageEditText = (EditText)this.findViewById(R.id.village_edit_text);
+        houseNumberEditText = (EditText)this.findViewById(R.id.house_number_edit_text);
+        streetAddressLayout = this.findViewById(R.id.street_address_layout);
+        houseAddressLayout = this.findViewById(R.id.house_address_layout);
 
-        searchButton = (Button)this.findViewById(R.id.search_button);
+        streetSearchButton = (Button)this.findViewById(R.id.street_address_search_button);
+        houseSearchButton = (Button)this.findViewById(R.id.house_address_search_button);
     }
 
     public void setListImage(int index, Bitmap image) {
@@ -147,8 +182,20 @@ public class AddressSearchActivity extends SABaseActivity {
         return secondBuildingNumberEditText.getText().toString();
     }
 
-    public void setSearchButtonOnClickListener(View.OnClickListener listener) {
-        searchButton.setOnClickListener(listener);
+    public String getInputVillage() {
+        return villageEditText.getText().toString();
+    }
+
+    public String getInputHouseNumber() {
+        return houseNumberEditText.getText().toString();
+    }
+
+    public void setStreetAddressSearchButtonOnClickListener(View.OnClickListener listener) {
+        streetSearchButton.setOnClickListener(listener);
+    }
+
+    public void setHouseAddressSearchButtonOnClickListener(View.OnClickListener listener) {
+        houseSearchButton.setOnClickListener(listener);
     }
 
 

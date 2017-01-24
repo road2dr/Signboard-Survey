@@ -168,7 +168,7 @@ public class FileManager {
 
 		String dbName = SyncConfiguration.getDatabaseFileName();
 
-		File targetFile = context.getDatabasePath(dbName);
+		File targetFile = context.getDatabasePath(dbName);	// TODO NullPointerException: Attempt to invoke virtual method 'char java.lang.String.charAt(int)' on a null object reference
 		if(targetFile.exists() == false)
 			throw new FileNotFoundException("file not found: "+targetFile);
 	

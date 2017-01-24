@@ -42,7 +42,7 @@ public class LoadValidBuildingImageTask extends DefaultAsyncTask<Building, Index
             if (pics != null) {
                 for (int j = 0; j < pics.size(); j++) {
 
-                    String path = SyncConfiguration.getDirectoryForBuildingPicture() + pics.get(j).getPath();
+                    String path = SyncConfiguration.getDirectoryForBuildingPicture(b.isSync()) + pics.get(j).getPath();
                     image = Utilities.loadImage(path, 8);
                     if(image != null)
                         break;

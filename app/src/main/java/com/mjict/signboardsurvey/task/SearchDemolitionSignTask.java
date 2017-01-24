@@ -8,7 +8,6 @@ import com.mjict.signboardsurvey.model.Address;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
-import com.mjict.signboardsurvey.model.SignOwnership;
 import com.mjict.signboardsurvey.util.SettingDataManager;
 
 import java.util.ArrayList;
@@ -108,42 +107,11 @@ public class SearchDemolitionSignTask extends DefaultAsyncTask<Address, Integer,
             for(int j=0; j<shops.size(); j++) {
                 Shop shop = shops.get(j);
 //                if(shop.getBusinessCondition())   // TODO 원래는 이렇게 접근 해야 하지만 DB 데이터가 완전하지 않은 관계로 각 sign 의 상태 체크
-                List<SignOwnership> ownerships = dmgr.findSignOwnershipByShopId(shop.getId());  // TODO 여기도 SignOwnership 없어지면 사라질 부분
-                for(int k=0; k<ownerships.size(); k++) {
-                    SignOwnership o = ownerships.get(k);
-                    Sign sign = dmgr.getSign(o.getSignId());
-                    demolitionSigns.add(sign);
-//                    int status = -1;
-//                    String type = null;
-//                    String content = null;
-//                    String shopName = null;
-//                    String lightType = null;
-//                    String result = null;
-//                    String size = null;
-//                    String location = null;
-//                    String date = null;
-//
-//                    if(sign.getStatusCode() == 1 || sign.getStatusCode() == 2) {  // 철거, 철거 예정
-//                        status = sign.getStatusCode();
-//                        content = sign.getContent();
-//                        Setting typeSetting = sdmgr.getSignType(sign.getType());
-//                        type = (typeSetting == null) ? sdmgr.getDefaultSignTypeName() : typeSetting.getName();
-//                        Setting lightTypeSetting = sdmgr.getLightType(sign.getLightType());
-//                        lightType = (lightTypeSetting == null) ? sdmgr.getDefaultLightTypeName(): lightTypeSetting.getName();
-//                        Setting resultSetting = sdmgr.getResult(sign.getInspectionResult());
-//                        result = (resultSetting == null) ? sdmgr.getDefaultResultName() : resultSetting.getName();
-//                        size = sign.getWidth()+"X"+sign.getLength();
-//                        if(sign.getHeight() > 0)
-//                            size = size +"X"+sign.getHeight();
-//                        location = sign.getPlacedFloor()+"/"+sign.getTotalFloor();
-//                        date = sign.getInputDate();
-//                        shopName = shop.getName();
-//
-//                        DemolitionSign demolitionSign = new DemolitionSign(null, null, status, type, content, shopName, lightType,
-//                                result, size, location, date, sign, shop);
-//                        demolitionSigns.add(demolitionSign);
-//                    }
 
+                List<Sign> signs = dmgr.findSignsByShopId(shop.getId());
+                for(int k=0; k<signs.size(); k++) {
+                    Sign sign = signs.get(k);
+                    demolitionSigns.add(sign);
                 }
             }
         }

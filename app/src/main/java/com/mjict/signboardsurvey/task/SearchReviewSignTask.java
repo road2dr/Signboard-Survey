@@ -8,7 +8,6 @@ import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.Setting;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
-import com.mjict.signboardsurvey.model.SignOwnership;
 import com.mjict.signboardsurvey.util.SettingDataManager;
 
 import java.util.ArrayList;
@@ -95,10 +94,10 @@ public class SearchReviewSignTask extends DefaultAsyncTask<Address, Integer, Lis
             for(int j=0; j<shops.size(); j++) {
                 Shop shop = shops.get(j);
 //                if(shop.getBusinessCondition())   // TODO 원래는 이렇게 접근 해야 하지만 DB 데이터가 완전하지 않은 관계로 각 sign 의 상태 체크
-                List<SignOwnership> ownerships = dmgr.findSignOwnershipByShopId(shop.getId());  // TODO 여기도 SignOwnership 없어지면 사라질 부분
-                for(int k=0; k<ownerships.size(); k++) {
-                    SignOwnership o = ownerships.get(k);
-                    Sign sign = dmgr.getSign(o.getSignId());
+
+                List<Sign> signs = dmgr.findSignsByShopId(shop.getId());
+                for(int k=0; k<signs.size(); k++) {
+                    Sign sign = signs.get(k);
 
                     if(sign.getReviewCode() == 0)
                         continue;

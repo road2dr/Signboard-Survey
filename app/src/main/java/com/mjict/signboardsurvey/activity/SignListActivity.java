@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.adapter.SignListAdapter;
 import com.mjict.signboardsurvey.model.ui.SignInfo;
+import com.mjict.signboardsurvey.widget.SignOptionDialog;
 
 /**
  * Created by Junseo on 2016-11-16.
@@ -20,6 +21,7 @@ public class SignListActivity extends SABaseActivity {
     private TextView shopCategoryTextView;
     private ListView signListView;
     private SignListAdapter adapter;
+    private SignOptionDialog signOptionDialog;
 
     private OnOptionMenuItemClickListener optionMenuItemClickListener;
 
@@ -54,6 +56,16 @@ public class SignListActivity extends SABaseActivity {
         adapter = new SignListAdapter(this);
         signListView.setAdapter(adapter);
 
+        signOptionDialog = new SignOptionDialog(this);
+        signOptionDialog.create();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(signOptionDialog != null)
+            signOptionDialog.dismiss();
+
+        super.onDestroy();
     }
 
     public void setShopNameText(String name) {
@@ -66,6 +78,15 @@ public class SignListActivity extends SABaseActivity {
 
     public void setSignListOnItemClickListener(AdapterView.OnItemClickListener listener) {
         signListView.setOnItemClickListener(listener);
+    }
+
+    public void setSignListOnItemLongClickListener(AdapterView.OnItemLongClickListener listener) {
+        signListView.setOnItemLongClickListener(listener);
+    }
+
+    public void removeFromList(int index) {
+        SignInfo item = adapter.getItem(index);
+        adapter.remove(item);
     }
 
     public void addToList(SignInfo sign) {
@@ -82,6 +103,19 @@ public class SignListActivity extends SABaseActivity {
 
     public void setOptionMenuItemClickListener(OnOptionMenuItemClickListener listener) {
         optionMenuItemClickListener = listener;
+    }
+
+    public void setSignDeleteDialogButtonVisible(boolean visible) {
+        signOptionDialog.setDeleteButtonVisible(visible);
+    }
+
+    public void showSignOptionDialog(SignOptionDialog.SignOptionDialogOnClickListener listener) {
+        signOptionDialog.setSignOptionDailogOnClickListener(listener);
+        signOptionDialog.show();
+    }
+
+    public void hideSignOptionDialog() {
+        signOptionDialog.hide();
     }
 
     public static interface OnOptionMenuItemClickListener {

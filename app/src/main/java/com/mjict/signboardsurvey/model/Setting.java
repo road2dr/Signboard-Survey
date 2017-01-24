@@ -18,19 +18,19 @@ public class Setting {
 	@DatabaseField
 	private int ord;
 
-	@DatabaseField
-	private int group;
+//	@DatabaseField
+//	private int group;
 	
 	public Setting() {
 		
 	}
 	
-	public Setting(int category, String code, String name, int ord, int group) {
+	public Setting(int category, String code, String name, int ord) {
 		this.category = category;
 		this.code = code;
 		this.name = name;
 		this.ord = ord;
-		this.group = group;
+//		this.group = group;
 	}
 	
 	public int getCategory() {
@@ -80,11 +80,11 @@ public class Setting {
 		return name;
 	}
 
-	public int getGroup() {
-		return group;
-	}
-
-	public void setGroup(int group) {
-		this.group = group;
-	}
+//	public int getGroup() {
+//		return group;
+//	}
+//
+//	public void setGroup(int group) {
+//		this.group = group;
+//	}
 }

@@ -7,9 +7,7 @@ import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.ShopAndSign;
 import com.mjict.signboardsurvey.model.Sign;
-import com.mjict.signboardsurvey.model.SignOwnership;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,20 +31,13 @@ public class LoadShopAndSignByBuildingTask extends DefaultAsyncTask<Building, Sh
             Building b = params[i];
             List<Shop> shopsInBuilding = dmgr.findShopByBuildingId(b.getId());
 
-            // TODO 나중에 SignOwnership 이 없어지면 바뀌겠지
-            List<Sign> signs = new ArrayList<>();
+            List<Sign> signs = null;
             for(int j=0; j<shopsInBuilding.size(); j++) {
                 Shop shop = shopsInBuilding.get(j);
-                if(shop.getIsDeleted() == true)
+                if(shop.isDeleted() == true)
                     continue;
 
-                List<SignOwnership> ownerships = dmgr.findSignOwnershipByShopId(shop.getId());
-
-                for(int k=0; k<ownerships.size(); k++) {
-                    Sign s = dmgr.getSign(ownerships.get(k).getSignId());
-                    if(s.isDeleted() == false)
-                        signs.add(s);
-                }
+                signs = dmgr.findSignsByShopId(shop.getId());
             }
 
             ShopAndSign sas = new ShopAndSign(i, shopsInBuilding, signs);

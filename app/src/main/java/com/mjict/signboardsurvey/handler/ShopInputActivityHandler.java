@@ -110,8 +110,23 @@ public class ShopInputActivityHandler extends SABaseActivityHandler {
 
     private Shop createNewShop() {
         String currentTime = Utilities.getCurrentTimeAsString();
-        String id = String.valueOf(MJContext.getDeviceNumber()+Utilities.hash(currentTime));
-        String businessLicenseNumber = "";
+//        String id = String.valueOf(MJContext.getDeviceNumber()+Utilities.hash(currentTime));
+//        String businessLicenseNumber = "";
+//        String ssn = "";
+//        String name = "";
+//        String representative = "";
+//        String phoneNumber = "";
+//        int businessCondition = -1;
+//        int category = -1;
+//        long buildingId = -1;
+//        String inputter = MJContext.getCurrentUser().getUserId();
+//        String inputDate = currentTime;
+//        int tblNumber = 510;
+//        int addressId = -1;
+//        boolean isDeleted = false;
+
+        long id = -1;
+        String licenseNumber = "";
         String ssn = "";
         String name = "";
         String representative = "";
@@ -119,13 +134,19 @@ public class ShopInputActivityHandler extends SABaseActivityHandler {
         int businessCondition = -1;
         int category = -1;
         long buildingId = -1;
-        String inputter = MJContext.getCurrentUser().getUserId();
+        String inputter = MJContext.getCurrentUser().getUserId();;
         String inputDate = currentTime;
         int tblNumber = 510;
         int addressId = -1;
         boolean isDeleted = false;
+        String sgCode = "";
+        boolean isSynchronized = false;
+        String syncDate = "";
 
-        return new Shop(id, businessLicenseNumber, ssn, name, representative, phoneNumber, businessCondition,
-                category, buildingId, inputter, inputDate, tblNumber, addressId, isDeleted);
+        Shop shop = new Shop(id, licenseNumber, ssn, name, representative, phoneNumber, businessCondition,
+                category, buildingId, inputter, inputDate, tblNumber, addressId, isDeleted, sgCode,
+                isSynchronized, syncDate);
+
+        return shop;
     }
 }

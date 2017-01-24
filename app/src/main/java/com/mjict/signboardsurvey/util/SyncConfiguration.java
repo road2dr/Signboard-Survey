@@ -16,8 +16,10 @@ public class SyncConfiguration {
 	private static String version = null;
 	private static String baseDir = null;
 	private static boolean dataChanged = false;
+
 	private static String signPictureDir = null;
 	private static String buildingPictureDir = null;
+
 	private static String databaseFileName = null;
 	private static String databaseFileForSync = null;
 	private static String mapFileDir = null;
@@ -50,8 +52,10 @@ public class SyncConfiguration {
 	public static final String DEFAULT_BASE_DIRECTORY="mjict/signboard/";
 	public static final String DEFAULT_DATABASE_FILE_NAME="MROKGTotal.db3";
 	public static final String DEFAULT_DATABASE_FILE_FOR_SYNC="database/MROKGTotal.db3";
-	public static final String DEFAULT_SIGN_PIC_DIRECTORY="pic/sign/";
-	public static final String DEFAULT_BUILDING_PIC_DIRECTORY="pic/building/";
+	public static final String DEFAULT_SERVER_SIGN_PIC_DIRECTORY="pic/server/sign/";
+	public static final String DEFAULT_SERVER_BUILDING_PIC_DIRECTORY="pic/server/building/";
+	public static final String DEFAULT_DEVICE_SIGN_PIC_DIRECTORY="pic/device/sign/";
+	public static final String DEFAULT_DEVICE_BUILDING_PIC_DIRECTORY="pic/device/building/";
 	public static final String DEFAULT_MAP_FILE_DIRECTORY="mapFiles/";
 	public static final String DEFAULT_TEMPORARY_DIRECTORY="temp/";
 	
@@ -66,8 +70,10 @@ public class SyncConfiguration {
 	private static final String VERSION = "version";
 	private static final String DATA_CHANGED = "data_changed";
 	private static final String DIRECTORY_FOR_BASE = "base_dir";
-	private static final String DIRECTORY_FOR_SIGN_PICTURE = "sign_picture_dir";
-	private static final String DIRECTORY_FOR_BUILDING_PICTURE = "building_pciture_dir";
+	private static final String DIRECTORY_FOR_SIGN_PICTURE_DEVICE = "device_sign_picture_dir";
+	private static final String DIRECTORY_FOR_BUILDING_PICTURE_DEVICE = "device_building_pciture_dir";
+	private static final String DIRECTORY_FOR_SIGN_PICTURE_SERVER = "server_sign_picture_dir";
+	private static final String DIRECTORY_FOR_BUILDING_PICTURE_SERVER = "server_building_pciture_dir";
 	private static final String DATABASE_FILE_NAME = "database_file_name";
 	private static final String DATABASE_FILE_NAME_FOR_SYNC = "database_file_for_sync";
 	private static final String DIRECTORY_FOR_MAP_FILES="map_dir";
@@ -94,10 +100,14 @@ public class SyncConfiguration {
 			properties.put(DATABASE_FILE_NAME, DEFAULT_DATABASE_FILE_NAME);
 		if(properties.contains(DATABASE_FILE_NAME_FOR_SYNC) == false)
 			properties.put(DATABASE_FILE_NAME_FOR_SYNC, DEFAULT_DATABASE_FILE_FOR_SYNC);
-		if(properties.contains(DIRECTORY_FOR_SIGN_PICTURE) == false)
-			properties.put(DIRECTORY_FOR_SIGN_PICTURE, DEFAULT_SIGN_PIC_DIRECTORY);
-		if(properties.contains(DIRECTORY_FOR_BUILDING_PICTURE) == false)
-			properties.put(DIRECTORY_FOR_BUILDING_PICTURE, DEFAULT_BUILDING_PIC_DIRECTORY);
+		if(properties.contains(DIRECTORY_FOR_SIGN_PICTURE_DEVICE) == false)
+			properties.put(DIRECTORY_FOR_SIGN_PICTURE_DEVICE, DEFAULT_DEVICE_SIGN_PIC_DIRECTORY);
+		if(properties.contains(DIRECTORY_FOR_BUILDING_PICTURE_DEVICE) == false)
+			properties.put(DIRECTORY_FOR_BUILDING_PICTURE_DEVICE, DEFAULT_DEVICE_BUILDING_PIC_DIRECTORY);
+		if(properties.contains(DIRECTORY_FOR_SIGN_PICTURE_SERVER) == false)
+			properties.put(DIRECTORY_FOR_SIGN_PICTURE_SERVER, DEFAULT_SERVER_SIGN_PIC_DIRECTORY);
+		if(properties.contains(DIRECTORY_FOR_BUILDING_PICTURE_SERVER) == false)
+			properties.put(DIRECTORY_FOR_BUILDING_PICTURE_SERVER, DEFAULT_SERVER_BUILDING_PIC_DIRECTORY);
 		if(properties.contains(DIRECTORY_FOR_MAP_FILES) == false)
 			properties.put(DIRECTORY_FOR_MAP_FILES, DEFAULT_MAP_FILE_DIRECTORY);
 		if(properties.contains(TEMP_DIR) == false)
@@ -126,8 +136,10 @@ public class SyncConfiguration {
 			return false;
 		
 		String[] dirs = {
-			getDirectoryForBuildingPicture(),
-			getDirectoryForSingPicture(),
+			getDirectoryForBuildingPicture(true),
+			getDirectoryForBuildingPicture(false),
+			getDirectoryForSingPicture(true),
+			getDirectoryForSingPicture(false),
 			getDirectoryMapFiles(),
 			getDirectoryForTemp(),
 		};
@@ -232,18 +244,20 @@ public class SyncConfiguration {
 		return base+tempDir;
 	}
 	
-	public static String getDirectoryForSingPicture() {
-		if(signPictureDir == null)
-			signPictureDir = properties.getProperty(DIRECTORY_FOR_SIGN_PICTURE);
+	public static String getDirectoryForSingPicture(boolean isSync) {
+		String property = isSync ? DIRECTORY_FOR_SIGN_PICTURE_SERVER : DIRECTORY_FOR_SIGN_PICTURE_DEVICE;
+
+		signPictureDir = properties.getProperty(property);
 		
 		String base = getBaseDirectory();
 		
 		return base+signPictureDir;
 	}
 	
-	public static String getDirectoryForBuildingPicture() {
-		if(buildingPictureDir == null)
-			buildingPictureDir = properties.getProperty(DIRECTORY_FOR_BUILDING_PICTURE);
+	public static String getDirectoryForBuildingPicture(boolean isSync) {
+		String property = isSync ? DIRECTORY_FOR_BUILDING_PICTURE_SERVER : DIRECTORY_FOR_BUILDING_PICTURE_DEVICE;
+
+		buildingPictureDir = properties.getProperty(property);
 			
 		String base = getBaseDirectory();
 		

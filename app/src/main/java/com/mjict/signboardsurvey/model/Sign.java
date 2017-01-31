@@ -17,7 +17,7 @@ public class Sign implements Serializable {
 	private String inspectionNumber;
 
 	@DatabaseField(columnName="josaDate")
-	private String inspectionDate;
+	private String inspectionDate;		// yyyymmdd
 
 	@DatabaseField
 	private String mobileId;
@@ -41,7 +41,7 @@ public class Sign implements Serializable {
 	private float height;
 
 	@DatabaseField
-	private String area;
+	private float area;
 	
 	@DatabaseField
 	private float extraSize;
@@ -83,8 +83,8 @@ public class Sign implements Serializable {
 	@DatabaseField
 	private String permissionNumber;
 
-	@DatabaseField(columnName="needReInspection")
-	private String needReinspection;	// TODO 필요 없어 보이는데
+//	@DatabaseField(columnName="needReInspection")
+//	private String needReinspection;	// TODO 필요 없어 보이는데
 
 	@DatabaseField(columnName = "inputor")
 	private String inputter;
@@ -113,8 +113,8 @@ public class Sign implements Serializable {
 	@DatabaseField(columnName="tblNumber")
 	private int tblNumber;
 
-	@DatabaseField
-	private boolean isDeleted;	// TODO 얘도 삭제 하는게 좋아 보이는데
+//	@DatabaseField
+//	private boolean isDeleted;	// TODO 얘도 삭제 하는게 좋아 보이는데
 
 	@DatabaseField(columnName = "frontBackRoad")
 	private boolean isFrontBackRoad;
@@ -138,7 +138,7 @@ public class Sign implements Serializable {
 	private String sgCode;	// 지역 코드 인듯? 서버에서 넣어주길 원함. 없으면 빌딩의 값을 넣어주자
 
 	@DatabaseField(columnName = "placedCode")
-	private int placedSide;
+	private int installSide;
 
 	@DatabaseField(columnName = "placedExt")
 	private int uniqueness;
@@ -154,13 +154,13 @@ public class Sign implements Serializable {
 
 	public Sign(long id, String inspectionNumber, String inspectionDate, String mobileId,
 				boolean isSynchronized, String syncDate, int type, float width, float length,
-				float height, String area, float extraSize, int quantity, String content,
+				float height, float area, float extraSize, int quantity, String content,
 				int placedFloor, boolean isFront, int lightType, String placement, boolean isCollision,
 				float collisionWidth, float collisionLength, int inspectionResult, String permissionNumber,
-				String needReinspection, String inputter, String inputDate, int statsCode, String picNumber,
-				String modifier, String modifyDate, int totalFloor, boolean isIntersection, int tblNumber, boolean isDeleted,
+				/*String needReinspection, */String inputter, String inputDate, int statsCode, String picNumber,
+				String modifier, String modifyDate, int totalFloor, boolean isIntersection, int tblNumber,/* boolean isDeleted,*/
 				boolean isFrontBackRoad, String demolitionPicPath, String demolishedDate, int reviewCode,
-				int shopId, int addressId, String sgCode, int placedSide, int uniqueness, String memo) {
+				int shopId, int addressId, String sgCode, int installSide, int uniqueness, String memo) {
 		this.id = id;
 		this.inspectionNumber = inspectionNumber;
 		this.inspectionDate = inspectionDate;
@@ -184,7 +184,7 @@ public class Sign implements Serializable {
 		this.collisionLength = collisionLength;
 		this.inspectionResult = inspectionResult;
 		this.permissionNumber = permissionNumber;
-		this.needReinspection = needReinspection;
+//		this.needReinspection = needReinspection;
 		this.inputter = inputter;
 		this.inputDate = inputDate;
 		this.statsCode = statsCode;
@@ -194,7 +194,7 @@ public class Sign implements Serializable {
 		this.totalFloor = totalFloor;
 		this.isIntersection = isIntersection;
 		this.tblNumber = tblNumber;
-		this.isDeleted = isDeleted;
+//		this.isDeleted = isDeleted;
 		this.isFrontBackRoad = isFrontBackRoad;
 		this.demolitionPicPath = demolitionPicPath;
 		this.demolishedDate = demolishedDate;
@@ -202,7 +202,7 @@ public class Sign implements Serializable {
 		this.shopId = shopId;
 		this.addressId = addressId;
 		this.sgCode = sgCode;
-		this.placedSide = placedSide;
+		this.installSide = installSide;
 		this.uniqueness = uniqueness;
 		this.memo = memo;
 	}
@@ -291,11 +291,11 @@ public class Sign implements Serializable {
 		this.height = height;
 	}
 
-	public String getArea() {
+	public float getArea() {
 		return area;
 	}
 
-	public void setArea(String area) {
+	public void setArea(float area) {
 		this.area = area;
 	}
 
@@ -395,13 +395,13 @@ public class Sign implements Serializable {
 		this.permissionNumber = permissionNumber;
 	}
 
-	public String getNeedReinspection() {
-		return needReinspection;
-	}
-
-	public void setNeedReinspection(String needReinspection) {
-		this.needReinspection = needReinspection;
-	}
+//	public String getNeedReinspection() {
+//		return needReinspection;
+//	}
+//
+//	public void setNeedReinspection(String needReinspection) {
+//		this.needReinspection = needReinspection;
+//	}
 
 	public String getInputter() {
 		return inputter;
@@ -475,13 +475,13 @@ public class Sign implements Serializable {
 		this.tblNumber = tblNumber;
 	}
 
-	public boolean isDeleted() {
-		return isDeleted;
-	}
-
-	public void setDeleted(boolean deleted) {
-		isDeleted = deleted;
-	}
+//	public boolean isDeleted() {
+//		return isDeleted;
+//	}
+//
+//	public void setDeleted(boolean deleted) {
+//		isDeleted = deleted;
+//	}
 
 	public boolean isFrontBackRoad() {
 		return isFrontBackRoad;
@@ -539,12 +539,12 @@ public class Sign implements Serializable {
 		this.sgCode = sgCode;
 	}
 
-	public int getPlacedSide() {
-		return placedSide;
+	public int getInstallSide() {
+		return installSide;
 	}
 
-	public void setPlacedSide(int placedSide) {
-		this.placedSide = placedSide;
+	public void setInstallSide(int installSide) {
+		this.installSide = installSide;
 	}
 
 	public int getUniqueness() {

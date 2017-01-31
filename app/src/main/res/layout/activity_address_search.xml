@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -8,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@color/colorPrimary"
         android:padding="5dp">
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,11 +26,14 @@
                 android:text="@string/county"
                 android:textStyle="bold"
                 android:textSize="14sp"
-                android:textColor="@color/label_text_color"/>
+                android:textColor="@color/white"/>
             <com.mjict.signboardsurvey.widget.SimpleSpinner
                 android:id="@+id/county_spinner"
                 android:layout_width="match_parent"
-                android:layout_height="40dp" />
+                android:layout_height="40dp"
+                android:backgroundTint="@color/white"
+                app:topTextView="@layout/tv_simple_spinner_top_white"
+                app:dropdownTextView="@layout/tv_simple_spinner_dropdown_white"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,11 +46,14 @@
                 android:text="@string/town"
                 android:textStyle="bold"
                 android:textSize="14sp"
-                android:textColor="@color/label_text_color"/>
+                android:textColor="@color/white"/>
             <com.mjict.signboardsurvey.widget.SimpleSpinner
                 android:id="@+id/town_spinner"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"/>
+                android:layout_height="40dp"
+                android:backgroundTint="@color/white"
+                app:topTextView="@layout/tv_simple_spinner_top_white"
+                app:dropdownTextView="@layout/tv_simple_spinner_dropdown_white"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -63,7 +71,7 @@
                 android:text="@string/street"
                 android:textStyle="bold"
                 android:textSize="14sp"
-                android:textColor="@color/label_text_color"/>
+                android:textColor="@color/white"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,11 +79,17 @@
                 <com.mjict.signboardsurvey.widget.SimpleSpinner
                     android:id="@+id/consonant_spinner"
                     android:layout_width="150dp"
-                    android:layout_height="40dp"/>
+                    android:layout_height="40dp"
+                    android:backgroundTint="@color/white"
+                    app:topTextView="@layout/tv_simple_spinner_top_white"
+                    app:dropdownTextView="@layout/tv_simple_spinner_dropdown_white"/>
                 <com.mjict.signboardsurvey.widget.SimpleSpinner
                     android:id="@+id/street_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"/>
+                    android:layout_height="40dp"
+                    android:backgroundTint="@color/white"
+                    app:topTextView="@layout/tv_simple_spinner_top_white"
+                    app:dropdownTextView="@layout/tv_simple_spinner_dropdown_white"/>
             </LinearLayout>
 
             <android.support.v7.widget.AppCompatTextView
@@ -84,7 +98,7 @@
                 android:text="@string/building_number"
                 android:textStyle="bold"
                 android:textSize="14sp"
-                android:textColor="@color/label_text_color"/>
+                android:textColor="@color/white"/>
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -96,16 +110,21 @@
                     <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/first_building_number_text_view"
                         android:layout_width="100dp"
-                        android:layout_height="40dp"/>
+                        android:layout_height="35dp"
+                        android:background="@color/white"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="-"/>
+                        android:text="-"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:textColor="@color/white"/>
                     <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/second_building_number_text_view"
                         android:layout_width="100dp"
-                        android:layout_height="40dp"/>
+                        android:layout_height="35dp"
+                        android:background="@color/white"/>
                 </LinearLayout>
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/street_address_search_button"
@@ -165,5 +184,9 @@
     <ListView
         android:id="@+id/building_list_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="@color/light_gray"
+        android:padding="5dp"
+        android:dividerHeight="5dp"
+        android:divider="@null"/>
 </LinearLayout>

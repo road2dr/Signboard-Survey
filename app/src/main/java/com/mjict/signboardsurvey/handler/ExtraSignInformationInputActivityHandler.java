@@ -17,6 +17,11 @@ import com.mjict.signboardsurvey.util.SettingDataManager;
 import com.mjict.signboardsurvey.util.Utilities;
 import com.mjict.signboardsurvey.util.WrongNumberFormatException;
 import com.mjict.signboardsurvey.util.WrongNumberScopeException;
+import com.mjict.signboardsurvey.widget.TimePickerDialog;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Junseo on 2016-11-18.
@@ -71,6 +76,23 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
             }
         });
 
+        activity.setDemolishDateTextOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.showTimePickerDialog();
+            }
+        });
+
+        activity.setTimePickerConfirmButtonOnClickListener(new TimePickerDialog.ConfirmButtonOnClickListener() {
+            @Override
+            public void onClicked(Date time) {
+                activity.hideTimePickerDialog();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREAN);
+                String timeText = format.format(time);
+                activity.setDemolishDateText(timeText);
+            }
+        });
+
         // do first job
         initSpinner();
 
@@ -78,20 +100,15 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
     }
 
     private void nextButtonClicked() {
-//        String placedSide = activity.getFrontChecked() ? "N" : "Y";
-//        String intersection = activity.getIntersectionChecked() ? "Y" : "N";
-//        boolean frontBack = activity.getFrontBackChecked();
-//        String placedFloorText = activity.getInputPlacedFloor();
-//        String totalFloorText = activity.getInputTotalFloor();
-
         boolean collisionChecked = activity.getCollisionChecked();
         String collisionWidthText = activity.getInputCollisionWidth();
         String collisionLengthText = activity.getInputCollisionLength();
         Setting installedSideSetting = (Setting) activity.getSelectedInstalledSide();
         Setting uniquenessSetting = (Setting)activity.getSelectedUniqueness();
         String memo = activity.getInputMemo();
-//        String demolishDate = activity.getInputDemolishDate();
+        String demolishDate = activity.getInputDemolishDate();
         Setting resultSetting = (Setting)activity.getSelectedResult();
+        Setting reviewSetting = (Setting)activity.getSelectedReview();
 
         try {
             checkNumberValue(collisionWidthText, collisionLengthText);
@@ -105,13 +122,14 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
         }
 
         currentSign.setCollision(collisionChecked);
-//        currentSign.setInstalledSide(installedSideSetting.getCode());   // TODO 추가 될 부분
-//        currentSign.setUniqueness(uniquenessSetting.getCode()); // TODO 추가 될 부분
-//        currentSign.setMemo(memo);
-//        currentSign.setDemolishedDate(demolishDate);
+        currentSign.setInstallSide(installedSideSetting.getCode());
+        currentSign.setUniqueness(uniquenessSetting.getCode());
+        currentSign.setMemo(memo);
+        currentSign.setDemolishedDate(demolishDate);
         currentSign.setInspectionResult(resultSetting.getCode());
         currentSign.setCollisionWidth(Float.parseFloat(collisionWidthText));
         currentSign.setCollisionLength(Float.parseFloat(collisionLengthText));
+        currentSign.setReviewCode(reviewSetting.getCode());
 
         Intent responseIntent = new Intent();
         responseIntent.putExtra(MJConstants.SIGN, currentSign);
@@ -131,12 +149,19 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
 
     private void initSpinner() {
         SettingDataManager smgr = SettingDataManager.getInstance();
-//        Setting[] installedSettings = smgr.getInstalledSide();  // TODO 나중에 추가 될 부분
-//        Setting[] uniquenessSettings = smgr.getUniquenessSettings();  // TODO 나중에 추가 될 부분
+        Setting[] installedSettings = smgr.getInstallSides();
+        Setting[] uniquenessSettings = smgr.getUniqueness();
         Setting[] resultSettings = smgr.getResults();
+        Setting[] reviewSettings = smgr.getReviewCodes();
 
         for(int i=0; i<resultSettings.length; i++)
             activity.addToResultSpinner(resultSettings[i].getCode(), resultSettings[i]);
+        for(int i=0; i<installedSettings.length; i++)
+            activity.addToInstalledSideSpinner(installedSettings[i].getCode(), installedSettings[i]);
+        for(int i=0; i<uniquenessSettings.length; i++)
+            activity.addToUniquenessSpinner(uniquenessSettings[i].getCode(), uniquenessSettings[i]);
+        for(int i=0; i<reviewSettings.length; i++)
+            activity.addToReviewSpinner(reviewSettings[i].getCode(), reviewSettings[i]);
     }
 
     private void updateUI() {
@@ -144,14 +169,13 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
         float collisionWidth = currentSign.getCollisionWidth();
         float collisionLength = currentSign.getCollisionLength();
 
-//        int installedSideCode = currentSign.getInstalledSideCode();   // TODO 나중에 추가 될 부분
-//        int uniquenessCode = currentSign.getUniquenessCode();   // TODO 나중에 추가 될 부분
-//        String memo = currentSign.getMemo();      // TODO 나중에 추가 될 부분
+        int installedSideCode = currentSign.getInstallSide();
+        int uniquenessCode = currentSign.getUniqueness();
+        String memo = currentSign.getMemo();
 
-        // TODO 나중에 추가 할 부분
-//        int status = currentSign.getStatusCode();
         String demolishDate = currentSign.getDemolishedDate();
         int result = currentSign.getInspectionResult();
+
 
 //        if(status == 철거 ) {
 //            activity.setDemolitionLayoutVisible(true);
@@ -165,6 +189,10 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
         activity.setCollisionLengthText(String.format("%.2f", collisionLength));
         activity.setDemolishDateText(demolishDate);
         activity.setResultSpinnerSelection(result);
+        activity.setMemoText(memo);
+        activity.setInstalledSideSpinnerSelection(installedSideCode);
+        activity.setUniquenessSpinnerSelection(uniquenessCode);
+        activity.setReviewSpinnerSelection(currentSign.getReviewCode());
     }
 
 

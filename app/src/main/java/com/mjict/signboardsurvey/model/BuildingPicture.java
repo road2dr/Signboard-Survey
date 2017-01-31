@@ -17,8 +17,8 @@ public class BuildingPicture implements Serializable {
 	@DatabaseField
 	private String path;
 	
-	@DatabaseField
-	private String direction;
+//	@DatabaseField
+//	private String direction;
 
 	// TODO 아마 추가 될 필드
 	private boolean isDeleted;
@@ -27,12 +27,12 @@ public class BuildingPicture implements Serializable {
 		
 	}
 	
-	public BuildingPicture(long id, long buildingId, String path, String direction) {
+	public BuildingPicture(long id, long buildingId, String path/*, String direction*/) {
 		super();
 		this.id = id;
 		this.buildingId = buildingId;
 		this.path = path;
-		this.direction = direction;
+//		this.direction = direction;
 	}
 
 	public long getId() {
@@ -59,13 +59,13 @@ public class BuildingPicture implements Serializable {
 		this.path = path;
 	}
 
-	public String getDirection() {
-		return direction;
-	}
-
-	public void setDirection(String direction) {
-		this.direction = direction;
-	}
+//	public String getDirection() {
+//		return direction;
+//	}
+//
+//	public void setDirection(String direction) {
+//		this.direction = direction;
+//	}
 	
 	
 }

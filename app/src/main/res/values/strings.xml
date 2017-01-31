@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Signboard Agency</string>
+    <string name="app_name">옥외공고물 전수조사</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -27,6 +27,7 @@
     <string name="extent">면적</string>
     <string name="letter_size">문자 크기</string>
     <string name="placed_location">표시 위치</string>
+    <string name="placed_side">설치된 면</string>
     <string name="height">높이</string>
     <string name="corner">곡각지</string>
     <string name="side_count">면수</string>
@@ -238,6 +239,7 @@
     <string name="etc_sign_type">기타 간판</string>
     <string name="lawful_sign_type">적법 간판</string>
     <string name="illegal_sign_type">불법 간판</string>
+    <string name="integrated_search">통합 검색</string>
 
 
     <!-- !!!!!!!!!!!!!!!!!!!!!! -->
@@ -281,6 +283,7 @@
     <string name="installed_side">설치된 면</string>
     <string name="uniqueness">특이 사항</string>
     <string name="memo">메모</string>
+    <string name="review_stats">재조사 상태</string>
 
 
 

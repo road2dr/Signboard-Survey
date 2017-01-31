@@ -3,13 +3,15 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:background="@color/light_gray"
+    android:padding="5dp">
     <LinearLayout
         android:id="@+id/shop_info_view"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@drawable/bg_gray_border" >
+        android:layout_height="80dp"
+        android:background="@drawable/bg_white_box"
+        android:padding="10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -19,7 +21,9 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:text="@string/shop_name"
-                android:gravity="center"/>
+                android:gravity="center_vertical"
+                android:drawableLeft="@drawable/ic_dot_resize"
+                android:drawablePadding="15dp"/>
             <TextView
                 android:id="@+id/shop_name_text_view"
                 android:layout_width="match_parent"
@@ -35,7 +39,9 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:text="@string/shop_category"
-                android:gravity="center"/>
+                android:gravity="center_vertical"
+                android:drawableLeft="@drawable/ic_dot_resize"
+                android:drawablePadding="15dp"/>
             <TextView
                 android:id="@+id/shop_category_text_view"
                 android:layout_width="match_parent"
@@ -44,19 +50,25 @@
         </LinearLayout>
     </LinearLayout>
 
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/signboard"
-        android:textSize="18sp"/>
-    <ListView
-        android:id="@+id/sign_list_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:dividerHeight="0dp"
-        android:divider="@null"/>
-
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        android:background="@drawable/bg_white_box"
+        android:padding="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/signboard"
+            android:textSize="18sp"/>
+        <ListView
+            android:id="@+id/sign_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:dividerHeight="5dp"
+            android:divider="@null"/>
+    </LinearLayout>
 </LinearLayout>

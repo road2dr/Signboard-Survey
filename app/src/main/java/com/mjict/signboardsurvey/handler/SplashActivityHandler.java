@@ -97,11 +97,12 @@ public class SplashActivityHandler extends DefaultSActivityHandler {
         initTask.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<TaskResult>() {
             @Override
             public void onTaskStart() {
-                activity.showWaitingDialog(R.string.loading_data_and_initialize);
+//                activity.showWaitingDialog(R.string.loading_data_and_initialize);
             }
             @Override
             public void onTaskFinished(TaskResult taskResult) {
-                activity.hideWaitingDialog();
+//                activity.hideWaitingDialog();
+
 
                 if(taskResult.success == false) {
                     activity.showAlertDialog(taskResult.errorMessage);

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:background="@drawable/bg_dialog"
+        android:padding="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/dialogLayout"
+            android:layout_centerHorizontal="true"
+            android:text="@string/select_time"
+            android:paddingLeft="10dp"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#000000"/>
+
+        <!--<Button-->
+            <!--android:id="@+id/current_time_button"-->
+            <!--android:layout_width="80dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/current_time"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:background="@drawable/bg_basic_button" />-->
+        <LinearLayout
+            android:id="@+id/dialogLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical" >
+            <DatePicker
+                android:id="@+id/date_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:datePickerMode="spinner"
+                android:calendarViewShown="false"
+                android:scaleX="0.8"
+                android:scaleY="0.8"/>
+            <TimePicker
+                android:id="@+id/time_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner"
+                android:layout_marginTop="-30dp"
+                android:scaleX="0.8"
+                android:scaleY="0.8"/>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/dialogLayout">
+            <Button
+                android:id="@+id/confirm_button"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:text="@string/confirm"
+                android:gravity="center"
+                android:textColor="#039be5"
+                android:stateListAnimator="@null"
+                android:background="@drawable/bg_white_box"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

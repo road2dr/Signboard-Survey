@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"  >
+    android:layout_height="match_parent"
+	android:background="@color/white">
 
     <com.mjict.signboardsurvey.widget.TouchImageView
         android:id="@+id/buildingImageView"
@@ -44,20 +45,26 @@
     
     <RelativeLayout
         android:id="@+id/rightLayout"
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+		android:padding="10dp">
         
         <ImageButton
             android:id="@+id/deleteButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true"
+			android:background="@drawable/btn_basic_button"
+			android:src="@drawable/ic_trash"/>
         <ImageButton
             android:id="@+id/addPictureButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_below="@+id/deleteButton" />
+            android:layout_below="@+id/deleteButton"
+			android:layout_marginTop="10dp"
+			android:background="@drawable/btn_basic_button"
+			android:src="@drawable/ic_camera"/>
         
         <LinearLayout 
             android:id="@+id/pageButtonLayout"
@@ -70,13 +77,18 @@
 	            android:layout_width="50dp"
 	            android:layout_height="match_parent"
 	            android:layout_weight="1"
-	            android:layout_alignParentLeft="true" />
+	            android:layout_alignParentLeft="true"
+				android:background="@null"
+				 android:src="@drawable/ic_prev_sel"/>
+
 	        <ImageButton
 	            android:id="@+id/nextButton"
 	            android:layout_width="50dp"
 	            android:layout_height="match_parent"
 	            android:layout_weight="1"
-	            android:layout_alignParentRight="true" />
+	            android:layout_alignParentRight="true"
+				android:background="@null"
+				android:src="@drawable/ic_next_sel"/>
         </LinearLayout>
         
         <TextView

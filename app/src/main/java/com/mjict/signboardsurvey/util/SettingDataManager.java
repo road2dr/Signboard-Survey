@@ -17,15 +17,17 @@ import java.util.List;
  */
 public class SettingDataManager {
 
-	public static final int SHOP_CONDITON = 90;	//
-	public static final int SHOP_CATEGORY = 60;	//
-	public static final int SIGN_TYPE = 40;		//
-	public static final int LIGHT_TYPE = 35;		//
-	public static final int RESULT = 50;			//
+	public static final int SHOP_CONDITON = 90;	// 업소, 간판 상태
+	public static final int SHOP_CATEGORY = 60;	// 업종
+	public static final int SIGN_TYPE = 40;		// 간판 종류
+	public static final int LIGHT_TYPE = 35;		// 조명 종류
+	public static final int RESULT = 50;			// 전수조사 결과
 
-	public static final int SIGN_STATUS = 90;
-	public static final int REVIEW_CODE = 115;
-	public static final int AREA_TYPE = 15;
+	public static final int SIGN_STATUS = 90;	// 업소, 간판 상태
+	public static final int REVIEW_CODE = 10;	// 재조사 코드
+	public static final int AREA_TYPE = 15;		// 지역 타입
+	public static final int INSTALL_SIDE = 13;  // 설치 면
+	public static final int UNIQUENESS = 14;	// 특이 사항
 
 //	public static final int BUILDING_LOCATION =
 	
@@ -157,6 +159,22 @@ public class SettingDataManager {
 
 	public Setting getAreaTypeCode(int code) {
 		return searchSetting(AREA_TYPE, code);
+	}
+
+	public Setting[] getInstallSides() {
+		return searchSetting(INSTALL_SIDE);
+	}
+
+	public Setting getInstallSide(int code) {
+		return searchSetting(INSTALL_SIDE, code);
+	}
+
+	public Setting[] getUniqueness() {
+		return searchSetting(UNIQUENESS);
+	}
+
+	public Setting getUniqueness(int code) {
+		return searchSetting(UNIQUENESS, code);
 	}
 
 //	public Setting[] getSignCategories() {

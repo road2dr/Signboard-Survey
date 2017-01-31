@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:background="@color/light_gray">
     <RelativeLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -14,24 +14,26 @@
             android:id="@+id/back_image_button"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_left_arrow"
+            android:src="@drawable/ic_left_arrow_sel"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
             android:background="@null"/>
         <TextView
             android:id="@+id/title_text_view"
-            android:layout_width="50dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginRight="?attr/actionBarSize"
             android:layout_toRightOf="@+id/back_image_button"
-            android:layout_toLeftOf="@+id/next_button"
+            android:gravity="center"
             android:text="@string/basic_information"
-            android:textSize="22sp"
-            android:gravity="center"/>
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
         <TextView
             android:id="@+id/next_button"
-            android:layout_width="100dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
             android:text="@string/next"
+            android:textColor="@color/navi_btn_text_color_sel"
             android:layout_alignParentRight="true"
             android:gravity="center"/>
     </RelativeLayout>
@@ -42,17 +44,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
+            android:orientation="vertical"
+            android:background="@drawable/bg_white_box"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
             <RelativeLayout
-                android:layout_width="200dp"
+                android:layout_width="300dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center_horizontal">
                 <ImageView
                     android:id="@+id/sign_image_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitCenter" />
                 <ImageButton
                     android:id="@+id/add_sign_image_button"
                     android:layout_width="80dp"
@@ -67,49 +71,80 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:text="@string/content"/>
+                    android:gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:text="@string/content"
+                    android:drawableLeft="@drawable/ic_dot_resize"
+                    android:drawablePadding="15dp"/>
                 <EditText
                     android:id="@+id/content_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:gravity="center_vertical"
-                    android:textSize="20sp"/>
+                    android:textSize="18sp"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:text="@string/status"/>
+                    android:gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:text="@string/type"
+                    android:drawableLeft="@drawable/ic_dot_resize"
+                    android:drawablePadding="15dp"/>
+                <com.mjict.signboardsurvey.widget.SimpleSpinner
+                    android:id="@+id/sign_type_spinner"
+                    android:layout_width="170dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:textSize="18sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:text="@string/status"
+                    android:drawableLeft="@drawable/ic_dot_resize"
+                    android:drawablePadding="15dp"/>
                 <com.mjict.signboardsurvey.widget.SimpleSpinner
                     android:id="@+id/status_spinner"
                     android:layout_width="170dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:gravity="center_vertical"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:text="@string/size"/>
+                    android:gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:text="@string/size"
+                    android:drawableLeft="@drawable/ic_dot_resize"
+                    android:drawablePadding="15dp"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -119,84 +154,90 @@
                         android:layout_width="80dp"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:textSize="20sp"/>
+                        android:textSize="18sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:text="@string/multiply_sign"/>
                     <EditText
                         android:id="@+id/length_edit_text"
                         android:layout_width="80dp"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:textSize="20sp"/>
+                        android:textSize="18sp"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:text="@string/light"/>
+                    android:gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:text="@string/light"
+                    android:drawableLeft="@drawable/ic_dot_resize"
+                    android:drawablePadding="15dp"/>
                 <Spinner
                     android:id="@+id/light_type_spinner"
                     android:layout_width="170dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:gravity="center_vertical"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:text="네온사인"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:text="@string/height_from_land"/>
+                    android:gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:text="@string/placed_location"
+                    android:drawableLeft="@drawable/ic_dot_resize"
+                    android:drawablePadding="15dp"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp">
                     <EditText
-                        android:id="@+id/placed_floor_eidt_text"
+                        android:id="@+id/placed_floor_edit_text"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:textSize="20sp"/>
+                        android:textSize="18sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:text="@string/divide_sign"/>
                     <EditText
                         android:id="@+id/total_floor_edit_text"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:textSize="20sp"/>
+                        android:textSize="18sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:text="@string/floor_count"/>
                     <EditText
                         android:id="@+id/height_edit_text"
@@ -204,14 +245,14 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="20dp"
                         android:gravity="center_vertical"
-                        android:textSize="20sp"/>
+                        android:textSize="18sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:text="@string/meter"/>
                 </LinearLayout>
             </LinearLayout>
@@ -220,10 +261,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:text="@string/building_location"
                 android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                android:drawableLeft="@drawable/ic_dot_resize"
+                android:drawablePadding="15dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -235,7 +278,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:background="@drawable/bg_gray_border"
+                    android:clickable="true"
+                    android:background="@drawable/bg_white_box"
                     android:layout_marginRight="5dp"
                     android:padding="2dp">
                     <ImageView
@@ -249,6 +293,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom|center_horizontal"
+                        android:duplicateParentState="true"
                         android:text="@string/front"/>
                 </LinearLayout>
                 <LinearLayout
@@ -256,7 +301,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:background="@drawable/bg_gray_border"
+                    android:clickable="true"
+                    android:background="@drawable/bg_white_box"
                     android:layout_marginRight="5dp"
                     android:padding="2dp">
                     <ImageView
@@ -270,6 +316,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom|center_horizontal"
+                        android:duplicateParentState="true"
                         android:text="@string/intersection"/>
                 </LinearLayout>
                 <LinearLayout
@@ -277,7 +324,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:background="@drawable/bg_gray_border"
+                    android:clickable="true"
+                    android:background="@drawable/bg_white_box"
                     android:layout_marginRight="5dp"
                     android:padding="2dp">
                     <ImageView
@@ -291,6 +339,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom|center_horizontal"
+                        android:duplicateParentState="true"
                         android:text="@string/front_back"/>
                 </LinearLayout>
             </LinearLayout>

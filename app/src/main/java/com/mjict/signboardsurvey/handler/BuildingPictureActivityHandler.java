@@ -260,7 +260,7 @@ public class BuildingPictureActivityHandler extends SABaseActivityHandler {
     private void startToSavePictureInformation(String path) {
         String fileName = path.substring(path.lastIndexOf("/")+1);
 
-        final BuildingPicture bp = new BuildingPicture(0, building.getId(), fileName, "");
+        final BuildingPicture bp = new BuildingPicture(0, building.getId(), fileName);
         InsertBuildingPictureTask task = new InsertBuildingPictureTask(activity.getApplicationContext());
         task.setDefaultAsyncTaskListener(new AsyncTaskListener<Long, Boolean>() {
             @Override

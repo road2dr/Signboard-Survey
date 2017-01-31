@@ -12,13 +12,15 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         
-        <item name="android:textViewStyle">@style/MyTextViewStyle</item>
+        <item name="android:textViewStyle">@style/MJTextViewStyle</item>
+        <item name="android:buttonStyle">@style/MJButtonStyle</item>
+        <item name="android:imageButtonStyle">@style/MJImageButtonStyle</item>
         <item name="popupMenuStyle">@style/MyPopupMenu</item>
     </style>
 
 
     <style name="MyPopupMenu" parent="android:Widget.Holo.Light.ListPopupWindow">
-        <item name="android:popupBackground">@color/colorPrimaryDark</item>
+        <item name="android:popupBackground">@drawable/bg_option_menu</item>
         <item name="android:popupElevation">0dp</item>
     </style>
 
@@ -38,8 +40,23 @@
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="MyTextViewStyle" parent="android:Widget.TextView">
+    <style name="MJTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="MJButtonStyle" parent="Base.TextAppearance.AppCompat.Widget.Button" >
+        <item name="android:background">@drawable/btn_basic_button</item>
+        <item name="android:gravity">center</item>
+        <item name="android:shadowRadius">0</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textColor">@color/basic_btn_text_color_sel</item>
+    </style>
+
+    <style name="MJImageButtonStyle" parent="MJButtonStyle" >
+        <item name="android:padding">5dp</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+
+
 
 </resources>

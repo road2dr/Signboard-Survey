@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/white">
     
     <com.mjict.signboardsurvey.widget.TouchImageView
         android:id="@+id/buildingImageView"
@@ -45,18 +46,25 @@
         <LinearLayout
             android:id="@+id/downmostBottomLayout"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_alignParentBottom="true"
+            android:padding="10dp"
             android:orientation="horizontal">
             <ImageButton
                 android:id="@+id/deleteButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/btn_basic_button"
+                android:src="@drawable/ic_trash"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"/>
             <ImageButton
                 android:id="@+id/addPictureButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/btn_basic_button"
+                android:src="@drawable/ic_camera"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="1"/>
     </LinearLayout>
     
@@ -69,7 +77,9 @@
             android:id="@+id/previousButton"
             android:layout_width="70dp"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_prev_sel"
+            android:background="@null"/>
         <TextView
             android:id="@+id/pageNumTextView"
             android:layout_width="100dp"
@@ -84,7 +94,9 @@
             android:id="@+id/nextButton"
             android:layout_width="70dp"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_next_sel"
+            android:background="@null"/>
     </RelativeLayout>
 
 </RelativeLayout>

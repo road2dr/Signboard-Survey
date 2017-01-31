@@ -3,7 +3,10 @@
     android:id="@+id/first_street_text_view"
     android:layout_width="match_parent"
     android:layout_height="35dp"
-    android:background="@drawable/bg_gray_border"
-    android:paddingLeft="5dp"
+    android:drawableLeft="@drawable/ic_dot_resize"
+    android:drawableRight="@drawable/ic_right_arrow"
+    android:drawablePadding="20dp"
+    android:paddingLeft="10dp"
     android:paddingRight="5dp"
+    android:background="@drawable/bg_white_box_no_border"
     android:gravity="center_vertical"/>

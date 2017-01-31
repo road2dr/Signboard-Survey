@@ -13,13 +13,14 @@ import android.widget.TextView;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.widget.ImageZoomView;
 import com.mjict.signboardsurvey.widget.JoystickView;
-import com.mjict.signboardsurvey.widget.TouchImageView;
+import com.mjict.signboardsurvey.widget.RetangleDrawImageView;
 
 
-public class SignMeasureActivity extends SABaseActivity implements JoystickView.OnJoystickMoveListener/*, VertexOnMoveListener*/ {
+public class SignMeasureActivity extends SABaseActivity implements JoystickView.OnJoystickMoveListener,
+        RetangleDrawImageView.VertexOnMoveChangedListener, RetangleDrawImageView.SizeSettledListener {
 
-    //	private JoystickView joystick;
-    private TouchImageView imageView;
+    private JoystickView joystick;
+    private RetangleDrawImageView imageView;
     private ImageZoomView zoomView;
 
     private Button measureButton;
@@ -54,15 +55,15 @@ public class SignMeasureActivity extends SABaseActivity implements JoystickView.
         super.init();
         this.hideToolBar();
 
-        imageView = (TouchImageView)this.findViewById(R.id.image_view);
-        imageView.setVertexDrawingEnabled(true);
+        imageView = (RetangleDrawImageView)this.findViewById(R.id.image_view);
+//        imageView.setVertexDrawingEnabled(true);
 
 //        imageView.setImageResource(R.drawable.sign_2);
-//		imageView.setVertexOnMoveListener(this);
-//		imageView.setSizeSettledListener(this);
+		imageView.setVertexMoveListener(this);
+		imageView.setSizeSettledListener(this);
 
-//		joystick = (JoystickView)this.findViewById(R.id.joystickView);
-//		joystick.setOnJoystickMoveListener(this, 100);
+		joystick = (JoystickView)this.findViewById(R.id.joystick_view);
+		joystick.setOnJoystickMoveListener(this, 100);
 
         zoomView = (ImageZoomView)this.findViewById(R.id.image_zoom_view);
 
@@ -86,7 +87,7 @@ public class SignMeasureActivity extends SABaseActivity implements JoystickView.
     public void setImage(Bitmap image) {
         this.image = image;
         imageView.setImageBitmap(image);
-        imageView.setZoom(1);
+//        imageView.setZoom(1);
         zoomView.setImage(image);
 
         int w = imageView.getWidth();
@@ -98,9 +99,9 @@ public class SignMeasureActivity extends SABaseActivity implements JoystickView.
         pos[2] = new Point(w/2+120, h/2+120);
         pos[3] = new Point(w/2-120, h/2+120);
 
-//		imageView.setVertexSize(35);
-//		imageView.setVertexPosition(pos);
-//		imageView.setLineWidth(2);
+		imageView.setVertexSize(35);
+		imageView.setVertexPosition(pos);
+		imageView.setLineWidth(2);
 
 //		Point bp = findBitmapPosition(pos[0].x, pos[0].y);
 //		zoomView.setZoomPosition(bp.x, bp.y);
@@ -149,7 +150,7 @@ public class SignMeasureActivity extends SABaseActivity implements JoystickView.
     }
 
     public void clearImageViewVertex() {
-        imageView.clearVertex();
+
     }
 
     /**
@@ -159,16 +160,16 @@ public class SignMeasureActivity extends SABaseActivity implements JoystickView.
     public Point[] getVertexPositionFromBitmap() {
         Point[] pos = imageView.getVertexPosition();
 
-//		Point[] bPosition = new Point[pos.length];
-//		for(int i=0; i<pos.length; i++) {
-//			Point p = pos[i];
-//			if(p == null)
-//				return null;
-//
-//			bPosition[i] = findBitmapPosition(p.x, p.y);
-//		}
+		Point[] bPosition = new Point[pos.length];
+		for(int i=0; i<pos.length; i++) {
+			Point p = pos[i];
+			if(p == null)
+				return null;
 
-        return pos;
+			bPosition[i] = findBitmapPosition(p.x, p.y);
+		}
+
+        return bPosition;
     }
 
     @Override
@@ -184,31 +185,31 @@ public class SignMeasureActivity extends SABaseActivity implements JoystickView.
             return;
         ///////////////
 
-//		Point ip = imageView.getSelectedPosition();
-//		int mx = ip.x+tx;
-//		int my = ip.y+ty;
-//		imageView.setSelecteVertexPosition(mx, my);
-//
-//		Point zp = findBitmapPosition(mx, my);
-//		zoomView.setZoomPosition(zp.x, zp.y);
-//
-//		// temp
-//		String temp = tx+", "+ty+" 만큼 뷰에서 이동, 줌뷰 에서는 "+(zp.x-curX)+", "+(zp.y-curY)+" 만큼 이동";
-//		imageView.setTempText(temp);
+		Point ip = imageView.getSelectedPosition();
+		int mx = ip.x+tx;
+		int my = ip.y+ty;
+		imageView.setSelecteVertexPosition(mx, my);
+
+		Point zp = findBitmapPosition(mx, my);
+		zoomView.setZoomPosition(zp.x, zp.y);
+
+		// temp
+		String temp = tx+", "+ty+" 만큼 뷰에서 이동, 줌뷰 에서는 "+(zp.x-curX)+", "+(zp.y-curY)+" 만큼 이동";
+		imageView.setTempText(temp);
 
     }
 
-//	@Override
-//	public void onMove(int index, int x, int y) {
-//		Point p = findBitmapPosition(x, y);
-//		zoomView.setZoomPosition(x, y);
-//	}
+	@Override
+	public void onMove(int index, int x, int y) {
+		Point p = findBitmapPosition(x, y);
+		zoomView.setZoomPosition(p.x, p.y);
+	}
 
-//	@Override
-//	public void onSelectedVertexChanged(int x, int y) {
-//		Point p = findBitmapPosition(x, y);
-//		zoomView.setZoomPosition(p.x, p.y);
-//	}
+	@Override
+	public void onSelectedVertexChanged(int x, int y) {
+		Point p = findBitmapPosition(x, y);
+		zoomView.setZoomPosition(p.x, p.y);
+	}
 
     /**
      * 이미지뷰 x, y 해당하는 곳의 비트맵의 위치를 구함.
@@ -278,4 +279,8 @@ public class SignMeasureActivity extends SABaseActivity implements JoystickView.
         return value;
     }
 
+    @Override
+    public void onSizeSettled() {
+
+    }
 }

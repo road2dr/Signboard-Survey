@@ -53,6 +53,9 @@ public class LoadSignResultStatusTask extends DefaultAsyncTask<Void, Integer, lo
 
 //            long n = dmgr.getSignsCountByResult(lawfulSignTypes.get(i));  // TODO ormlite 버그인가 count 연산이 제대로 안된다;;;
             List<Sign> signs = dmgr.getSignsByResult(lawfulSignTypes.get(i));
+            if(signs == null)
+                return null;
+
             int n = signs.size();
             lawfulSignCount = lawfulSignCount + n;
         }

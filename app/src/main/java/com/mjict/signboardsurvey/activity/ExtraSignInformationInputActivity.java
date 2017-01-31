@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.widget.SimpleSpinner;
+import com.mjict.signboardsurvey.widget.TimePickerDialog;
 
 /**
  * Created by Junseo on 2016-11-18.
@@ -20,6 +21,7 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
     private CheckBox collisionCheckBox;
     private EditText collisionWidthEditText;
     private EditText collisionLengthEditText;
+    private SimpleSpinner reviewSpinner;
     private SimpleSpinner installedSideSpinner;
     private SimpleSpinner uniquenessSpinner;
     private EditText memoEditText;
@@ -35,6 +37,8 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
     private View backButton;
     private View nextButton;
 
+    private TimePickerDialog timePickerDialog;
+
 
     @Override
     protected int getContentLayout() {
@@ -49,6 +53,7 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
         collisionCheckBox = (CheckBox)this.findViewById(R.id.collision_check_box);
         collisionWidthEditText = (EditText)this.findViewById(R.id.collision_width_edit_text);
         collisionLengthEditText = (EditText)this.findViewById(R.id.collision_length_edit_text);
+        reviewSpinner = (SimpleSpinner)this.findViewById(R.id.review_spinner);
         installedSideSpinner = (SimpleSpinner)this.findViewById(R.id.installed_side_spinner);
         uniquenessSpinner = (SimpleSpinner)this.findViewById(R.id.uniqueness_spinner);
         memoEditText = (EditText)this.findViewById(R.id.memo_edit_text);
@@ -60,17 +65,12 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
 
         demolitionLabel = this.findViewById(R.id.demolition_label);
         demolitionLayout = this.findViewById(R.id.demolition_layout);
-//        private SimpleSpinner installedSideSpinner;
-//        private SimpleSpinner uniquenessSpinner;
-//        private EditText memoEditText;
-//        private ImageView demolitionImageView;
-//        private ImageButton addPicButton;
-//        private TextView demolishDateTextView;
-//        private SimpleSpinner resultSpinner;
-
 
         backButton = this.findViewById(R.id.back_button);
         nextButton = this.findViewById(R.id.next_button);
+
+        timePickerDialog = new TimePickerDialog(this);
+        timePickerDialog.create();
     }
 
 //    public void setFrontChecked(boolean checked) {
@@ -153,6 +153,18 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
 //    uniquenessSpinner = (SimpleSpinner)this.findViewById(R.id.uniqueness_spinner);
 //    memoEditText = (EditText)this.findViewById(R.id.memo_edit_text);
 
+    public void addToReviewSpinner(int id, Object data) {
+        reviewSpinner.addSpinnerData(id, data);
+    }
+
+    public void setReviewSpinnerSelection(int id) {
+        reviewSpinner.setSpinnerSelection(id);
+    }
+
+    public Object getSelectedReview() {
+        return reviewSpinner.getSelectedData();
+    }
+
     public void addToInstalledSideSpinner(int id, Object data) {
         installedSideSpinner.addSpinnerData(id, data);
     }
@@ -199,6 +211,10 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
         addPicButton.setOnClickListener(listener);
     }
 
+    public String getInputDemolishDate() {
+        return demolishDateTextView.getText().toString();
+    }
+
     public void setDemolishDateText(CharSequence text) {
         demolishDateTextView.setText(text);
     }
@@ -217,6 +233,18 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
 
     public Object getSelectedResult() {
         return resultSpinner.getSelectedData();
+    }
+
+    public void showTimePickerDialog() {
+        timePickerDialog.show();
+    }
+
+    public void hideTimePickerDialog() {
+        timePickerDialog.dismiss();
+    }
+
+    public void setTimePickerConfirmButtonOnClickListener(TimePickerDialog.ConfirmButtonOnClickListener listener) {
+        timePickerDialog.setConfirmButtonOnClickListener(listener);
     }
 
     public void setBackButtonOnClickListener(View.OnClickListener listener) {

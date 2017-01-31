@@ -40,6 +40,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
 
     private Setting[] statusSettings;
     private Setting[] lightSettings;
+    private Setting[] signTypeSettings;
 
     // value for auto judgement
     private AutoJudgementValue autoJudgementValue;
@@ -67,6 +68,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         SettingDataManager smgr = SettingDataManager.getInstance();
         statusSettings = smgr.getSignStatus();
         lightSettings = smgr.getLightTypes();
+        signTypeSettings = smgr.getSignTypes();
 
         initSpinnerData();
 
@@ -131,9 +133,15 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
             if(resultCode == Activity.RESULT_OK) {
                 float width = data.getFloatExtra(MJConstants.SIZE_X, 0)/1000;
                 float length = data.getFloatExtra(MJConstants.SIZE_Y, 0)/1000;
+                float area = width*length;
+
+                width = Float.parseFloat(String.format("%.2f",width));
+                length = Float.parseFloat(String.format("%.2f",length));
+                area = Float.parseFloat(String.format("%.2f",area));
 
                 currentSign.setWidth(width);
                 currentSign.setLength(length);
+                currentSign.setArea(area);
 
                 updateToUI();
             } else {
@@ -177,13 +185,16 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
 
     private void initSpinnerData() {
         for(int i=0; i<statusSettings.length; i++)
-            activity.addToStatusSpinner(i, statusSettings[i]);  // TODO 원래 이렇게 직접 넣는게 아니라 wrapper 클래스를 만들어 넣어 주는게 맞을 듯
+            activity.addToStatusSpinner(statusSettings[i].getCode(), statusSettings[i]);  // TODO 원래 이렇게 직접 넣는게 아니라 wrapper 클래스를 만들어 넣어 주는게 맞을 듯
 
         for(int i=0; i<lightSettings.length; i++) {
             Setting s = lightSettings[i];
             IconItem item = new IconItem(-1, s);
             activity.addToLightSpinner(item);
         }
+
+        for(int i=0; i<signTypeSettings.length; i++)
+            activity.addToSignTypeSpinner(signTypeSettings[i].getCode(), signTypeSettings[i]);
     }
 
     private void updateToUI() {
@@ -215,6 +226,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         activity.setHeightText(height);
         activity.setLightSpinnerSelection(lightIndex);
         activity.setStatusSpinnerSelection(currentSign.getStatsCode());
+        activity.setSignTypeSpinnerSelection(currentSign.getType());
 
         activity.setPlacedFloorText(placedFloorText);
         activity.setTotalFloorText(totalFloorText);
@@ -226,6 +238,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
     private void nextButtonClicked() {
         String content = activity.getInputContent();
         Setting statusSetting = (Setting)activity.getSelectedStatus();
+        Setting signTypeSetting = (Setting)activity.getSelectedSignType();
         String widthText = activity.getInputWidth();
         String lengthText = activity.getInputLength();
         String heightText = activity.getInputHeight();
@@ -260,6 +273,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
 
         //
         currentSign.setContent(content);
+        currentSign.setType(signTypeSetting.getCode());
         currentSign.setStatsCode(statusSetting.getCode());
         currentSign.setWidth(Float.parseFloat(widthText));
         currentSign.setLength(Float.parseFloat(lengthText));
@@ -341,7 +355,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         String time = Utilities.getCurrentTimeAsString();
         int hash = Math.abs((int)Utilities.hash(time));
         String dir = SyncConfiguration.getDirectoryForSingPicture(currentSign.isSynchronized());
-        final String fileName = String.format("sign_%d_%d.jpg", currentSign.getId(), hash);
+        final String fileName = String.format("sign_%10d.jpg", hash);
         String path = dir + fileName;
 
         Intent intent = new Intent(activity, CameraActivity.class);
@@ -384,7 +398,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
                     if(values[0].image != null)
                         activity.setSignImage(values[0].image);
                     else
-                        activity.setSignImage(R.drawable.ic_signboard); // 이미지 없거나 로드 실패
+                        activity.setSignImage(R.drawable.ic_no_image); // 이미지 없거나 로드 실패
                 }
             }
             @Override
@@ -443,11 +457,11 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         float width = 0f;
         float length = 0f;
         float height = 0f;
-        String area = "";
+        float area = 0f;
         float extraSize = 0f;
         int quantity = 0;
         String content = "";
-        int placedFloor = -1;
+        int placedFloor = 0;
         boolean isFront = false;
         int lightType = -1;
         String placement = "";
@@ -456,17 +470,17 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         float collisionLength = 0f;
         int inspectionResult = -1;
         String permissionNumber = "";
-        String needReinspection = "";
+//        String needReinspection = "";
         String inputter = MJContext.getCurrentUser().getUserId();
         String inputDate = "";
         int statsCode = -1;
         String picNumber = "";
         String modifier = MJContext.getCurrentUser().getUserId();;
         String modifyDate = "";
-        int totalFloor = -1;
+        int totalFloor = 0;
         boolean isIntersection = false;
         int tblNumber = 510;
-        boolean isDeleted = false;
+//        boolean isDeleted = false;
         boolean isFrontBackRoad = false;
         String demolitionPicPath = "";
         String demolishedDate = "";
@@ -481,8 +495,8 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         Sign sign = new Sign(id, inspectionNumber,inspectionDate,mobileId,isSynchronized,syncDate,
                 type,width,length,height,area,extraSize,quantity,content,placedFloor,isFront,lightType,
                 placement,isCollision,collisionWidth,collisionLength,inspectionResult,permissionNumber,
-                needReinspection,inputter,inputDate, statsCode,picNumber,modifier,modifyDate,
-                totalFloor,isIntersection,tblNumber,isDeleted,isFrontBackRoad,demolitionPicPath,
+                inputter,inputDate, statsCode,picNumber,modifier,modifyDate,
+                totalFloor,isIntersection,tblNumber,isFrontBackRoad,demolitionPicPath,
                 demolishedDate,reviewCode,addressId,addressId,sgCode,placedSide,uniqueness,memo);
 
         return sign;

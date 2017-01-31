@@ -58,7 +58,7 @@ public class SearchResultActivity extends SABaseActivity {
     public void addAddressResult(String result, int index, int length) {
         TextView tv = (TextView)inflater.inflate(R.layout.tv_search_result_address, null);
         SpannableStringBuilder ssb = new SpannableStringBuilder(result);
-        ssb.setSpan(new AbsoluteSizeSpan(40), index, index+length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new AbsoluteSizeSpan(70), index, index+length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         tv.setText(ssb);
         tv.setTag(addressResultLayout.getChildCount());
         final int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics());
@@ -91,7 +91,10 @@ public class SearchResultActivity extends SABaseActivity {
         String shopCountText = result.shopCountText;
         String signCountText = result.signCountText;
 
-        imageView.setImageBitmap(result.image);
+        if(result.image != null)
+            imageView.setImageBitmap(result.image);
+        else
+            imageView.setImageResource(R.drawable.ic_no_image);
         nameTextView.setText(result.name);
         addressTextView.setText(result.streetAddress);
         shopCountTextView.setText(shopCountText);
@@ -119,7 +122,7 @@ public class SearchResultActivity extends SABaseActivity {
     public void addShopResult(String result, int index, int length) {
         TextView tv = (TextView)inflater.inflate(R.layout.tv_search_result_address, null);
         SpannableStringBuilder ssb = new SpannableStringBuilder(result);
-        ssb.setSpan(new AbsoluteSizeSpan(40), index, index+length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new AbsoluteSizeSpan(70), index, index+length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         tv.setText(ssb);
         tv.setTag(shopResultLayout.getChildCount());
         final int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics());

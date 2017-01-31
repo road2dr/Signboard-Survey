@@ -3,18 +3,20 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:background="@color/light_gray"
+    android:padding="5dp">
     <LinearLayout
         android:id="@+id/building_info_view"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:background="@drawable/bg_gray_border" >
+        android:layout_height="140dp"
+        android:padding="5dp"
+        android:background="@drawable/bg_white_box" >
         <ImageView
             android:id="@+id/building_image_view"
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_gray_border"/>
+            android:background="@color/white"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -30,60 +32,75 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/street_address"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 android:gravity="left"/>
             <TextView
                 android:id="@+id/street_address_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/secondary_text"
                 android:minLines="2"
                 android:maxLines="2"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/house_number_address"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 android:gravity="left"/>
             <TextView
                 android:id="@+id/house_address_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/secondary_text"
                 android:minLines="2"
                 android:maxLines="2"/>
         </LinearLayout>
     </LinearLayout>
 
-    <RadioGroup
-        android:id="@+id/list_option_radio_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="right"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp">
-        <RadioButton
-            android:id="@+id/radio_option_list"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radio_list"
-            android:button="@null"
-            android:checked="true"/>
-        <RadioButton
-            android:id="@+id/radio_option_table"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radio_table"
-            android:button="@null"
-            android:layout_marginLeft="5dp"/>
-    </RadioGroup>
-
-    <ListView
-        android:id="@+id/shop_list_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="0dp"
-        android:divider="@null"/>
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bg_white_box">
+        <RadioGroup
+            android:id="@+id/list_option_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="right"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
+            <RadioButton
+                android:id="@+id/radio_option_list"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_grid2_sel"
+                android:button="@null"
+                android:checked="true"/>
+            <RadioButton
+                android:id="@+id/radio_option_table"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_grid3_sel"
+                android:button="@null"
+                android:layout_marginLeft="15dp"/>
+        </RadioGroup>
+
+        <ListView
+            android:id="@+id/shop_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:dividerHeight="5dp"
+            android:divider="@null"/>
+    </LinearLayout>
 
 </LinearLayout>

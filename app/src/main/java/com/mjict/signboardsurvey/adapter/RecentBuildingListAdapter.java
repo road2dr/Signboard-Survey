@@ -51,7 +51,10 @@ public class RecentBuildingListAdapter extends ArrayAdapter<RecentBuilding> {
 
         RecentBuilding b = getItem(position);
 
-        holder.getImageView().setImageBitmap(b.image);
+        if(b.image != null)
+            holder.getImageView().setImageBitmap(b.image);
+        else
+            holder.getImageView().setImageResource(R.drawable.ic_no_image);
         holder.getNameTextView().setText(b.name);
         holder.getAddressTextView().setText(b.address);
 

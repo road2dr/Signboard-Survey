@@ -710,11 +710,14 @@ public class DatabaseManager {
 		return result;
 	}
 	
-	public int insertShop(Shop shop) {
-		int result = -1;
+	public long insertShop(Shop shop) {
+		long result = -1;
 		
 		try {
-			result = helper.getShopDao().create(shop);
+			Shop s = helper.getShopDao().createIfNotExists(shop);
+			if(s != null)
+				result = s.getId();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			result = -1;

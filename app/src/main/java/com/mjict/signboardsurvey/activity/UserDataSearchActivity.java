@@ -4,8 +4,6 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -22,8 +20,6 @@ import com.mjict.signboardsurvey.widget.SimpleSpinner;
 public class UserDataSearchActivity extends SABaseActivity {
 
     private TextView userInfoTextView;
-    private CheckBox reviewCheckBox;
-    private CheckBox demolitionCheckBox;
     private RadioGroup termRadioGroup;
     private TermRadioOnCheckedChangeListener radioCheckedChangeListener;
     private SimpleSpinner countySpinner;
@@ -45,8 +41,6 @@ public class UserDataSearchActivity extends SABaseActivity {
         super.init();
 
         userInfoTextView = (TextView)this.findViewById(R.id.user_information_text_view);
-        reviewCheckBox = (CheckBox)this.findViewById(R.id.review_check_box);
-        demolitionCheckBox = (CheckBox)this.findViewById(R.id.demolish_check_box);
         termRadioGroup = (RadioGroup)this.findViewById(R.id.term_radio_group);
         resultListView = (ListView)this.findViewById(R.id.result_list_view);
         countySpinner = (SimpleSpinner)this.findViewById(R.id.county_spinner);
@@ -120,8 +114,6 @@ public class UserDataSearchActivity extends SABaseActivity {
     }
 
     public void enabledAll() {
-        reviewCheckBox.setEnabled(true);
-        demolitionCheckBox.setEnabled(true);
         for(int i=0; i<termRadioGroup.getChildCount(); i++) {
             View child = termRadioGroup.getChildAt(i);
             if(child != null && child instanceof RadioButton)
@@ -136,8 +128,6 @@ public class UserDataSearchActivity extends SABaseActivity {
 
 
     public void disabledAll() {
-        reviewCheckBox.setEnabled(false);
-        demolitionCheckBox.setEnabled(false);
         for(int i=0; i<termRadioGroup.getChildCount(); i++) {
             View child = termRadioGroup.getChildAt(i);
             if(child != null && child instanceof RadioButton)
@@ -152,14 +142,6 @@ public class UserDataSearchActivity extends SABaseActivity {
 
     public void setUserInfoText(String text) {
         userInfoTextView.setText(text);
-    }
-
-    public void setReviewCheckBoxOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
-        reviewCheckBox.setOnCheckedChangeListener(listener);
-    }
-
-    public void demolitionCheckBoxOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
-        demolitionCheckBox.setOnCheckedChangeListener(listener);
     }
 
     public void setTermRadioOnCheckedChangedListener(TermRadioOnCheckedChangeListener listener) {

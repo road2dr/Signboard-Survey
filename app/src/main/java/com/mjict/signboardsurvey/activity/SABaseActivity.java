@@ -1,6 +1,7 @@
 package com.mjict.signboardsurvey.activity;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.GravityCompat;
@@ -9,7 +10,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.PopupMenu;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -97,6 +97,7 @@ public abstract class SABaseActivity extends AppCompatSActivity {
 
         menuButton = (ImageView)this.findViewById(R.id.menu_button);
         drawerArrowDrawable = new DrawerArrowDrawable(this);
+        drawerArrowDrawable.setColor(Color.WHITE);
         menuButton.setImageDrawable(drawerArrowDrawable);
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +112,8 @@ public abstract class SABaseActivity extends AppCompatSActivity {
 
         titleTextView = (TextView)this.findViewById(R.id.title_text_view);
         optionButton = (ImageView)this.findViewById(R.id.option_button);
-        optionPopup = new PopupMenu(SABaseActivity.this, optionButton, Gravity.NO_GRAVITY, android.support.v7.appcompat.R.attr.popupMenuStyle, 0);
+//        optionPopup = new PopupMenu(SABaseActivity.this, optionButton, Gravity.NO_GRAVITY, android.support.v7.appcompat.R.attr.popupMenuStyle, 0);
+        optionPopup = new PopupMenu(SABaseActivity.this, optionButton);
         optionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

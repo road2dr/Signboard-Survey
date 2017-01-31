@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="140dp"
     android:orientation="horizontal"
-    android:background="@drawable/bg_gray_border"
+    android:background="@drawable/bg_white_box"
     android:padding="10dp">
 
     <ImageView
@@ -21,8 +21,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_text"/>
             <TextView
@@ -38,8 +38,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_size"/>
             <TextView
@@ -55,8 +55,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_result"/>
             <TextView

@@ -3,8 +3,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp">
 
     <LinearLayout
         android:id="@+id/first_layout"
@@ -12,26 +12,29 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:background="@drawable/bg_gray_border"
+        android:background="@drawable/bg_white_box"
         android:paddingTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dp">
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="2.5dp">
         <TextView
             android:id="@+id/first_name_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:textColor="@color/secondary_text"
             android:maxLines="1"
             android:gravity="center"/>
         <TextView
             android:id="@+id/first_category_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text"
             android:gravity="center" />
         <TextView
             android:id="@+id/first_phone_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text"
             android:gravity="center" />
     </LinearLayout>
 
@@ -41,26 +44,29 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:background="@drawable/bg_gray_border"
+        android:background="@drawable/bg_white_box"
         android:paddingTop="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp">
+        android:layout_marginLeft="2.5dp"
+        android:layout_marginRight="2.5dp">
         <TextView
             android:id="@+id/second_name_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:textColor="@color/secondary_text"
             android:maxLines="1"
             android:gravity="center"/>
         <TextView
             android:id="@+id/second_category_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text"
             android:gravity="center"/>
         <TextView
             android:id="@+id/second_phone_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text"
             android:gravity="center"/>
     </LinearLayout>
 
@@ -70,14 +76,15 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:background="@drawable/bg_gray_border"
+        android:background="@drawable/bg_white_box"
         android:paddingTop="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="10dp">
+        android:layout_marginLeft="2.5dp"
+        android:layout_marginRight="5dp">
         <TextView
             android:id="@+id/third_name_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text"
             android:textSize="18sp"
             android:maxLines="1"
             android:gravity="center"/>
@@ -85,11 +92,13 @@
             android:id="@+id/third_category_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text"
             android:gravity="center"/>
         <TextView
             android:id="@+id/third_phone_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text"
             android:gravity="center"/>
     </LinearLayout>
 

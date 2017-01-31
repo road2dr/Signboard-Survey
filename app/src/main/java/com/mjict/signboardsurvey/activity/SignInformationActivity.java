@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mjict.signboardsurvey.R;
 
@@ -25,7 +26,7 @@ public class SignInformationActivity extends SABaseActivity {
     private CheckBox frontBackCheckBox;
     private EditText typeTextView;
     private EditText sizeTextView;
-    private ImageView lightTypeImageView;
+    private TextView lightTypeTextView;
     private EditText statusTextView;
 
     private OnOptionMenuItemClickListener optionMenuItemClickListener;
@@ -65,7 +66,7 @@ public class SignInformationActivity extends SABaseActivity {
         frontBackCheckBox = (CheckBox)this.findViewById(R.id.front_back_check_box);
         typeTextView = (EditText)this.findViewById(R.id.type_edit_text);
         sizeTextView = (EditText)this.findViewById(R.id.size_edit_text);
-        lightTypeImageView = (ImageView)this.findViewById(R.id.light_type_image_view);
+        lightTypeTextView = (TextView)this.findViewById(R.id.light_type_text_view);
         statusTextView = (EditText)this.findViewById(R.id.status_edit_text);
 
         frontCheckBox.setEnabled(false);
@@ -126,8 +127,8 @@ public class SignInformationActivity extends SABaseActivity {
         sizeTextView.setText(text);
     }
 
-    public void setLightTypeImage(int resId) {
-        lightTypeImageView.setImageResource(resId);
+    public void setLightTypeText(String text) {
+        lightTypeTextView.setText(text);
     }
 
     public void setStatusText(String text) {

@@ -24,9 +24,7 @@ public class KeywordSearchActivity extends SABaseActivity {
     @Override
     protected void init() {
         super.init();
-        this.hideToolBar();
-        this.disableNavigation();
-
+        this.setTitle(R.string.integrated_search);
         keywordEditText = (AutoCompleteTextView)this.findViewById(R.id.keyword_edit_text);
         searchButton = (ImageButton)this.findViewById(R.id.search_button);
 

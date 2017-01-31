@@ -22,7 +22,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FilterInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,6 +34,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import magick.ImageInfo;
+import magick.MagickImage;
 
 public class Utilities {
 
@@ -308,7 +313,7 @@ public class Utilities {
 	}
 
 	public static long hash(String str) {
-		long hash = 5381;
+		long hash = 53;
 
 		for(int i=0; i<str.length(); i++)
 			hash = ((hash << 5) + hash) + str.charAt(i); /* hash * 33 + c */
@@ -372,139 +377,6 @@ public class Utilities {
 		return judgement;
 	}
 
-//	int areaType, int areaCode, int signType, int signStatus, float width,
-//	float length, float height, boolean isFront, boolean isIntersection,
-//	int lightType, int placedFloor, int totalFloor, int signCount
-
-//	SparseArray<AutoInspectionRule> aa;
-//	private static AutoInspectionRule autoInspectionRule = null;
-
-//	ArrayList<AutoInspectionRule> inspectionRules = null;
-
-
-//	private static SparseArray<List<AutoInspectionRule>> inspectionRules;
-//	private static List<AutoInspectionRule> defaultInspectionRules;
-//
-//	public static void loadInspectionRules() {		// TODO 초기화 할때 로드 해둬
-//
-//		inspectionRules = new SparseArray<>();
-//
-//		SettingDataManager sdm = SettingDataManager.getInstance();
-//		Setting[] allSignTypes = sdm.getSignTypes();
-//		ArrayList<Setting> fixedSignTypes = new ArrayList<>();
-//		for(int i=0; i<allSignTypes.length; i++) {
-//			Setting s = allSignTypes[i];
-//			if(s.getGroup() == 1)	// 고정 광고물만 사용
-//				fixedSignTypes.add(s);
-//		}
-//
-//		for(int i=0; i<fixedSignTypes.size(); i++) {
-//			Setting s = fixedSignTypes.get(i);
-//			String xmlFileName = String.format(Configuration.getDirectoryForInspectionRule()+"inspection_rule_%d.xml", s.getCode());
-//			List<AutoInspectionRule> rule = AutoInspectionRule.fromXml(xmlFileName);
-//			inspectionRules.put(s.getCode(), rule);
-//		}
-//
-//		String defaultRuleFileName = String.format(Configuration.getDirectoryForInspectionRule()+"inspection_rule_%d.xml", 0);
-//		defaultInspectionRules = AutoInspectionRule.fromXml(defaultRuleFileName);
-//	}
-//
-//
-//	public static int autoInspection(int areaType, int signType, int signCount, int placedFloor, float width, float length,
-//									 boolean isIntersection, boolean isFrontBackRoad, int lightType) {
-//
-//		if(inspectionRules == null && defaultInspectionRules == null)	// 자동 판단 파일 없음
-//			return 3;	// TODO 자동 판단 파일이 없을 시 디폴트 값을 설정 해야 함.
-//
-//		List<AutoInspectionRule> rules = inspectionRules.get(signType);
-//		if(rules == null)
-//			rules = defaultInspectionRules;
-//
-//		if(rules == null)
-//			return 3;
-//
-//		AutoInspectionRule rule = null;
-//		AutoInspectionRule defaultRule = null;
-//		for(int i=0; i<rules.size(); i++) {
-//			AutoInspectionRule r = rules.get(i);
-//
-//			if(r.getAreaType() == areaType)
-//				rule = r;
-//
-//			if(r.getAreaType() == 99)	// 99 => 지정 되지 않은 구역. 디폴트 지역
-//				defaultRule = r;		// 그러니깐 모든 파일은 area_type 이 99 인 룰을 기본적으로 포함하고 있어야 한다.
-//		}
-//
-//		if(rule == null)
-//			rule = defaultRule;
-//
-//		if(rule == null)
-//			return 3;
-//
-//		int defaultResult = rule.getDefaultInspectionResult();		// 기본 전수조사 결과. xml 에 명시된 값에 해당하지 않으면 이걸로 결과를 리턴
-//
-//		// 갯수 검사
-//		int availableCount = rule.getBasicAvailableCount();
-//		if(isIntersection && isFrontBackRoad )
-//			availableCount = availableCount + rule.getBothAdditionCount();
-//		else {
-//			if(isIntersection)
-//				availableCount = availableCount + rule.getIntersectionAdditionCount();
-//			else if(isFrontBackRoad)
-//				availableCount = availableCount + rule.getFrontBackRoadAdditionCount();
-//		}
-//
-//		if(signCount > availableCount)
-//			return 8;	// 요건불비(수량초과)
-//
-//		// 조명에 따른 위치 및 규격 검사
-//		// 조명 종류에 해당하는 룰을 찾아야 한다.
-//		AutoInspectionRule.LightRule lightRule = null;
-//		AutoInspectionRule.LightRule defaultLightRule = null;
-//		for(int i=0; i<rule.getLightRules().size(); i++) {
-//			AutoInspectionRule.LightRule l = rule.getLightRules().get(i);
-//			if(l.code == lightType)
-//				lightRule = l;
-//			if(l.code == 0)				// 0 => 지정 되지 않은 조명 타입. 디폴트 조명
-//				defaultLightRule = l;	// light code 가 0인 룰은 기본적으로 포함하고 있어야 한다.
-//		}
-//
-//		if(lightRule == null)
-//			lightRule = defaultLightRule;
-//
-//		if(lightRule == null)
-//			return defaultResult;
-//
-//		// 설치 장소 검사
-//		if(placedFloor > lightRule.maxAvailablePlacedFloor || placedFloor < lightRule.minAvailablePlacedFloor)
-//			return 9;	// 요건불비(위치장소위반)
-//
-//		// 규격 - 면적 검사
-//		float area = length * width;
-//		for(int i=0; i<lightRule.areaRules.size(); i++) {
-//			AutoInspectionRule.MinMaxRule r = lightRule.areaRules.get(i);
-//			if(area > r.min && area <= r.max)
-//				return r.result;
-//		}
-//
-//		// 규격 - 세로 검사
-//		for(int i=0; i<lightRule.lengthRules.size(); i++) {
-//			AutoInspectionRule.MinMaxRule r = lightRule.lengthRules.get(i);
-//			if(length > r.min && length <= r.max)
-//				return r.result;
-//		}
-//
-//		// 규격 - 가로 검사
-//		for(int i=0; i<lightRule.widthRules.size(); i++) {
-//			AutoInspectionRule.MinMaxRule r = lightRule.widthRules.get(i);
-//			if(width > r.min && width <= r.max)
-//				return r.result;
-//		}
-//
-//		// 위 조건에 모두 해당 사항이 없으면 디폴드 결과 갑으소
-//		return defaultResult;
-//	}
-
 	public static Bitmap loadImage(String path, int sampleSize) {
 		File file = new File(path);
 		Bitmap image = null;
@@ -512,7 +384,32 @@ public class Utilities {
 			try {
 				BitmapFactory.Options opt = new BitmapFactory.Options();
 				opt.inSampleSize = sampleSize;
-				image = BitmapFactory.decodeFile(path, opt);
+
+//				FileInputStream fis = new FileInputStream(path);
+//				BufferedInputStream bis = new BufferedInputStream(fis, 1024 * 8);
+//				ByteArrayOutputStream out = new ByteArrayOutputStream();
+//				int len=0;
+//
+//				byte[] buffer = new byte[1024];
+//				while((len = bis.read(buffer)) != -1){
+//					out.write(buffer, 0, len);
+//				}
+//				out.close();
+//				bis.close();
+//
+////				image = BitmapFactory.decodeFile(path, opt);
+//				byte[] data = out.toByteArray();
+//				image = BitmapFactory.decodeByteArray(data, 0, data.length, opt);
+
+
+//				image = BitmapFactory.decodeStream(new FlushedInputStream(fis));
+
+				ImageInfo i = new ImageInfo(path);
+				MagickImage m = new MagickImage(i);
+
+
+				image = MagickBitmap.ToBitmap(m, sampleSize);
+
 			} catch (Exception e) {
 				e.printStackTrace();
 				image = null;
@@ -527,6 +424,30 @@ public class Utilities {
 		@Override
 		public int compare(Rule lhs, Rule rhs) {
 			return lhs.getOrder() < rhs.getOrder() ? -1 : lhs.getOrder() > rhs.getOrder() ? 1:0;
+		}
+	}
+
+	static class FlushedInputStream extends FilterInputStream {
+		public FlushedInputStream(InputStream inputStream) {
+			super(inputStream);
+		}
+
+		@Override
+		public long skip(long n) throws IOException {
+			long totalBytesSkipped = 0L;
+			while (totalBytesSkipped < n) {
+				long bytesSkipped = in.skip(n - totalBytesSkipped);
+				if (bytesSkipped == 0L) {
+					int read = read();
+					if (read < 0) {
+						break;  // we reached EOF
+					} else {
+						bytesSkipped = 1; // we read one byte
+					}
+				}
+				totalBytesSkipped += bytesSkipped;
+			}
+			return totalBytesSkipped;
 		}
 	}
 }

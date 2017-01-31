@@ -9,7 +9,7 @@ import com.mjict.signboardsurvey.model.Shop;
 /**
  * Created by Junseo on 2016-08-18.
  */
-public class RegisterShopTask extends DefaultAsyncTask<Shop, Integer, Boolean> {
+public class RegisterShopTask extends DefaultAsyncTask<Shop, Integer, Long> {
     private Context context;
 
     public RegisterShopTask(Context c) {
@@ -17,14 +17,14 @@ public class RegisterShopTask extends DefaultAsyncTask<Shop, Integer, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Shop... params) {
+    protected Long doInBackground(Shop... params) {
         if(params == null)
-            return false;
+            return -1L;
 
         Shop shop = params[0];
         DatabaseManager dmgr = DatabaseManager.getInstance(context);
-        int result = dmgr.insertShop(shop);
+        long result = dmgr.insertShop(shop);
 
-        return (result != -1);
+        return result;
     }
 }

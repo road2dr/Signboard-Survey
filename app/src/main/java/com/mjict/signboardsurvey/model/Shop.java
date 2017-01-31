@@ -12,7 +12,7 @@ public class Shop implements Serializable {
 	 */
 	private static final long serialVersionUID = -1989796112959429983L;
 
-	@DatabaseField(id=true)
+	@DatabaseField(generatedId = true)
 	private long id;
 	
 	@DatabaseField

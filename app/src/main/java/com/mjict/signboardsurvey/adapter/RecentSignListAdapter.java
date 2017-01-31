@@ -51,7 +51,11 @@ public class RecentSignListAdapter extends ArrayAdapter<RecentSign> {
         }
 
         RecentSign s = getItem(position);
-        holder.getImageView().setImageBitmap(s.image);
+        if(s.image != null)
+            holder.getImageView().setImageBitmap(s.image);
+        else
+            holder.getImageView().setImageResource(R.drawable.ic_no_image);
+
         holder.getContentTextView().setText(s.content);
         holder.getTypeTextView().setText(s.type);
         holder.getResultTextView().setText(s.result);

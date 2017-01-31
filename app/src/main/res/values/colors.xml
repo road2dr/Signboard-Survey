@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryDark">#cccccc</color>
+    <color name="colorPrimary">#0099fd</color>
+    <color name="colorPrimaryDark">#094484</color>
     <color name="colorAccent">#ff3300</color>
 
-    <color name="light_gray">#e4e4e4</color>
+    <color name="button_normal">#317dc9</color>
+    <color name="button_pressed">#094484</color>
+
+    <color name="light_gray">#eaeaea</color>
+    <color name="navi_text_color">#aaaaaa</color>
+
+    <color name="box_pressed">#75b3f2</color>
 
     <color name="label_seperator">#aeaeae</color>
     <color name="black">#000000</color>

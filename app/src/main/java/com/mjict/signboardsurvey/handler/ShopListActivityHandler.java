@@ -24,9 +24,12 @@ import com.mjict.signboardsurvey.task.ModifyShopTask;
 import com.mjict.signboardsurvey.task.RegisterShopTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 import com.mjict.signboardsurvey.util.SettingDataManager;
+import com.mjict.signboardsurvey.util.SyncConfiguration;
 import com.mjict.signboardsurvey.widget.ShopOptionDialog;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Junseo on 2016-11-14.
@@ -118,13 +121,24 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
 
                 // find out whether new or exist
                 int index = -1;
-                for(int i=0; i<currentShops.size(); i++) {
-                    Shop s = currentShops.get(i);
-                    if(s.getId() == shop.getId()) {
-                        index = i;
-                        break;
+
+                if(shop.getId() != -1) {
+                    for (int i = 0; i < currentShops.size(); i++) {
+                        Shop s = currentShops.get(i);
+                        if (s.getId() == shop.getId()) {
+                            index = i;
+                            break;
+                        }
                     }
                 }
+
+                SimpleDateFormat syncTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREAN);
+                String syncDate = syncTimeFormat.format(SyncConfiguration.getLastSynchronizeDate());
+
+                shop.setSgCode(currentBuilding.getSgCode());
+                shop.setBuildingId(currentBuilding.getId());
+                shop.setAddressId(currentBuilding.getAddressId());
+                shop.setSyncDate(syncDate);
 
                 if(index == -1) {
                     // new shop
@@ -202,22 +216,22 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
     }
 
     private void startToRegisterShop(final Shop shop) {
-        shop.setBuildingId(currentBuilding.getId());
-        shop.setAddressId(currentBuilding.getAddressId());
+
         RegisterShopTask task = new RegisterShopTask(activity.getApplicationContext());
-        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Long>() {
             @Override
             public void onTaskStart() {
                 activity.showWaitingDialog(R.string.saving);
             }
             @Override
-            public void onTaskFinished(Boolean result) {
+            public void onTaskFinished(Long result) {
                 activity.hideWaitingDialog();
-                if(result == false) {
+                if(result == -1) {
                     Toast.makeText(activity, R.string.failed_to_save, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                shop.setId(result);
                 currentShops.add(shop);
                 ShopInfo info = shopToShopInfo(shop);
                 activity.addToList(info);
@@ -227,8 +241,6 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
     }
 
     private void startToModifyShop(final int index, final Shop shop) {
-        shop.setBuildingId(currentBuilding.getId());
-        shop.setAddressId(currentBuilding.getAddressId());
         ModifyShopTask task = new ModifyShopTask(activity.getApplicationContext());
         task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
             @Override

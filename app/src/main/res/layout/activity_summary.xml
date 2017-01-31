@@ -65,9 +65,12 @@
             android:layout_height="match_parent"
             android:clickable="false"
             android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_toRightOf="@+id/summary_menu_button"
             android:layout_alignParentRight="true"
-            android:background="@drawable/bg_edt_tv_simple">
+            android:background="@drawable/bg_edit_tv_simple">
             <ImageButton
                 android:id="@+id/search_button"
                 android:layout_width="50dp"
@@ -86,18 +89,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:background="@color/light_gray">
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp">
+                android:layout_height="150dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_white_box">
                 <LinearLayout
                     android:id="@+id/statistics_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
                     android:orientation="vertical"
-                    android:background="@drawable/bg_gray_border"
                     android:addStatesFromChildren="true">
                     <android.support.v4.view.ViewPager
                         android:id="@+id/statistics_view_pager"
@@ -110,7 +115,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="20dp"/>
                 </LinearLayout>
-                <Button
+                <ImageButton
                     android:id="@+id/refresh_statistics_button"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -118,50 +123,62 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginRight="15dp"
                     android:layout_marginBottom="10dp"
-                    android:text="@string/refresh"/>
-            </RelativeLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:text="@string/all_signs_status"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"
-                android:gravity="center_vertical"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="center_horizontal">
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/sign_status_pie_chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
-                    android:visibility="invisible"/>
-                <TextView
-                    android:id="@+id/sign_status_loading_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/loading_all_signs_status"
-                    android:visibility="visible"/>
-                <Button
-                    android:id="@+id/refresh_pie_chart_button"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/refresh"/>
+                    android:src="@drawable/ic_refresh_sel"
+                    style="@style/MJImageButtonStyle"/>     <!-- TODO 이미지 버튼은 왜 안 먹는지 모르겠다. 나중에 확인 해봐-->
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:paddingLeft="10dp"
                 android:orientation="vertical"
-                android:layout_marginTop="20dp">
+                android:background="@drawable/bg_white_box"
+                android:clickable="false">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="@string/all_signs_status"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center_horizontal">
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/sign_status_pie_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:visibility="invisible"/>
+                    <TextView
+                        android:id="@+id/sign_status_loading_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/loading_all_signs_status"
+                        android:visibility="visible"/>
+                    <ImageButton
+                        android:id="@+id/refresh_pie_chart_button"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="10dp"
+                        android:src="@drawable/ic_refresh_sel"
+                        style="@style/MJImageButtonStyle"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:orientation="vertical"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/bg_white_box"
+                android:clickable="false">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -171,29 +188,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="10dp"
                         android:text="@string/recent_building"
                         android:textSize="18sp"
                         android:gravity="center_vertical"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:text="@string/more"
-                        android:gravity="center_vertical"
-                        android:visibility="gone"/>
                 </RelativeLayout>
                 <com.mjict.signboardsurvey.widget.HorizontalListView
                     android:id="@+id/recent_building_list_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     app:dividerWidth="2dp"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="230dp"
                 android:orientation="vertical"
-                android:layout_marginTop="20dp">
+                android:background="@drawable/bg_white_box"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -203,21 +218,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="10dp"
                         android:text="@string/recent_sign"
                         android:textSize="18sp"
                         android:gravity="center_vertical"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:text="@string/more"
-                        android:gravity="center_vertical"
-                        android:visibility="gone"/>
-                </RelativeLayout>
+                 </RelativeLayout>
                 <com.mjict.signboardsurvey.widget.HorizontalListView
                     android:id="@+id/recent_sign_list_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     app:dividerWidth="2dp"/>
             </LinearLayout>
 
@@ -226,6 +237,7 @@
                 android:layout_height="240dp"
                 android:orientation="vertical"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:visibility="gone">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -251,8 +263,7 @@
                     android:id="@+id/map_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/test_map"/>
+                    android:layout_marginTop="5dp"/>
             </LinearLayout>
 
 

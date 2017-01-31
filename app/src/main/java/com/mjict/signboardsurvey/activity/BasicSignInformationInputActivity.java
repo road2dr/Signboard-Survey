@@ -23,6 +23,7 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
     private ImageView signImageView;
     private ImageButton addSignImageButton;
     private EditText contentEditText;
+    private SimpleSpinner signTypeSpinner;
     private SimpleSpinner statusSpinner;
     private EditText widthEditText;
     private EditText lengthEditText;
@@ -57,13 +58,14 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
         lightSpinnerAdapter = new ImageSpinnerAdapter(this);
         lightSpinner.setAdapter(lightSpinnerAdapter);
 
+        signTypeSpinner = (SimpleSpinner)this.findViewById(R.id.sign_type_spinner);
         statusSpinner = (SimpleSpinner)this.findViewById(R.id.status_spinner);
         contentEditText = (EditText)this.findViewById(R.id.content_edit_text);
         widthEditText = (EditText)this.findViewById(R.id.width_edit_text);
         lengthEditText = (EditText)this.findViewById(R.id.length_edit_text);
         heightEditText = (EditText)this.findViewById(R.id.height_edit_text);
 
-        placedFloorEditText = (EditText)this.findViewById(R.id.placed_floor_eidt_text);
+        placedFloorEditText = (EditText)this.findViewById(R.id.placed_floor_edit_text);
         totalFloorEditText = (EditText)this.findViewById(R.id.total_floor_edit_text);
         frontCheckBox = (CheckBox)this.findViewById(R.id.front_check_box);
         intersectionCheckBox = (CheckBox)this.findViewById(R.id.intersection_check_box);
@@ -158,6 +160,18 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
 //            }
 //        });
 //    }
+
+    public void addToSignTypeSpinner(int id, Object data) {
+        signTypeSpinner.addSpinnerData(id, data);
+    }
+
+    public Object getSelectedSignType() {
+        return signTypeSpinner.getSelectedData();
+    }
+
+    public void setSignTypeSpinnerSelection(int id) {
+        signTypeSpinner.setSpinnerSelection(id);
+    }
 
     public void addToStatusSpinner(int id, Object data) {
         statusSpinner.addSpinnerData(id, data);

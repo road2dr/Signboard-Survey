@@ -16,9 +16,6 @@ import com.mjict.signboardsurvey.util.SyncConfiguration;
 import com.mjict.signboardsurvey.util.Utilities;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Junseo on 2016-07-28.
@@ -75,8 +72,9 @@ public class InitializeTask extends DefaultAsyncTask<Void, Integer, TaskResult> 
         if(answer == false)
             return new TaskResult(false, null, R.string.failed_to_initialize);
 
-        if(isFirst == true)
+        if(isFirst == true) {
             answer = SyncConfiguration.makeDirectories();
+        }
 
         Log.d("junseo", "디렉토리 만들기: "+answer);
 
@@ -111,6 +109,17 @@ public class InitializeTask extends DefaultAsyncTask<Void, Integer, TaskResult> 
                 e.printStackTrace();
                 return new TaskResult(false, e, R.string.sd_not_mounted);
             } catch (IOException e) {
+
+                /////////////////////// TODO 나중에 수정 - 싱크 프로그램쪽 문제. 빈 db 파일이 있어야 싱크가 된다
+                String syncFile = SyncConfiguration.getDatabaseFileNameForSync();
+                try {
+                    FileManager.copyDbFileTo(context, syncFile);
+                } catch (SdNotMountedException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
                 e.printStackTrace();
                 return new TaskResult(false, e, R.string.failed_to_copy_db_file);
             }
@@ -121,15 +130,9 @@ public class InitializeTask extends DefaultAsyncTask<Void, Integer, TaskResult> 
         if(mobildId == -1)
             return new TaskResult(false, null, R.string.there_are_no_initialize_file);
 
-        long inspectionNo = SyncConfiguration.getLastInspectionNo();
-        if(inspectionNo == -1) {
-
-            Date today = Calendar.getInstance().getTime();
-            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-            String strNo = format.format(today)+mobildId+"0000";
-            long no = Long.valueOf(strNo);
-
-            SyncConfiguration.setLastInspectionNo(no);
+        long inspectionSeq = SyncConfiguration.getLastInspectionSeq();
+        if(inspectionSeq < 0) {
+            SyncConfiguration.setLastInspectionSeq(0);
         }
 
         SyncConfiguration.setDataChanged(false);

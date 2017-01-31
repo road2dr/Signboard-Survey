@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:background="@color/white">
     <RelativeLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -14,24 +14,26 @@
             android:id="@+id/back_button"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_left_arrow"
+            android:src="@drawable/ic_left_arrow_sel"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
             android:background="@null"/>
         <TextView
             android:id="@+id/title_text_view"
-            android:layout_width="50dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/back_button"
-            android:layout_toLeftOf="@+id/done_button"
-            android:text="@string/shop_information"
-            android:textSize="22sp"
-            android:gravity="center"/>
+            android:layout_marginRight="?attr/actionBarSize"
+            android:layout_toRightOf="@+id/back_image_button"
+            android:gravity="center"
+            android:text="@string/basic_information"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
         <TextView
             android:id="@+id/done_button"
-            android:layout_width="100dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:text="@string/done"
+            android:text="@string/next"
+            android:textColor="@color/navi_btn_text_color_sel"
             android:layout_alignParentRight="true"
             android:gravity="center"/>
     </RelativeLayout>
@@ -39,13 +41,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
         <TextView
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="20sp"
-            android:text="@string/shop_name"/>
+            android:text="@string/shop_name"
+            android:drawableLeft="@drawable/ic_dot_resize"
+            android:drawablePadding="15dp"/>
         <EditText
             android:id="@+id/name_edit_text"
             android:layout_width="250dp"
@@ -57,13 +63,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
         <TextView
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="20sp"
-            android:text="@string/phone_number"/>
+            android:text="@string/phone_number"
+            android:drawableLeft="@drawable/ic_dot_resize"
+            android:drawablePadding="15dp"/>
         <EditText
             android:id="@+id/phone_edit_text"
             android:layout_width="250dp"
@@ -75,13 +85,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
         <TextView
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="20sp"
-            android:text="@string/shop_category"/>
+            android:text="@string/shop_category"
+            android:drawableLeft="@drawable/ic_dot_resize"
+            android:drawablePadding="15dp"/>
         <com.mjict.signboardsurvey.widget.SimpleSpinner
             android:id="@+id/category_spinner"
             android:layout_width="250dp"
@@ -93,13 +107,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
         <TextView
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="20sp"
-            android:text="@string/status"/>
+            android:text="@string/status"
+            android:drawableLeft="@drawable/ic_dot_resize"
+            android:drawablePadding="15dp"/>
         <com.mjict.signboardsurvey.widget.SimpleSpinner
             android:id="@+id/condition_spinner"
             android:layout_width="250dp"

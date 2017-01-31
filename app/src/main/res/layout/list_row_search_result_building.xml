@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:background="@drawable/bg_gray_border"
+    android:background="@drawable/bg_white_box"
     android:layout_marginTop="5dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
@@ -12,8 +12,8 @@
         android:id="@+id/image_view"
         android:layout_width="100dp"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:background="@drawable/bg_gray_border"/>
+        android:scaleType="centerInside"
+        android:background="@color/white"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,13 +34,14 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/ic_address"/>
+                android:src="@drawable/ic_address"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/address_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:textSize="14sp"
                 android:minLines="2"
                 android:maxLines="2"/>

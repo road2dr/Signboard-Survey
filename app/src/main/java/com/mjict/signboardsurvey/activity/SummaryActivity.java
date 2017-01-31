@@ -7,7 +7,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -48,8 +47,8 @@ public class SummaryActivity extends SABaseActivity {
     private SummaryStatisticsViewPagerAdapter statisticsViewPagerAdapter;
     private CircleIndicator circleIndicator;
 
-    private Button refreshStatisticsButton;
-    private Button refreshPieChartButton;
+    private ImageButton refreshStatisticsButton;
+    private ImageButton refreshPieChartButton;
 
 //    sign_status_pie_chart
 //    sign_status_loading_view
@@ -92,11 +91,12 @@ public class SummaryActivity extends SABaseActivity {
         searchEditText = (View)this.findViewById(R.id.search_edit_text);
         searchButton = (ImageButton)this.findViewById(R.id.search_button);
 
-        refreshStatisticsButton = (Button)this.findViewById(R.id.refresh_statistics_button);
-        refreshPieChartButton = (Button)this.findViewById(R.id.refresh_pie_chart_button);
+        refreshStatisticsButton = (ImageButton)this.findViewById(R.id.refresh_statistics_button);
+        refreshPieChartButton = (ImageButton)this.findViewById(R.id.refresh_pie_chart_button);
 
         summaryMenuButton = (ImageButton)this.findViewById(R.id.summary_menu_button);
         drawerArrowDrawable = new DrawerArrowDrawable(this);
+        drawerArrowDrawable.setColor(Color.WHITE);
         summaryMenuButton.setImageDrawable(drawerArrowDrawable);
         summaryMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override

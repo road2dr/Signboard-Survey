@@ -5,25 +5,41 @@
     android:background="#f2f2f2"
     android:padding="10dp">
 
-   <com.mjict.signboardsurvey.widget.ImageZoomView
-       android:id="@+id/image_zoom_view"
-       android:layout_width="150dp"
-       android:layout_height="150dp"
-       android:layout_alignParentRight="true"
-       android:layout_alignParentTop="true"
-       android:layout_marginTop="30dp"
-       android:layout_marginLeft="20dp"
-       android:layout_marginRight="20dp"
-       android:layout_marginBottom="0dp"
-       android:visibility="gone"/>
+   <!--<com.mjict.signboardsurvey.widget.TouchImageView-->
+       <!--android:id="@+id/image_view"-->
+       <!--android:layout_width="match_parent"-->
+       <!--android:layout_height="match_parent"-->
+       <!--android:layout_toLeftOf="@+id/joystick_layout"-->
+       <!--android:layout_above="@+id/measure_layout"-->
+       <!--android:scaleType="fitCenter"/>-->
 
-   <com.mjict.signboardsurvey.widget.TouchImageView
-       android:id="@+id/image_view"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:layout_toLeftOf="@+id/button_layout"
-       android:layout_above="@+id/measure_layout"
-       android:scaleType="fitCenter"/>
+    <com.mjict.signboardsurvey.widget.RetangleDrawImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/joystick_layout"
+        android:layout_above="@+id/measure_layout"
+        android:scaleType="fitCenter"/>
+
+    <LinearLayout
+        android:id="@+id/joystick_layout"
+        android:layout_width="130dp"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/button_layout"
+        android:orientation="vertical">
+        <com.mjict.signboardsurvey.widget.ImageZoomView
+            android:id="@+id/image_zoom_view"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"/>
+        <com.mjict.signboardsurvey.widget.JoystickView
+            android:id="@+id/joystick_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
     
     <LinearLayout
         android:id="@+id/measure_layout"

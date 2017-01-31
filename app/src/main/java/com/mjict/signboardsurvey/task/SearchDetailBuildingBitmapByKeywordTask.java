@@ -72,8 +72,7 @@ public class SearchDetailBuildingBitmapByKeywordTask extends DefaultAsyncTask<St
 
                 List<Sign> signs = dmgr.findSignsByShopId(shop.getId());
                 for(int k=0; k<signs.size(); k++) {
-                    Sign s = signs.get(k);
-                    if (s.isDeleted() == false)
+                Sign s = signs.get(k);
                         allSigns.add(s);
                 }
             }

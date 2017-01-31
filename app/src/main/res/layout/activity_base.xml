@@ -38,13 +38,13 @@
             android:layout_height="200dp"
             android:orientation="vertical"
             android:layout_alignParentTop="true"
-            android:background="@drawable/test_profile_bg">
+            android:background="@color/colorPrimary">
             <com.mjict.signboardsurvey.widget.CircularImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="40dp"
-                android:src="@drawable/test_user"/>
+                android:src="@drawable/ic_user"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
@@ -68,104 +68,115 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/user_profile_view"
-            android:drawableLeft="@drawable/btn_search_sel"
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
-            android:background="@drawable/bg_gray_border"
+            android:background="@drawable/btn_navigation_button"
             android:textAlignment="textStart"
             android:drawablePadding="30dp"
             android:textSize="16sp"
-            android:text="조회"/>
+            android:textColor="@color/navi_text_color"
+            android:text="조회"/><!-- TODO string 지정 -->
         <Button
             android:id="@+id/user_statistics_button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/inquiry_button"
-            android:drawableLeft="@drawable/btn_user_search_sel"
+            android:drawableRight="@drawable/ic_right_arrow"
             android:paddingLeft="45dp"
             android:paddingRight="25dp"
-            android:background="@drawable/bg_gray_border"
+            android:background="@drawable/btn_navigation_button"
             android:textAlignment="textStart"
             android:drawablePadding="30dp"
             android:textSize="16sp"
+            android:textColor="@color/navi_text_color"
             android:text="사용자 자료 조회"/>
         <Button
             android:id="@+id/demolished_sign_button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/user_statistics_button"
-            android:drawableLeft="@drawable/btn_doc_search_sel"
+            android:drawableRight="@drawable/ic_right_arrow"
             android:paddingLeft="45dp"
             android:paddingRight="25dp"
-            android:background="@drawable/bg_gray_border"
+            android:background="@drawable/btn_navigation_button"
             android:textAlignment="textStart"
             android:drawablePadding="30dp"
             android:textSize="16sp"
+            android:textColor="@color/navi_text_color"
             android:text="철거 간판"/>
         <Button
             android:id="@+id/review_sign_button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/demolished_sign_button"
-            android:drawableLeft="@drawable/btn_doc_search_sel"
+            android:drawableRight="@drawable/ic_right_arrow"
             android:paddingLeft="45dp"
             android:paddingRight="25dp"
-            android:background="@drawable/bg_gray_border"
+            android:background="@drawable/btn_navigation_button"
             android:textAlignment="textStart"
             android:drawablePadding="30dp"
             android:textSize="16sp"
+            android:textColor="@color/navi_text_color"
             android:text="재조사 간판"/>
         <Button
             android:id="@+id/address_search_button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/review_sign_button"
-            android:drawableLeft="@drawable/btn_location_search_sel"
+            android:drawableRight="@drawable/ic_right_arrow"
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
-            android:background="@drawable/bg_gray_border"
+            android:background="@drawable/btn_navigation_button"
             android:textAlignment="textStart"
             android:drawablePadding="30dp"
             android:textSize="16sp"
+            android:textColor="@color/navi_text_color"
             android:text="주소 검색"/>
         <Button
             android:id="@+id/map_search_button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/address_search_button"
-            android:drawableLeft="@drawable/btn_map_sel"
+            android:drawableRight="@drawable/ic_right_arrow"
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
-            android:background="@drawable/bg_gray_border"
+            android:background="@drawable/btn_navigation_button"
             android:textAlignment="textStart"
             android:drawablePadding="30dp"
             android:textSize="16sp"
+            android:textColor="@color/navi_text_color"
             android:text="지도 검색"/>
 
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/button_layout"
+            android:background="@color/light_gray"/>
         <LinearLayout
+            android:id="@+id/button_layout"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:orientation="horizontal"
             android:layout_alignParentBottom="true">
+
             <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/btn_home_sel"
-                android:background="@drawable/bg_gray_border"/>
+                android:src="@drawable/ic_home_sel"
+                android:background="@drawable/btn_navigation_button"/>
             <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/btn_setting_sel"
-                android:background="@drawable/bg_gray_border"/>
+                android:src="@drawable/ic_setting_sel"
+                android:background="@drawable/btn_navigation_button"/>
             <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/btn_power_sel"
-                android:background="@drawable/bg_gray_border"/>
+                android:src="@drawable/ic_power_sel"
+                android:background="@drawable/btn_navigation_button"/>
         </LinearLayout>
 
 

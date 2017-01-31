@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -25,7 +26,8 @@ public class SyncConfiguration {
 	private static String mapFileDir = null;
 	private static float laserMeasurementErrorFactor = -1;
 	private static int mobileNo = -1;
-	private static long lastInspectionNo = -1;
+	private static long lastInspectionSeq = -1;
+	private static String lastUseDate = null;
 	private static String tempDir = null;
 	private static String inspectionRuleDir = null;
 	private static Date lastSyncDate = null;
@@ -52,10 +54,10 @@ public class SyncConfiguration {
 	public static final String DEFAULT_BASE_DIRECTORY="mjict/signboard/";
 	public static final String DEFAULT_DATABASE_FILE_NAME="MROKGTotal.db3";
 	public static final String DEFAULT_DATABASE_FILE_FOR_SYNC="database/MROKGTotal.db3";
-	public static final String DEFAULT_SERVER_SIGN_PIC_DIRECTORY="pic/server/sign/";
-	public static final String DEFAULT_SERVER_BUILDING_PIC_DIRECTORY="pic/server/building/";
-	public static final String DEFAULT_DEVICE_SIGN_PIC_DIRECTORY="pic/device/sign/";
-	public static final String DEFAULT_DEVICE_BUILDING_PIC_DIRECTORY="pic/device/building/";
+	public static final String DEFAULT_SERVER_SIGN_PIC_DIRECTORY="pic/Server/sign/";
+	public static final String DEFAULT_SERVER_BUILDING_PIC_DIRECTORY="pic/Server/building/";
+	public static final String DEFAULT_DEVICE_SIGN_PIC_DIRECTORY="pic/Device/sign/";
+	public static final String DEFAULT_DEVICE_BUILDING_PIC_DIRECTORY="pic/Device/building/";
 	public static final String DEFAULT_MAP_FILE_DIRECTORY="mapFiles/";
 	public static final String DEFAULT_TEMPORARY_DIRECTORY="temp/";
 	
@@ -78,7 +80,8 @@ public class SyncConfiguration {
 	private static final String DATABASE_FILE_NAME_FOR_SYNC = "database_file_for_sync";
 	private static final String DIRECTORY_FOR_MAP_FILES="map_dir";
 	private static final String MOBILE_NO="mobile_no";
-	private static final String LAST_INSPECTION_NO = "last_inspection_no";
+	private static final String LAST_INSPECTION_SEQ = "last_inspection_seq";
+	private static final String LAST_USE_DATE = "last_use_date";
 	private static final String TEMP_DIR = "temp_dir";
 	private static final String INSPECTION_RULE_DIR = "inspection_rule_dir";
 	private static final String LAST_SYNC_DATE = "last_sync_date";
@@ -325,23 +328,41 @@ public class SyncConfiguration {
 		return mobileNo;
 	}
 
-	public static long getLastInspectionNo() {
-		if(lastInspectionNo == -1) {
+	public static long getLastInspectionSeq() {
+		if(lastInspectionSeq == -1) {
 			try {
-				String strValue = (String) properties.get(LAST_INSPECTION_NO);
-				lastInspectionNo = Long.valueOf(strValue);
+				String strValue = (String) properties.get(LAST_INSPECTION_SEQ);
+				lastInspectionSeq = Long.valueOf(strValue);
 			}catch(Exception ex) {
 				ex.printStackTrace();
-				lastInspectionNo = -1;
+				lastInspectionSeq = -1;
 			}
 		}
 
-		return lastInspectionNo;
+		return lastInspectionSeq;
 	}
 	
-	public static void setLastInspectionNo(long no) {
-		lastInspectionNo = no;
-		properties.put(LAST_INSPECTION_NO, String.valueOf(lastInspectionNo));
+	public static void setLastInspectionSeq(long no) {
+		lastInspectionSeq = no;
+		properties.put(LAST_INSPECTION_SEQ, String.valueOf(lastInspectionSeq));
+	}
+
+	public static String getLastUseDate() {
+		if(lastUseDate == null) {
+			try {
+				lastUseDate = new String(properties.getProperty(LAST_USE_DATE).getBytes("ISO-8859-1"), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				lastUseDate = null;
+			}
+		}
+
+		return lastUseDate;
+	}
+
+	public static void setLastUseDate(String date) {
+		lastUseDate = date;
+		properties.put(LAST_USE_DATE, date);
 	}
 	
 	public static Date getLastSynchronizeDate() {
@@ -426,5 +447,27 @@ public class SyncConfiguration {
 		return conditions;
 	}
 
+	public static long calculateInspectionSeq() {
+		long lastSeq = getLastInspectionSeq();
+		if(lastSeq < 0)
+			lastSeq = 0;
+		else {
+			String lastUseDate = getLastUseDate();
+			Date cur = Calendar.getInstance().getTime();
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.KOREAN);
+			String today = format.format(cur);
+
+			if(lastUseDate != null) {
+				if(lastUseDate.equals(today) == false) {
+					lastSeq = 0;
+
+				}
+			}
+
+			setLastUseDate(today);
+		}
+
+		return lastSeq;
+	}
 
 }

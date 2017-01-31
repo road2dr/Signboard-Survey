@@ -33,13 +33,17 @@ public class SimpleSpinner extends AppCompatSpinner implements AdapterView.OnIte
 
     private void init(Context context, AttributeSet attrs) {
         int dropdownTextView = -1;
+        int topTextView = -1;
         if(attrs != null) {
             final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SimpleSpinner);
             dropdownTextView = typedArray.getResourceId(R.styleable.SimpleSpinner_dropdownTextView, R.layout.tv_simple_spinner_dropdown);
+            topTextView = typedArray.getResourceId(R.styleable.SimpleSpinner_topTextView, R.layout.tv_simple_spinner_top);
         }
 
-        spinnerAdapter = new ArrayAdapter<SpinnerItem>(context, R.layout.tv_simple_spinner_top);
+        spinnerAdapter = new ArrayAdapter<SpinnerItem>(context, topTextView);
         spinnerAdapter.setDropDownViewResource(dropdownTextView);
+
+
         this.setAdapter(spinnerAdapter);
         this.setOnItemSelectedListener(this);
     }

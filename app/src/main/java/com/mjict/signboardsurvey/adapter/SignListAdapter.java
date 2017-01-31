@@ -61,9 +61,9 @@ public class SignListAdapter extends ArrayAdapter<SignInfo> {
         holder.getResultTextView().setText(s.result);
         holder.getSizeTextView().setText(s.size);
 
-        final int[] colors = {0xffFFFFA5, 0xffE7FFC0, 0xffFFD2FF};
-        int color = colors[position%3];
-        view.setBackgroundColor(color);
+//        final int[] colors = {0xffFFFFA5, 0xffE7FFC0, 0xffFFD2FF};
+//        int color = colors[position%3];
+//        view.setBackgroundColor(color);
 
         return view;
     }

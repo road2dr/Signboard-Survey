@@ -11,24 +11,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/colorPrimaryDark">
+            android:background="@color/light_gray">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:paddingTop="10dp"
-                android:paddingLeft="10dp"
-                android:paddingBottom="10dp"
-                android:paddingRight="5dp">
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"
+                android:paddingBottom="5dp"
+                android:paddingRight="2.5dp">
                 <LinearLayout
                     android:id="@+id/sign_image_layout"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:orientation="vertical"
                     android:padding="10dp"
-                    android:background="@drawable/bg_white_card">
+                    android:background="@drawable/bg_white_box">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -41,16 +41,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:background="@drawable/bg_gray_border"/>
+                        android:background="@color/white"/>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/content_layout"
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
                     android:orientation="vertical"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:padding="10dp"
-                    android:background="@drawable/bg_white_card">
+                    android:background="@drawable/bg_white_box">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -73,9 +73,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
                     android:orientation="vertical"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:padding="10dp"
-                    android:background="@drawable/bg_white_card">
+                    android:background="@drawable/bg_white_box">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -98,9 +98,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:padding="10dp"
-                    android:background="@drawable/bg_white_card">
+                    android:background="@drawable/bg_white_box">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:background="@drawable/bg_gray_border"
+                            android:background="@drawable/bg_white_box"
                             android:layout_marginRight="5dp"
                             android:padding="2dp">
                             <ImageView
@@ -140,7 +140,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:background="@drawable/bg_gray_border"
+                            android:background="@drawable/bg_white_box"
                             android:layout_marginRight="5dp"
                             android:padding="2dp">
                             <ImageView
@@ -169,8 +169,8 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:background="@drawable/bg_gray_border"
                             android:layout_marginRight="5dp"
+                            android:background="@drawable/bg_white_box"
                             android:padding="2dp">
                             <ImageView
                                 android:layout_width="match_parent"
@@ -208,17 +208,17 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:paddingTop="10dp"
-                android:paddingLeft="5dp"
-                android:paddingBottom="10dp"
-                android:paddingRight="10dp">
+                android:paddingTop="5dp"
+                android:paddingLeft="2.5dp"
+                android:paddingBottom="5dp"
+                android:paddingRight="5dp">
                 <LinearLayout
                     android:id="@+id/sign_type_layout"
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
                     android:orientation="vertical"
                     android:padding="10dp"
-                    android:background="@drawable/bg_white_card">
+                    android:background="@drawable/bg_white_box">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -241,9 +241,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
                     android:orientation="vertical"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:padding="10dp"
-                    android:background="@drawable/bg_white_card">
+                    android:background="@drawable/bg_white_box">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -264,11 +264,11 @@
                 <LinearLayout
                     android:id="@+id/light_type_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="110dp"
                     android:orientation="vertical"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:padding="10dp"
-                    android:background="@drawable/bg_white_card">
+                    android:background="@drawable/bg_white_box">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -276,22 +276,19 @@
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:text="@string/light_type"/>
-                    <ImageView
-                        android:id="@+id/light_type_image_view"
+                    <TextView
+                        android:id="@+id/light_type_text_view"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_gray_border"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/img_lgith1"/>
+                        android:layout_height="match_parent"/>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/status_layout"
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
                     android:orientation="vertical"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:padding="10dp"
-                    android:background="@drawable/bg_white_card">
+                    android:background="@drawable/bg_white_box">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -309,6 +306,33 @@
                         android:inputType="none"
                         android:enabled="false"/>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/placed_side_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:orientation="vertical"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:background="@drawable/bg_white_box">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:text="@string/placed_side"/>
+                    <EditText
+                        android:id="@+id/placed_side_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:focusable="true"
+                        android:clickable="false"
+                        android:focusableInTouchMode="true"
+                        android:inputType="none"
+                        android:enabled="false"/>
+                </LinearLayout>
+
 
             </LinearLayout>
 

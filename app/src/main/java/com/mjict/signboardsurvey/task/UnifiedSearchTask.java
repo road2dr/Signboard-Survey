@@ -96,8 +96,7 @@ public class UnifiedSearchTask extends DefaultAsyncTask<String, Integer, Unified
 
                     for(int k=0; k<signs.size(); k++) {
                         Sign s = signs.get(k);
-                        if(s.isDeleted() == false)
-                            signsInBuilding.add(s);
+                        signsInBuilding.add(s);
                     }
                 }
 

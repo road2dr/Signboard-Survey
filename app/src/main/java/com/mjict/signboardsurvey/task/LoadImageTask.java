@@ -1,6 +1,7 @@
 package com.mjict.signboardsurvey.task;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.util.Utilities;
@@ -27,8 +28,10 @@ public class LoadImageTask extends DefaultAsyncTask<String, IndexBitmap, Boolean
             String path = params[i];
             Bitmap image = null;
             if(path != null) {
+                Log.d("junseo", "load image: "+path);
                 image = Utilities.loadImage(path, inSampleSize);
             }
+
             IndexBitmap li = new IndexBitmap(i, image);
 
             if(isCancelled() == false)

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -28,9 +29,14 @@ import com.mjict.signboardsurvey.task.RegisterSignTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 import com.mjict.signboardsurvey.util.SettingDataManager;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
+import com.mjict.signboardsurvey.util.Utilities;
 import com.mjict.signboardsurvey.widget.SignOptionDialog;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Junseo on 2016-11-15.
@@ -112,6 +118,22 @@ public class SignListActivityHandler extends SABaseActivityHandler {
                     }
                 }
 
+                // 나머지 정보 채우기
+                Calendar current = Calendar.getInstance();
+                SimpleDateFormat josaDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREAN);
+                SimpleDateFormat syncTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREAN);
+                String currentTimeString = Utilities.getCurrentTimeAsString();
+
+                String josaDate = josaDateFormat.format(current.getTime());
+                String syncDate = syncTimeFormat.format(SyncConfiguration.getLastSynchronizeDate());
+
+                sign.setInspectionDate(josaDate);
+                sign.setSyncDate(syncDate);
+                sign.setModifyDate(currentTimeString);
+                sign.setShopId(currentShop.getId());
+                sign.setSgCode(currentShop.getSgCode());
+                sign.setAddressId(currentShop.getAddressId());
+
                 if(index == -1) {   // 새간판
                     startToInsertSignAndUpdateUI(sign);
                 } else {
@@ -177,8 +199,24 @@ public class SignListActivityHandler extends SABaseActivityHandler {
     }
 
     private void startToInsertSignAndUpdateUI(final Sign sign) {
-        sign.setAddressId(currentShop.getAddressId());
+        String inputDate = Utilities.getCurrentTimeAsString();
+        long seq = SyncConfiguration.calculateInspectionSeq();
+
+        Date current = Calendar.getInstance().getTime();
+        int deviceNo = MJContext.getCurrentUser().getMobileId();
+        SimpleDateFormat josaDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREAN);
+        String today = josaDateFormat.format(current);
+        String seqString = String.format("%03d", seq);
+        String josaNoStr = today + deviceNo + seqString;
+
+        long josaNo = Long.parseLong(josaNoStr);
+
+        sign.setInputDate(inputDate);
+        sign.setInputter(MJContext.getCurrentUser().getUserId());
+        sign.setInspectionNumber(String.valueOf(josaNo));
+
         RegisterSignTask task = new RegisterSignTask(activity.getApplicationContext(), currentShop.getId());
+        final long nextSeq = seq + 1;
         task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Long>() {
             @Override
             public void onTaskStart() {
@@ -203,6 +241,7 @@ public class SignListActivityHandler extends SABaseActivityHandler {
                     startToLoadSignImage(shopSigns.size()-1, path);
 
                     MJContext.addRecentSing(sign.getId());
+                    SyncConfiguration.setLastInspectionSeq(nextSeq);
                 }
             }
         });
@@ -268,8 +307,11 @@ public class SignListActivityHandler extends SABaseActivityHandler {
             }
             @Override
             public void onTaskProgressUpdate(IndexBitmap... values) {
-                for(int i=0; i<values.length; i++)
+                for(int i=0; i<values.length; i++) {
+                    Log.d("junseo", "image: "+values[i].index+" img: "+values[i].image);
                     activity.setSignImage(values[i].index, values[i].image);
+                }
+
             }
             @Override
             public void onTaskFinished(Boolean result) {

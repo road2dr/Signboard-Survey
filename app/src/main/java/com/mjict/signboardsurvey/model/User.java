@@ -20,17 +20,21 @@ public class User {
 	
 	@DatabaseField
 	private String county;
+
+	@DatabaseField
+	private int mobileId;
 	
 	public User() {
 	}
 	
-	public User(String userId, String name, String password, String province, String county) {
+	public User(String userId, String name, String password, String province, String county, int mobileId) {
 		super();
 		this.userId = userId;
 		this.name = name;
 		this.password = password;
 		this.province = province;
 		this.county = county;
+		this.mobileId = mobileId;
 	}
 	
 	
@@ -74,4 +78,11 @@ public class User {
 		this.county = county;
 	}
 
+	public int getMobileId() {
+		return mobileId;
+	}
+
+	public void setMobileId(int mobileId) {
+		this.mobileId = mobileId;
+	}
 }

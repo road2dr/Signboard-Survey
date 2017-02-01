@@ -64,7 +64,7 @@ public class Sign implements Serializable {
 	private int lightType;
 	
 	@DatabaseField
-	private String placement;
+	private String placement;		// TODO 얘 무슨 필드 인지 확인 해봐 자꾸 헷갈린다
 
 	// TODO 이 필드도 필요하나..
 	@DatabaseField(columnName = "streetInfringement")
@@ -146,10 +146,61 @@ public class Sign implements Serializable {
 	@DatabaseField
 	private String memo;
 
+	@DatabaseField
+	private boolean modified;
+
 
 
 	public Sign() {
 		
+	}
+
+	public Sign(Sign s) {	// 복사 생성자
+		this.id = s.id;
+		this.inspectionNumber = s.inspectionNumber;
+		this.inspectionDate = s.inspectionDate;
+		this.mobileId = s.mobileId;
+		this.isSynchronized = s.isSynchronized;
+		this.syncDate = s.syncDate;
+		this.type = s.type;
+		this.width = s.width;
+		this.length = s.length;
+		this.height = s.height;
+		this.area = s.area;
+		this.extraSize = s.extraSize;
+		this.quantity = s.quantity;
+		this.content = s.content;
+		this.placedFloor = s.placedFloor;
+		this.isFront = s.isFront;
+		this.lightType = s.lightType;
+		this.placement = s.placement;
+		this.isCollision = s.isCollision;
+		this.collisionWidth = s.collisionWidth;
+		this.collisionLength = s.collisionLength;
+		this.inspectionResult = s.inspectionResult;
+		this.permissionNumber = s.permissionNumber;
+//		this.needReinspection = needReinspection;
+		this.inputter = s.inputter;
+		this.inputDate = s.inputDate;
+		this.statsCode = s.statsCode;
+		this.picNumber = s.picNumber;
+		this.modifier = s.modifier;
+		this.modifyDate = s.modifyDate;
+		this.totalFloor = s.totalFloor;
+		this.isIntersection = s.isIntersection;
+		this.tblNumber = s.tblNumber;
+//		this.isDeleted = isDeleted;
+		this.isFrontBackRoad = s.isFrontBackRoad;
+		this.demolitionPicPath = s.demolitionPicPath;
+		this.demolishedDate = s.demolishedDate;
+		this.reviewCode = s.reviewCode;
+		this.shopId = s.shopId;
+		this.addressId = s.addressId;
+		this.sgCode = s.sgCode;
+		this.installSide = s.installSide;
+		this.uniqueness = s.uniqueness;
+		this.memo = s.memo;
+		this.mobileId = s.mobileId;
 	}
 
 	public Sign(long id, String inspectionNumber, String inspectionDate, String mobileId,
@@ -160,7 +211,7 @@ public class Sign implements Serializable {
 				/*String needReinspection, */String inputter, String inputDate, int statsCode, String picNumber,
 				String modifier, String modifyDate, int totalFloor, boolean isIntersection, int tblNumber,/* boolean isDeleted,*/
 				boolean isFrontBackRoad, String demolitionPicPath, String demolishedDate, int reviewCode,
-				int shopId, int addressId, String sgCode, int installSide, int uniqueness, String memo) {
+				long shopId, int addressId, String sgCode, int installSide, int uniqueness, String memo, boolean modified) {
 		this.id = id;
 		this.inspectionNumber = inspectionNumber;
 		this.inspectionDate = inspectionDate;
@@ -205,6 +256,7 @@ public class Sign implements Serializable {
 		this.installSide = installSide;
 		this.uniqueness = uniqueness;
 		this.memo = memo;
+		this.modified = modified;
 	}
 
 	public static long getSerialVersionUID() {
@@ -561,5 +613,13 @@ public class Sign implements Serializable {
 
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+
+	public boolean isModified() {
+		return modified;
+	}
+
+	public void setModified(boolean modified) {
+		this.modified = modified;
 	}
 }

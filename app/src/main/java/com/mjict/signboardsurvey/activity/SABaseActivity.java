@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,6 +40,9 @@ public abstract class SABaseActivity extends AppCompatSActivity {
     private Button demolishedSignButton;
     private Button reviewSignButton;
     private Button mapSearchButton;
+    private ImageButton homeButton;
+    private ImageButton settingButton;
+    private ImageButton quitButton;
 
     private WaitingDialog waitingDialog;
     private AlertDialog.Builder alertDialog;

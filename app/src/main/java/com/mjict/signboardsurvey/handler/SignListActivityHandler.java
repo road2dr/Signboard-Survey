@@ -24,7 +24,6 @@ import com.mjict.signboardsurvey.task.AsyncTaskListener;
 import com.mjict.signboardsurvey.task.DeleteSignTask;
 import com.mjict.signboardsurvey.task.LoadImageTask;
 import com.mjict.signboardsurvey.task.LoadSignsByShopTask;
-import com.mjict.signboardsurvey.task.ModifySignTask;
 import com.mjict.signboardsurvey.task.RegisterSignTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 import com.mjict.signboardsurvey.util.SettingDataManager;
@@ -35,7 +34,6 @@ import com.mjict.signboardsurvey.widget.SignOptionDialog;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -106,59 +104,24 @@ public class SignListActivityHandler extends SABaseActivityHandler {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == MJConstants.REQUEST_SIGN_INFORMATION) {
-            if(resultCode == Activity.RESULT_OK) {
-                // 간판 정보 바뀜
+        if(requestCode == MJConstants.REQUEST_SIGN_INPUT_INFORMATION) {
+            if(resultCode == Activity.RESULT_OK) {  // 새 간판 정보 받아옴
                 Sign sign = (Sign)data.getSerializableExtra(MJConstants.SIGN);
-                int index = -1;
-                for(int i=0; i<shopSigns.size(); i++) {
-                    Sign s = shopSigns.get(i);
-                    if(s.getId() == sign.getId()) {
-                        index = i;
-                    }
-                }
-
-                // 나머지 정보 채우기
-                Calendar current = Calendar.getInstance();
-                SimpleDateFormat josaDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREAN);
-                SimpleDateFormat syncTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREAN);
-                String currentTimeString = Utilities.getCurrentTimeAsString();
-
-                String josaDate = josaDateFormat.format(current.getTime());
-                String syncDate = syncTimeFormat.format(SyncConfiguration.getLastSynchronizeDate());
-
-                sign.setInspectionDate(josaDate);
-                sign.setSyncDate(syncDate);
-                sign.setModifyDate(currentTimeString);
-                sign.setShopId(currentShop.getId());
-                sign.setSgCode(currentShop.getSgCode());
-                sign.setAddressId(currentShop.getAddressId());
-
-                if(index == -1) {   // 새간판
-                    startToInsertSignAndUpdateUI(sign);
-                } else {
-                    startToModifySignAndUpdateUI(index, sign);
-                }
-
-//                SignInfo si = signToSignInfo(sign);
-//                String path = SyncConfiguration.getDirectoryForSingPicture() + sign.getPicNumber();
-//                if(index == -1) {
-//                    // 새간판
-//                    shopSigns.add(sign);
-//                    activity.addToList(si);
-//
-//                    startToLoadSignImage(shopSigns.size()-1, path);
-//                } else {
-//                    // 기존 간판
-//                    shopSigns.set(index, sign);
-//                    activity.setSignInfo(index, si);
-//                    startToLoadSignImage(index, path);
-//                }
-
-            } else {
-                // 간판 정보 안 바뀜
+                startToInsertSignAndUpdateUI(sign);
+            } else {    // 간판 정보 입력 취소
+                Toast.makeText(activity, R.string.input_sign_information_canceled, Toast.LENGTH_SHORT).show();
             }
+        } else if(requestCode == MJConstants.REQUEST_SIGN_MODIFY) {
+            if(resultCode == Activity.RESULT_OK) { // 간판 정보가 바뀌었음
+                Sign sign = (Sign)data.getSerializableExtra(MJConstants.SIGN);
+                findSignAndReplace(sign);
+            } else {    // 간판 정보가 바뀌지 않았음
+            }
+        } else {
+
         }
+
+
     }
 
     private void startToLoadSignList() {
@@ -188,7 +151,7 @@ public class SignListActivityHandler extends SABaseActivityHandler {
                 String[] paths = new String[shopSigns.size()];
                 for(int i=0; i<shopSigns.size(); i++) {
                     Sign sign = shopSigns.get(i);
-                    String path = SyncConfiguration.getDirectoryForSingPicture(sign.isSynchronized()) + sign.getPicNumber();
+                    String path = SyncConfiguration.getDirectoryForSingPicture(sign.isModified()) + sign.getPicNumber();
                     paths[i] = path;
                 }
 
@@ -199,24 +162,29 @@ public class SignListActivityHandler extends SABaseActivityHandler {
     }
 
     private void startToInsertSignAndUpdateUI(final Sign sign) {
-        String inputDate = Utilities.getCurrentTimeAsString();
-        long seq = SyncConfiguration.calculateInspectionSeq();
-
-        Date current = Calendar.getInstance().getTime();
-        int deviceNo = MJContext.getCurrentUser().getMobileId();
+        // 나머지 정보 채우기
+        Calendar current = Calendar.getInstance();
         SimpleDateFormat josaDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREAN);
-        String today = josaDateFormat.format(current);
-        String seqString = String.format("%03d", seq);
-        String josaNoStr = today + deviceNo + seqString;
+        SimpleDateFormat syncTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREAN);
+        String currentTimeString = Utilities.getCurrentTimeAsString();
 
-        long josaNo = Long.parseLong(josaNoStr);
+        String josaDate = josaDateFormat.format(current.getTime());
+        String syncDate = syncTimeFormat.format(SyncConfiguration.getLastSynchronizeDate());
+        String inputDate = Utilities.getCurrentTimeAsString();
+        long newInspectionNo = SyncConfiguration.generateInspectionNo();
 
+        sign.setInspectionDate(josaDate);
+        sign.setSyncDate(syncDate);
+        sign.setModifyDate(currentTimeString);
+        sign.setShopId(currentShop.getId());
+        sign.setSgCode(currentShop.getSgCode());
+        sign.setAddressId(currentShop.getAddressId());
         sign.setInputDate(inputDate);
         sign.setInputter(MJContext.getCurrentUser().getUserId());
-        sign.setInspectionNumber(String.valueOf(josaNo));
+        sign.setModifier(MJContext.getCurrentUser().getUserId());
+        sign.setInspectionNumber(String.valueOf(newInspectionNo));
 
         RegisterSignTask task = new RegisterSignTask(activity.getApplicationContext(), currentShop.getId());
-        final long nextSeq = seq + 1;
         task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Long>() {
             @Override
             public void onTaskStart() {
@@ -234,46 +202,36 @@ public class SignListActivityHandler extends SABaseActivityHandler {
                     sign.setId(result);
 
                     SignInfo si = signToSignInfo(sign);
-                    String path = SyncConfiguration.getDirectoryForSingPicture(sign.isSynchronized()) + sign.getPicNumber();
+                    String path = SyncConfiguration.getDirectoryForSingPicture(sign.isModified()) + sign.getPicNumber();
                     shopSigns.add(sign);
                     activity.addToList(si);
 
                     startToLoadSignImage(shopSigns.size()-1, path);
 
                     MJContext.addRecentSing(sign.getId());
-                    SyncConfiguration.setLastInspectionSeq(nextSeq);
+                    SyncConfiguration.increaseInspectionSeq();
                 }
             }
         });
         task.execute(sign);
     }
 
-    private void startToModifySignAndUpdateUI(final int position, final Sign sign) {
-        ModifySignTask task = new ModifySignTask(activity.getApplicationContext());
-        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
-            @Override
-            public void onTaskStart() {
-                activity.showWaitingDialog(R.string.saving);
-            }
 
-            @Override
-            public void onTaskFinished(Boolean result) {
-                activity.hideWaitingDialog();
-                if(result == false) {
-                    // TODO 수정 실패 - 사진 파일 삭제
-                    Toast.makeText(activity, R.string.failed_to_save_sign_information, Toast.LENGTH_SHORT);
-                } else {
-                    SignInfo si = signToSignInfo(sign);
-                    String path = SyncConfiguration.getDirectoryForSingPicture(sign.isSynchronized()) + sign.getPicNumber();
-                    shopSigns.set(position, sign);
-                    activity.setSignInfo(position, si);
-                    startToLoadSignImage(position, path);
-
-                    MJContext.addRecentSing(sign.getId());
-                }
+    private void findSignAndReplace(Sign sign) {
+        int position = -1;
+        for(int i=0; i<shopSigns.size(); i++) {
+            Sign s = shopSigns.get(i);
+            if(s.getId() == sign.getId()) {
+                position = i;
             }
-        });
-        task.execute(sign);
+        }
+        if(position != -1) {
+            SignInfo si = signToSignInfo(sign);
+            String path = SyncConfiguration.getDirectoryForSingPicture(sign.isModified()) + sign.getPicNumber();
+            shopSigns.set(position, sign);
+            activity.setSignInfo(position, si);
+            startToLoadSignImage(position, path);
+        }
     }
 
     private SignInfo signToSignInfo(Sign s) {
@@ -390,16 +348,13 @@ public class SignListActivityHandler extends SABaseActivityHandler {
         intent.putExtra(HANDLER_CLASS, SignInformationActivityHandler.class);
         intent.putExtra(MJConstants.SIGN, sign);
         intent.putExtra(MJConstants.SIGN_LIST, shopSigns);
-        activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_INFORMATION);
+
+        activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_MODIFY);
     }
 
     private void goToSignInput() {
         Intent intent = new Intent(activity, BasicSignInformationInputActivity.class);
         intent.putExtra(HANDLER_CLASS, BasicSignInformationInputActivityHandler.class);
-        activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_INFORMATION);
+        activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_INPUT_INFORMATION);
     }
-
-
-
-
 }

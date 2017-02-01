@@ -1,6 +1,7 @@
 package com.mjict.signboardsurvey.task;
 
 
+import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.util.FileManager;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
 
@@ -29,7 +30,7 @@ public class SaveImageTask extends DefaultAsyncTask<byte[], Integer, Boolean> {
         if(fileName == null) {
             long time = Calendar.getInstance().getTimeInMillis();
             String picDir = SyncConfiguration.getTempDirectory();
-            filePath = picDir+time+""+SyncConfiguration.getMobileNo()+".jpg";
+            filePath = picDir+time+""+ MJContext.getCurrentUser().getMobileId()+".jpg";
         } else {
             filePath = fileName;
         }

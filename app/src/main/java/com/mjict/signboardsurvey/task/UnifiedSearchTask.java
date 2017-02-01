@@ -67,7 +67,8 @@ public class UnifiedSearchTask extends DefaultAsyncTask<String, Integer, Unified
                 List<BuildingPicture> pics = dmgr.findBuildingPictureByBuildingId(b.getId());
                 Bitmap image = null;
                 if(pics != null && pics.size() > 0) {
-                    String path = SyncConfiguration.getDirectoryForBuildingPicture(b.isSync()) + pics.get(0).getPath();
+                    BuildingPicture bp = pics.get(0);
+                    String path = SyncConfiguration.getDirectoryForBuildingPicture(bp.isSynchronized()) + bp.getPath();
                     image = Utilities.loadImage(path, 8);
                 }
 

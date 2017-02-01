@@ -240,6 +240,8 @@
     <string name="lawful_sign_type">적법 간판</string>
     <string name="illegal_sign_type">불법 간판</string>
     <string name="integrated_search">통합 검색</string>
+    <string name="input_sign_information_canceled">간판 정보 입력을 취소 했습니다.</string>
+    <string name="cannot_delete_that_sign_information">해당 사진 정보를 지울 수 없습니다.</string>
 
 
     <!-- !!!!!!!!!!!!!!!!!!!!!! -->

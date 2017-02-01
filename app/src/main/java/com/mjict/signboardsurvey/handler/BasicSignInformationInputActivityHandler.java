@@ -63,7 +63,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
 
 
         if(currentSign.getPicNumber() != null && currentSign.getPicNumber().equals("") == false)
-            imagePath = SyncConfiguration.getDirectoryForSingPicture(currentSign.isSynchronized())+currentSign.getPicNumber();
+            imagePath = SyncConfiguration.getDirectoryForSingPicture(currentSign.isModified())+currentSign.getPicNumber();
 
         SettingDataManager smgr = SettingDataManager.getInstance();
         statusSettings = smgr.getSignStatus();
@@ -149,7 +149,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
             }
 
             startToLoadSignImage();
-        } else if(requestCode == MJConstants.REQUEST_SIGN_INFORMATION){
+        } else if(requestCode == MJConstants.REQUEST_SIGN_INPUT_INFORMATION){
             if(resultCode == Activity.RESULT_OK) {
                 currentSign = (Sign)data.getSerializableExtra(MJConstants.SIGN);
 
@@ -338,11 +338,15 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         intent.putExtra(MJConstants.SIGN, currentSign);
         intent.putExtra(MJConstants.AUTO_JUDGEMENT_VALUE, autoJudgementValue);
 
-        activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_INFORMATION);
+        activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_INPUT_INFORMATION);
     }
 
     private void goToSignPicture() {
-        String path = SyncConfiguration.getDirectoryForSingPicture(currentSign.isSynchronized())+currentSign.getPicNumber();
+        String path = null;
+        if(imagePath == null)
+            path = SyncConfiguration.getDirectoryForSingPicture(currentSign.isModified())+currentSign.getPicNumber();
+        else
+            path = imagePath;
 
         Intent intent = new Intent(activity, PictureActivity.class);
         intent.putExtra(HANDLER_CLASS, SignPictureActivityHandler.class);
@@ -354,13 +358,14 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
     private void goToCamera() {
         String time = Utilities.getCurrentTimeAsString();
         int hash = Math.abs((int)Utilities.hash(time));
-        String dir = SyncConfiguration.getDirectoryForSingPicture(currentSign.isSynchronized());
+        String dir = SyncConfiguration.getDirectoryForSingPicture(true);
         final String fileName = String.format("sign_%10d.jpg", hash);
         String path = dir + fileName;
 
         Intent intent = new Intent(activity, CameraActivity.class);
         intent.putExtra(HANDLER_CLASS, CameraActivityHandler.class);
         intent.putExtra(MJConstants.PATH, path);
+
 
         activity.startActivityForResult(intent, MJConstants.REQUEST_TAKE_AND_SAVE);
     }
@@ -412,45 +417,10 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
     private Sign createNewSign() {
         String currentTime = Utilities.getCurrentTimeAsString();
 
-//        long id = -1;
-//        int type = -1;
-//        float width = 0f;
-//        float length = 0f;
-//        float height = 0f;
-//        String area = "";   // 안쓰는거 같음
-//        float extraSize = 0f;   // 안쓰는거 같음
-//        int quantity = 0;   // 안쓰는거 같음
-//        String content = "";
-//        int placedFloor = 0;
-//        String placedSide = "N";
-//        int lightType = -1;
-//        String placement = "";  // 안쓰는거 같음 - 나중에 쓸줄 모름
-//        boolean streetInfringement = false;
-//        float collisionWidth = 0f;
-//        float collisionLength = 0f;
-//        int inspectionResult = -1;
-//        String permissionNumber = "";   // 안쓰는거 같음
-//        String inputor = MJContext.getCurrentUser().getUserId();
-//        String inputDate = currentTime;
-//        String needReinspection = "";   // 안쓰는거 같음 - reviewCode로 대체 될 듯
-//        int statusCode = -1;
-//        String picNumber = "";
-//        String modifier = "";
-//        String modifyDate = currentTime;
-//        int totalFloor = 0;
-//        String isIntersection = "N";
-//        int tblNumber = 510;
-//        int addressId = -1;
-//        String demolitionPicPath = "";
-//        String demolishedDate = "";
-//        boolean isDeleted = false;
-//        int reviewCode = -1;
-//        boolean isFrontBackRoad = false;
-
         long id = -1;		// id
         String inspectionNumber = "";
         String inspectionDate = "";
-        String mobileId = String.valueOf(MJContext.getDeviceNumber());
+        String mobileId = String.valueOf(MJContext.getCurrentUser().getMobileId());
         boolean isSynchronized = false;
         String syncDate = "";
         int type = -1;
@@ -491,13 +461,14 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         int placedSide = -1;
         int uniqueness = -1;
         String memo = "";
+        boolean modified = true;
 
         Sign sign = new Sign(id, inspectionNumber,inspectionDate,mobileId,isSynchronized,syncDate,
                 type,width,length,height,area,extraSize,quantity,content,placedFloor,isFront,lightType,
                 placement,isCollision,collisionWidth,collisionLength,inspectionResult,permissionNumber,
                 inputter,inputDate, statsCode,picNumber,modifier,modifyDate,
                 totalFloor,isIntersection,tblNumber,isFrontBackRoad,demolitionPicPath,
-                demolishedDate,reviewCode,addressId,addressId,sgCode,placedSide,uniqueness,memo);
+                demolishedDate,reviewCode,shopId,addressId,sgCode,placedSide,uniqueness,memo, modified);
 
         return sign;
     }

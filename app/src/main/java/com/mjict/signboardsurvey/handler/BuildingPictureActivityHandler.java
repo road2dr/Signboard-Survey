@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.R;
@@ -13,8 +14,10 @@ import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.BuildingPicture;
 import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
+import com.mjict.signboardsurvey.task.DeleteBuildingPictureTask;
 import com.mjict.signboardsurvey.task.InsertBuildingPictureTask;
 import com.mjict.signboardsurvey.task.LoadImageTask;
+import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
 import com.mjict.signboardsurvey.util.Utilities;
 
@@ -132,7 +135,7 @@ public class BuildingPictureActivityHandler extends SABaseActivityHandler {
         // 건물 사진 파일 이름 만듬
         String time = Utilities.getCurrentTimeAsString();
         int hash = Math.abs((int)Utilities.hash(time));
-        String dir = SyncConfiguration.getDirectoryForBuildingPicture(building.isSync());
+        String dir = SyncConfiguration.getDirectoryForBuildingPicture(false);
         final String fileName = String.format("building_%d_%d.jpg", building.getId(), hash);
         String path = dir + fileName;
 
@@ -169,35 +172,40 @@ public class BuildingPictureActivityHandler extends SABaseActivityHandler {
     }
 
     private void deleteButtonClicked() {
-//        if(buildingPictures == null || buildingPictures.size() <= 0)
-//            return;
-//
-//        if(buildingPictures.size() <= 0)
-//            return;
-//
-//        final BuildingPicture pic = buildingPictures.get(imageIndex);
-//        DeleteBuildingPictureTask task = new DeleteBuildingPictureTask(activity.getBaseContext());
-//        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
-//            @Override
-//            public void onTaskStart() {
-//                activity.showWaitingDialog(R.string.deleting_building_image);   // TODO 여기서도 에러..
-//            }
-//            @Override
-//            public void onTaskFinished(Boolean result) {
-//                activity.hideWaitingDialog();
-//
-//                int msg = result ? R.string.succeeded_to_delete : R.string.failed_to_delete;
-//                Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-//
-//                buildingPictures.remove(pic);
-//                if(imageIndex >= buildingPictures.size())
-//                    imageIndex = 0;
-//
-//                updatePageText();
-//                startToLoadImage();
-//            }
-//        });
-//        task.execute(pic);
+        if(buildingPictures == null || buildingPictures.size() <= 0)
+            return;
+
+        if(buildingPictures.size() <= 0)
+            return;
+
+        final BuildingPicture pic = buildingPictures.get(imageIndex);
+        if(pic.isSynchronized() == true) {
+            Toast.makeText(activity, R.string.cannot_delete_that_sign_information, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DeleteBuildingPictureTask task = new DeleteBuildingPictureTask(activity.getBaseContext());
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
+            @Override
+            public void onTaskStart() {
+                activity.showWaitingDialog(R.string.deleteing);
+            }
+            @Override
+            public void onTaskFinished(Boolean result) {
+                activity.hideWaitingDialog();
+
+                int msg = result ? R.string.succeeded_to_delete : R.string.failed_to_delete;
+                Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+
+                buildingPictures.remove(pic);
+                if(imageIndex >= buildingPictures.size())
+                    imageIndex = 0;
+
+                updatePageText();
+                startToLoadImage();
+            }
+        });
+        task.execute(pic);
     }
 
 //    private void startToLoadBuildingPictures() {
@@ -236,7 +244,7 @@ public class BuildingPictureActivityHandler extends SABaseActivityHandler {
             return;
 
         BuildingPicture pic = buildingPictures.get(imageIndex);
-        String path = SyncConfiguration.getDirectoryForBuildingPicture(building.isSync())+pic.getPath();
+        String path = SyncConfiguration.getDirectoryForBuildingPicture(pic.isSynchronized())+pic.getPath();
         LoadImageTask task = new LoadImageTask();
         task.setSampleSize(1);
         task.setDefaultAsyncTaskListener(new AsyncTaskListener<IndexBitmap, Boolean>() {
@@ -260,7 +268,7 @@ public class BuildingPictureActivityHandler extends SABaseActivityHandler {
     private void startToSavePictureInformation(String path) {
         String fileName = path.substring(path.lastIndexOf("/")+1);
 
-        final BuildingPicture bp = new BuildingPicture(0, building.getId(), fileName);
+        final BuildingPicture bp = new BuildingPicture(0, building.getId(), fileName, false);
         InsertBuildingPictureTask task = new InsertBuildingPictureTask(activity.getApplicationContext());
         task.setDefaultAsyncTaskListener(new AsyncTaskListener<Long, Boolean>() {
             @Override

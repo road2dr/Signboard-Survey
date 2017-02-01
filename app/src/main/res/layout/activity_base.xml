@@ -160,18 +160,21 @@
             android:layout_alignParentBottom="true">
 
             <ImageButton
+                android:id="@+id/home_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:src="@drawable/ic_home_sel"
                 android:background="@drawable/btn_navigation_button"/>
             <ImageButton
+                android:id="@+id/setting_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:src="@drawable/ic_setting_sel"
                 android:background="@drawable/btn_navigation_button"/>
             <ImageButton
+                android:id="@+id/quit_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

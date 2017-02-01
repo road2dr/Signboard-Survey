@@ -256,7 +256,7 @@ public class Utilities {
 //	String strDate = fm.format(cal.getTime());
 //
 	public static String getCurrentTimeAsString() {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd aa hh:mm:ss", Locale.KOREAN);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREAN);
 		String date = format.format(Calendar.getInstance().getTime());
 
 		return date;
@@ -293,14 +293,14 @@ public class Utilities {
 	};
 
 	public static String toTimeString(Date time) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd aa hh:mm:ss", Locale.KOREAN);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREAN);
 		String date = format.format(time);
 
 		return date;
 	}
 
 	public static Date stringToDate(String time) {
-		DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd aa hh:mm:ss", Locale.KOREAN);
+		DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREAN);
 		Date date = null;
 		try {
 			date = sdFormat.parse(time);

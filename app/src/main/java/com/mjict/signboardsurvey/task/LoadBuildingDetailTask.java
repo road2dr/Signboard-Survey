@@ -55,7 +55,7 @@ public class LoadBuildingDetailTask extends DefaultAsyncTask<List<Building>, Det
             Bitmap image = null;
             if(pics != null) {
                 for(int j=0; j<pics.size(); j++) {
-                    String path = SyncConfiguration.getDirectoryForBuildingPicture(b.isSync())+pics.get(j).getPath();
+                    String path = SyncConfiguration.getDirectoryForBuildingPicture(pics.get(j).isSynchronized())+pics.get(j).getPath();
                     File file = new File(path);
                     if(file.exists()) {
                         try {

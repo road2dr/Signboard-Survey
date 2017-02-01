@@ -1,5 +1,7 @@
 package com.mjict.signboardsurvey.util;
 
+import com.mjict.signboardsurvey.MJContext;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -247,8 +249,8 @@ public class SyncConfiguration {
 		return base+tempDir;
 	}
 	
-	public static String getDirectoryForSingPicture(boolean isSync) {
-		String property = isSync ? DIRECTORY_FOR_SIGN_PICTURE_SERVER : DIRECTORY_FOR_SIGN_PICTURE_DEVICE;
+	public static String getDirectoryForSingPicture(boolean isModified) {
+		String property = isModified ? DIRECTORY_FOR_SIGN_PICTURE_DEVICE : DIRECTORY_FOR_SIGN_PICTURE_SERVER;
 
 		signPictureDir = properties.getProperty(property);
 		
@@ -314,7 +316,13 @@ public class SyncConfiguration {
 		
 		return base+tempDir;
 	}
-	
+
+	/**
+	 * 프로퍼티에 기록된 모바일 번호를 가져온다. <br>
+	 * 프로퍼티 이름은 'mobile_no' <br>
+	 * 현재 시스템 상으로는 사용하지 않는다.
+	 * @return mobile number
+     */
 	public static int getMobileNo() {
 		if(mobileNo == -1) {
 			String strValue = (String) properties.get(MOBILE_NO);
@@ -326,6 +334,11 @@ public class SyncConfiguration {
 		}
 		
 		return mobileNo;
+	}
+
+	public static void setMobileNo(int no) {
+		mobileNo = no;
+		properties.put(MOBILE_NO, String.valueOf(mobileNo));
 	}
 
 	public static long getLastInspectionSeq() {
@@ -347,10 +360,17 @@ public class SyncConfiguration {
 		properties.put(LAST_INSPECTION_SEQ, String.valueOf(lastInspectionSeq));
 	}
 
+	public static void increaseInspectionSeq() {
+		lastInspectionSeq++;
+		properties.put(LAST_INSPECTION_SEQ, String.valueOf(lastInspectionSeq));
+	}
+
 	public static String getLastUseDate() {
 		if(lastUseDate == null) {
 			try {
-				lastUseDate = new String(properties.getProperty(LAST_USE_DATE).getBytes("ISO-8859-1"), "UTF-8");
+				String useDate = properties.getProperty(LAST_USE_DATE);
+				if(useDate != null)
+					lastUseDate = new String(useDate.getBytes("ISO-8859-1"), "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 				lastUseDate = null;
@@ -447,7 +467,7 @@ public class SyncConfiguration {
 		return conditions;
 	}
 
-	public static long calculateInspectionSeq() {
+	private static long calculateInspectionSeq() {
 		long lastSeq = getLastInspectionSeq();
 		if(lastSeq < 0)
 			lastSeq = 0;
@@ -468,6 +488,20 @@ public class SyncConfiguration {
 		}
 
 		return lastSeq;
+	}
+
+	public static long generateInspectionNo() {
+		long seq = SyncConfiguration.calculateInspectionSeq();
+
+		Date current = Calendar.getInstance().getTime();
+		int deviceNo = MJContext.getCurrentUser().getMobileId();
+		SimpleDateFormat josaDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREAN);
+		String today = josaDateFormat.format(current);
+		String seqString = String.format("%03d", seq);
+		String josaNoStr = today + deviceNo + seqString;
+
+		long josaNo = Long.parseLong(josaNoStr);
+		return josaNo;
 	}
 
 }

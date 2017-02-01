@@ -23,7 +23,9 @@ import java.sql.SQLException;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
-	private final static String DATABASE_NAME = "MROKGTotal.db3";
+//	private final static String DATABASE_NAME = "MROKGTotal.db3";
+	private final static String DATABASE_NAME = "/sdcard/mjict/signboard/database/MROKGTotal.db3";
+
 	private final static int DATABASE_VERSION = 1;
 	
 	private Dao<Sign, Long> signsDao;

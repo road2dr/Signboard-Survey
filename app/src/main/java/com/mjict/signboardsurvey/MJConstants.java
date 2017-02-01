@@ -35,7 +35,9 @@ public class MJConstants {
 
     public static final int REQUEST_TAKE_AND_SAVE = 5234;
     public static final int REQUEST_BUILDING_PICTURE = 1129;
-    public static final int REQUEST_SIGN_INFORMATION = 5967;
+//    public static final int REQUEST_SIGN_INFORMATION = 5967;
+    public static final int REQUEST_SIGN_INPUT_INFORMATION = 6427;
+    public static final int REQUEST_SIGN_MODIFY = 489;
     public static final int REQUEST_BUILDING_INFORMATION = 4449;
     public static final int REQUEST_MEASURE_SIGN = 3388;
     public static final int REQUEST_SHOP_INFORMATION = 892;

@@ -13,6 +13,7 @@ import com.mjict.signboardsurvey.activity.SummaryActivity;
 import com.mjict.signboardsurvey.model.User;
 import com.mjict.signboardsurvey.task.LoadUserDataTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
+import com.mjict.signboardsurvey.util.SyncConfiguration;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class LoginActivityHandler extends SABaseActivityHandler {
                 if(true) {
                     User user = ((UserWrapper)activity.getSelectedUser()).user;
                     MJContext.setCurrentUser(user);
+                    SyncConfiguration.setMobileNo(user.getMobileId());  // 동기화쪽 요청으로 추가. 백업 만들때 쓴다고 한다.
                     goToSummary();
                     // TODO 임시
 //                    goToTemp();

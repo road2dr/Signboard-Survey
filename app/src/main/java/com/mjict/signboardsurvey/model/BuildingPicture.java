@@ -16,6 +16,9 @@ public class BuildingPicture implements Serializable {
 	
 	@DatabaseField
 	private String path;
+
+	@DatabaseField(columnName = "isSync")
+	private boolean isSynchronized;
 	
 //	@DatabaseField
 //	private String direction;
@@ -27,12 +30,12 @@ public class BuildingPicture implements Serializable {
 		
 	}
 	
-	public BuildingPicture(long id, long buildingId, String path/*, String direction*/) {
+	public BuildingPicture(long id, long buildingId, String path, boolean isSynchronized) {
 		super();
 		this.id = id;
 		this.buildingId = buildingId;
 		this.path = path;
-//		this.direction = direction;
+		this.isSynchronized = isSynchronized;
 	}
 
 	public long getId() {
@@ -59,7 +62,15 @@ public class BuildingPicture implements Serializable {
 		this.path = path;
 	}
 
-//	public String getDirection() {
+	public boolean isSynchronized() {
+		return isSynchronized;
+	}
+
+	public void setSynchronized(boolean aSynchronized) {
+		isSynchronized = aSynchronized;
+	}
+
+	//	public String getDirection() {
 //		return direction;
 //	}
 //

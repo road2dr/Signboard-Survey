@@ -1,12 +1,15 @@
 package com.mjict.signboardsurvey.handler;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 
+import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.ReviewSignActivity;
+import com.mjict.signboardsurvey.activity.SignInformationActivity;
 import com.mjict.signboardsurvey.model.Address;
 import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.model.Setting;
@@ -30,7 +33,6 @@ import java.util.List;
  * Created by Junseo on 2016-07-24.
  */
 public class ReviewSignActivityHandler extends SABaseActivityHandler {
-    private static final int REQUEST_MODIFY_DATA = 7476;
 
     private ReviewSignActivity activity;
     private List<Sign> searchResult;
@@ -93,15 +95,16 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if(requestCode == REQUEST_MODIFY_DATA) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                Shop shop = (Shop) data.getSerializableExtra(SignInformationActivityHandler.MODIFIED_SHOP);
-//                ArrayList<Sign> signs = (ArrayList<Sign>) data.getSerializableExtra(SignInformationActivityHandler.MODIFIED_SIGNS);
-//                if(signs != null && signs.size() > 0) {
-//                    loadSignImageAndReplace(signs.get(0));
-//                }
-//            }
-//        }
+        if(requestCode == MJConstants.REQUEST_SIGN_MODIFY) {
+            if(resultCode == Activity.RESULT_OK) { // 간판 정보가 바뀌었음
+                Sign sign = (Sign)data.getSerializableExtra(MJConstants.SIGN);
+
+                findSignAndReplace(sign);
+            } else {    // 간판 정보가 바뀌지 않았음
+            }
+        } else {
+
+        }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -227,11 +230,26 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
 
         for(int i=0; i<n; i++) {
             Sign sign = searchResult.get(i);
-            String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isSynchronized());
+            String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isModified());
             String signImagePath = signPicDir+sign.getPicNumber();
             signImagePaths[i] = signImagePath;
         }
 
+        runImageLoadTask(signImagePaths);
+    }
+
+    private void startToLoadImage(int position) {
+        if(searchResult == null)
+            return;
+
+        Sign sign = searchResult.get(position);
+        String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isModified());
+        String signImagePath = signPicDir+sign.getPicNumber();
+
+        runImageLoadTask(signImagePath);
+    }
+
+    private void runImageLoadTask(String... paths) {
         LoadImageTask signImageTask = new LoadImageTask();
         signImageTask.setSampleSize(8);
         signImageTask.setDefaultAsyncTaskListener(new AsyncTaskListener<IndexBitmap, Boolean>() {
@@ -248,45 +266,34 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
             public void onTaskFinished(Boolean aBoolean) {
             }
         });
-        signImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, signImagePaths);
-
-
+        signImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, paths);
     }
-
-    int clickedPosition = 0;
     private void listRowClicked(int position, ReviewSign data) {
-        clickedPosition = position;
+        Sign sign = searchResult.get(position);
 
-//        Intent intent = new Intent(activity.getBaseContext(), SignInformationActivity.class);
-//        intent.putExtra(HANDLER_CLASS, SignInformationActivityHandler.class);
-//        intent.putExtra(SignInformationActivityHandler.SHOP_INFORMATION, data.shop);
-//        intent.putExtra(SignInformationActivityHandler.CURRENT_SIGN, data.sign);
-//        intent.putExtra(SignInformationActivityHandler.ONE_SIGN_MODE, true);
-//
-//        activity.startActivityForResult(intent, REQUEST_MODIFY_DATA);
+        Intent intent = new Intent(activity.getBaseContext(), SignInformationActivity.class);
+        intent.putExtra(HANDLER_CLASS, SignInformationActivityHandler.class);
+        intent.putExtra(MJConstants.SIGN, sign);
+//        intent.putExtra(MJConstants.SIGN_LIST, shopSigns);
+
+        activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_MODIFY);
     }
 
-    private void loadSignImageAndReplace(Sign sign) {
+    private void findSignAndReplace(Sign sign) {
+        int position = -1;
+        for(int i=0; i<searchResult.size(); i++) {
+            Sign s = searchResult.get(i);
+            if(s.getId() == sign.getId()) {
+                position = i;
+            }
+        }
+        if(position != -1) {
+            searchResult.set(position, sign);
+            ReviewSign reviewSign = signToReviewSign(sign);
+            activity.replaceListItem(position, reviewSign);
 
-//        LoadReviewSignBySignTask task = new LoadReviewSignBySignTask(activity.getApplicationContext());
-//        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<ReviewSign>() {
-//            @Override
-//            public void onTaskStart() {
-//                activity.showWaitingDialog(R.string.loading);
-//            }
-//            @Override
-//            public void onTaskFinished(ReviewSign reviewSign) {
-//                activity.hideWaitingDialog();
-//                if(reviewSign == null)
-//                    return;
-//
-//                activity.replaceListItem(clickedPosition, reviewSign);
-//
-//                clickedPosition = 0;
-//
-//            }
-//        });
-//        task.execute(sign);
+            startToLoadImage(position);
+        }
     }
 
     private ReviewSign signToReviewSign(Sign sign) {

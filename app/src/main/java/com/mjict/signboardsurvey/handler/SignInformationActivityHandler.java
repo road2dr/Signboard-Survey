@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.mjict.signboardsurvey.MJConstants;
+import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.BasicSignInformationInputActivity;
 import com.mjict.signboardsurvey.activity.SignInformationActivity;
@@ -16,10 +18,16 @@ import com.mjict.signboardsurvey.model.Setting;
 import com.mjict.signboardsurvey.model.Sign;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
 import com.mjict.signboardsurvey.task.LoadImageTask;
+import com.mjict.signboardsurvey.task.ModifySignTask;
+import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 import com.mjict.signboardsurvey.util.SettingDataManager;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
+import com.mjict.signboardsurvey.util.Utilities;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by Junseo on 2016-11-17.
@@ -63,7 +71,6 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
             }
         });
 
-
         // do first job
         updateToUI();
 
@@ -73,15 +80,11 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
     private int responseResult = Activity.RESULT_CANCELED;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == MJConstants.REQUEST_SIGN_INFORMATION) {
+        if(requestCode == MJConstants.REQUEST_SIGN_INPUT_INFORMATION) {
             if(resultCode == Activity.RESULT_OK) {
                 Sign sign = (Sign) data.getSerializableExtra(MJConstants.SIGN);
-                currentSign = sign;
 
-                updateToUI();
-
-                startToLoadSignImage();
-                responseResult = Activity.RESULT_OK;
+                startToModifySignAndUpdateUI(sign);
             } else {
                 responseResult = Activity.RESULT_CANCELED;
             }
@@ -99,7 +102,6 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
 
     private void updateToUI() {
         SettingDataManager smgr = SettingDataManager.getInstance();
-        // TODO 건물 위치 값에 대한 정의 필요 함. 기존의 isFront isIntersection 와의 값도 고려 해야 함.
 
         Setting typeSetting =  smgr.getSignType(currentSign.getType());
         Setting statusSetting = smgr.getSignStatus(currentSign.getStatsCode());
@@ -155,7 +157,7 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
 //    }
 
     private void startToLoadSignImage() {
-        String path = SyncConfiguration.getDirectoryForSingPicture(currentSign.isSynchronized())+currentSign.getPicNumber();
+        String path = SyncConfiguration.getDirectoryForSingPicture(currentSign.isModified())+currentSign.getPicNumber();
         LoadImageTask task = new LoadImageTask();
         task.setSampleSize(8);
         task.setDefaultAsyncTaskListener(new AsyncTaskListener<IndexBitmap, Boolean>() {
@@ -180,6 +182,88 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
         task.execute(path);
     }
 
+    private void startToModifySignAndUpdateUI(final Sign sign) {
+        final Sign target = createTargetSign(sign);
+
+        ModifySignTask task = new ModifySignTask(activity.getApplicationContext());
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
+            @Override
+            public void onTaskStart() {
+                activity.showWaitingDialog(R.string.saving);
+            }
+
+            @Override
+            public void onTaskFinished(Boolean result) {
+                activity.hideWaitingDialog();
+                if(result == false) {
+                    // TODO 수정 실패 - 사진 파일 삭제
+                    responseResult = Activity.RESULT_CANCELED;
+                    Toast.makeText(activity, R.string.failed_to_save_sign_information, Toast.LENGTH_SHORT);
+                } else {
+                    currentSign = target;
+
+                    updateToUI();
+                    startToLoadSignImage();
+
+                    responseResult = Activity.RESULT_OK;
+                    SyncConfiguration.increaseInspectionSeq();
+                    MJContext.addRecentSing(currentSign.getId());
+
+                    Toast.makeText(activity, R.string.succeeded_to_save, Toast.LENGTH_SHORT);
+                }
+            }
+        });
+        task.execute(target);
+    }
+
+    private Sign createTargetSign(Sign sign) {
+        Sign tempSign = new Sign(currentSign);  // 수정에 실패 했을 대를 대비하기 위한 복사본
+
+        // 입력받아온 정보를 넣어준다
+        tempSign.setPicNumber(sign.getPicNumber());
+        tempSign.setType(sign.getType());
+        tempSign.setContent(sign.getContent());
+        tempSign.setStatsCode(sign.getStatsCode());
+        tempSign.setWidth(sign.getWidth());
+        tempSign.setLength(sign.getLength());
+        tempSign.setLightType(sign.getLightType());
+        tempSign.setPlacedFloor(sign.getPlacedFloor());
+        tempSign.setTotalFloor(sign.getTotalFloor());
+        tempSign.setHeight(sign.getHeight());
+        tempSign.setFront(sign.isFront());
+        tempSign.setIntersection(sign.isIntersection());
+        tempSign.setFrontBackRoad(sign.isFrontBackRoad());
+        tempSign.setCollision(sign.isCollision());
+        tempSign.setCollisionWidth(sign.getCollisionWidth());
+        tempSign.setCollisionLength(sign.getCollisionLength());
+        tempSign.setReviewCode(sign.getReviewCode());
+        tempSign.setInstallSide(sign.getInstallSide());
+        tempSign.setUniqueness(sign.getUniqueness());
+        tempSign.setMemo(sign.getMemo());
+        tempSign.setDemolitionPicPath(sign.getDemolitionPicPath());
+        tempSign.setDemolishedDate(sign.getDemolishedDate());
+        tempSign.setInspectionResult(sign.getInspectionResult());
+
+        // 나머지 정보 채우기
+        Calendar current = Calendar.getInstance();
+        SimpleDateFormat josaDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREAN);
+        SimpleDateFormat syncTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREAN);
+        String currentTimeString = Utilities.getCurrentTimeAsString();
+        String josaDate = josaDateFormat.format(current.getTime());
+        String syncDate = syncTimeFormat.format(SyncConfiguration.getLastSynchronizeDate());
+        tempSign.setInspectionDate(josaDate);
+        tempSign.setSyncDate(syncDate);
+        tempSign.setModifyDate(currentTimeString);
+        tempSign.setModifier(MJContext.getCurrentUser().getUserId());
+        tempSign.setModified(true);
+        if(tempSign.getInspectionNumber().equals("")) { // 조사 번호가 없으면 넣어준다
+            long inspectionNo = SyncConfiguration.generateInspectionNo();
+            tempSign.setInspectionNumber(String.valueOf(inspectionNo));
+        }
+
+        return tempSign;
+    }
+
     private void goToSignInput() {
         AutoJudgementValue value = null;
         if(shopSigns != null)
@@ -189,7 +273,7 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
         intent.putExtra(HANDLER_CLASS, BasicSignInformationInputActivityHandler.class);
         intent.putExtra(MJConstants.SIGN, currentSign);
         intent.putExtra(MJConstants.AUTO_JUDGEMENT_VALUE, value);
-        activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_INFORMATION);
+        activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_INPUT_INFORMATION);
     }
 
     private void goToSignPicture() {

@@ -227,7 +227,13 @@ public class FileManager {
 		return true;
 	}
 	
+	public static boolean deleteFile(String path) {
+		File file = new File(path);
+		if(file.exists())
+			return file.delete();
 
+		return false;
+	}
 	
 //	public static boolean writeDataToFile(byte[] data, String filePath) {
 //		try {

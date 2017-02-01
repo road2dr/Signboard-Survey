@@ -1,13 +1,16 @@
 package com.mjict.signboardsurvey.handler;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 
+import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.DemolishedSignActivity;
+import com.mjict.signboardsurvey.activity.SignInformationActivity;
 import com.mjict.signboardsurvey.model.Address;
 import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.model.Setting;
@@ -134,16 +137,16 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if(requestCode == REQUEST_MODIFY_DATA) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                Shop shop = (Shop) data.getSerializableExtra(SignInformationActivityHandler.MODIFIED_SHOP);
-//                ArrayList<Sign> signs = (ArrayList<Sign>) data.getSerializableExtra(SignInformationActivityHandler.MODIFIED_SIGNS);
-//                if(signs != null && signs.size() > 0) {
-//                    loadSignImageAndReplace(signs.get(0));
-//                }
-//            }
-//        }
+        if(requestCode == MJConstants.REQUEST_SIGN_MODIFY) {
+            if(resultCode == Activity.RESULT_OK) { // 간판 정보가 바뀌었음
+                Sign sign = (Sign)data.getSerializableExtra(MJConstants.SIGN);
 
+                findSignAndReplace(sign);
+            } else {    // 간판 정보가 바뀌지 않았음
+            }
+        } else {
+
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -188,17 +191,15 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
         task.execute(address);
     }
 
-    int clickedPosition = 0;
     private void listRowClicked(int position, DemolishedSign data) {
-        clickedPosition = position;
+        Sign sign = searchList.get(position);
 
-//        Intent intent = new Intent(activity.getBaseContext(), SignInformationActivity.class);
-//        intent.putExtra(HANDLER_CLASS, SignInformationActivityHandler.class);
-//        intent.putExtra(SignInformationActivityHandler.SHOP_INFORMATION, data.shop);
-//        intent.putExtra(SignInformationActivityHandler.CURRENT_SIGN, data.sign);
-//        intent.putExtra(SignInformationActivityHandler.ONE_SIGN_MODE, true);
-//
-//        activity.startActivityForResult(intent, REQUEST_MODIFY_DATA);
+        Intent intent = new Intent(activity.getBaseContext(), SignInformationActivity.class);
+        intent.putExtra(HANDLER_CLASS, SignInformationActivityHandler.class);
+        intent.putExtra(MJConstants.SIGN, sign);
+//        intent.putExtra(MJConstants.SIGN_LIST, shopSigns);
+
+        activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_MODIFY);
     }
 
     private void countySpinnerItemChanged(int position, String county) {
@@ -274,6 +275,38 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
         task.execute(town, consonant);
     }
 
+    private void findSignAndReplace(Sign sign) {
+        int position = -1;
+        for(int i=0; i<searchList.size(); i++) {
+            Sign s = searchList.get(i);
+            if(s.getId() == sign.getId()) {
+                position = i;
+            }
+        }
+        if(position != -1) {
+            searchList.set(position, sign);
+            DemolishedSign demolishedSign = signToDemolishedSign(sign);
+            activity.replaceListItem(position, demolishedSign);
+
+            startToLoadImage(position);
+        }
+    }
+
+    private void startToLoadImage(int position) {
+        if(searchList == null)
+            return;
+
+        Sign sign = searchList.get(position);
+        String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isModified());
+        String signImagePath = signPicDir+sign.getPicNumber();
+        String demolitionImagePath = null;
+        if(sign.getDemolitionPicPath() != null && sign.getDemolitionPicPath().isEmpty() == false)
+            demolitionImagePath = signPicDir+sign.getDemolitionPicPath();
+
+        runSignImageLoadTask(signImagePath);
+        runDemolishImageLoadTask(demolitionImagePath);
+    }
+
     private void startToLoadAllImages() {
         if(searchList == null)
             return;
@@ -283,7 +316,7 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
         String[] demolitionImagePaths = new String[n];
         for(int i=0; i<n; i++) {
             Sign sign = searchList.get(i);
-            String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isSynchronized());
+            String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isModified());
             String signImagePath = signPicDir+sign.getPicNumber();
             String demolitionImagePath = null;
             if(sign.getDemolitionPicPath() != null && sign.getDemolitionPicPath().isEmpty() == false)
@@ -293,6 +326,11 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
             demolitionImagePaths[i] = demolitionImagePath;
         }
 
+        runSignImageLoadTask(signImagePaths);
+        runDemolishImageLoadTask(demolitionImagePaths);
+    }
+
+    private void runSignImageLoadTask(String... paths) {
         LoadImageTask signImageTask = new LoadImageTask();
         signImageTask.setSampleSize(8);
         signImageTask.setDefaultAsyncTaskListener(new AsyncTaskListener<IndexBitmap, Boolean>() {
@@ -309,8 +347,10 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
             public void onTaskFinished(Boolean result) {
             }
         });
-        signImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, signImagePaths);
+        signImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, paths);
+    }
 
+    private void runDemolishImageLoadTask(String... paths) {
         LoadImageTask demolitionImageTask = new LoadImageTask();
         demolitionImageTask.setSampleSize(8);
         demolitionImageTask.setDefaultAsyncTaskListener(new AsyncTaskListener<IndexBitmap, Boolean>() {
@@ -327,7 +367,7 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
             public void onTaskFinished(Boolean aBoolean) {
             }
         });
-        demolitionImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, demolitionImagePaths);
+        demolitionImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, paths);
     }
 
 //    private void loadSignImageAndReplace(Sign sign) {

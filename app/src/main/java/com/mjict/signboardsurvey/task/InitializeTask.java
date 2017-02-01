@@ -9,8 +9,6 @@ import com.mjict.signboardsurvey.autojudgement.AutoJudgementRuleManager;
 import com.mjict.signboardsurvey.database.DatabaseManager;
 import com.mjict.signboardsurvey.model.TaskResult;
 import com.mjict.signboardsurvey.util.AppDataConfiguration;
-import com.mjict.signboardsurvey.util.FileManager;
-import com.mjict.signboardsurvey.util.SdNotMountedException;
 import com.mjict.signboardsurvey.util.SettingDataManager;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
 import com.mjict.signboardsurvey.util.Utilities;
@@ -95,36 +93,43 @@ public class InitializeTask extends DefaultAsyncTask<Void, Integer, TaskResult> 
         SettingDataManager.getInstance().load(context);
         DatabaseManager dbm = DatabaseManager.getInstance(context);
 
-        // 설정 로드
-        boolean databaseChanged = SyncConfiguration.getDataChaged();
-
-        Log.d("junseo", "Configuration datachanged: "+databaseChanged);
-        if(databaseChanged) {
-            if(SyncConfiguration.hasDatabaseFileFoySync() == false)
+        // 변경 -- 2017.02.01 DB 파일을 외부에서 바로 읽고 쓰게 한다
+        //        boolean databaseChanged = SyncConfiguration.getDataChaged(); 체크 할 이유가 없어졌다.
+        if(SyncConfiguration.hasDatabaseFileFoySync() == false)
                 return new TaskResult(false, null, R.string.there_are_no_db_file);
 
-            try {
-                FileManager.copySyncDBFileToInternal(context);
-            } catch (SdNotMountedException e) {
-                e.printStackTrace();
-                return new TaskResult(false, e, R.string.sd_not_mounted);
-            } catch (IOException e) {
+        // 설정 로드
+//        boolean databaseChanged = SyncConfiguration.getDataChaged();
+//
+//        Log.d("junseo", "Configuration datachanged: "+databaseChanged);
+//        if(databaseChanged) {
+//            if(SyncConfiguration.hasDatabaseFileFoySync() == false)
+//                return new TaskResult(false, null, R.string.there_are_no_db_file);
+//
+//            try {
+//                FileManager.copySyncDBFileToInternal(context);
+//            } catch (SdNotMountedException e) {
+//                e.printStackTrace();
+//                return new TaskResult(false, e, R.string.sd_not_mounted);
+//            } catch (IOException e) {
+//
+//                /////////////////////// TODO 나중에 수정 - 싱크 프로그램쪽 문제. 빈 db 파일이 있어야 싱크가 된다
+//                String syncFile = SyncConfiguration.getDatabaseFileNameForSync();
+//                try {
+//                    FileManager.copyDbFileTo(context, syncFile);
+//                } catch (SdNotMountedException e1) {
+//                    e1.printStackTrace();
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                }
+//
+//                e.printStackTrace();
+//                return new TaskResult(false, e, R.string.failed_to_copy_db_file);
+//            }
+//        }
+//        Log.d("junseo", "복사 성공");
 
-                /////////////////////// TODO 나중에 수정 - 싱크 프로그램쪽 문제. 빈 db 파일이 있어야 싱크가 된다
-                String syncFile = SyncConfiguration.getDatabaseFileNameForSync();
-                try {
-                    FileManager.copyDbFileTo(context, syncFile);
-                } catch (SdNotMountedException e1) {
-                    e1.printStackTrace();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-
-                e.printStackTrace();
-                return new TaskResult(false, e, R.string.failed_to_copy_db_file);
-            }
-        }
-        Log.d("junseo", "복사 성공");
+//        FileManager.deleteFile(SyncConfiguration.getDatabaseFileNameForSync());
 
         int mobildId = SyncConfiguration.getMobileNo();
         if(mobildId == -1)

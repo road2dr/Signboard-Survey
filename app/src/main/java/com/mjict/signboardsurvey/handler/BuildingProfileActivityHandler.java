@@ -273,7 +273,7 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
 
     private void startToLoadImage(int position) {
         BuildingPicture pic = pictures.get(position);
-        String path = SyncConfiguration.getDirectoryForBuildingPicture(currentBuilding.isSync())+pic.getPath();
+        String path = SyncConfiguration.getDirectoryForBuildingPicture(pic.isSynchronized())+pic.getPath();
         Log.d("junseo", "start to load image: "+path);
         LoadImageTask task = new LoadImageTask();
         task.setSampleSize(4);

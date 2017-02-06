@@ -4,28 +4,17 @@ package com.mjict.signboardsurvey.autojudgement;
  * Created by Junseo on 2017-01-17.
  */
 public class EquationCondition extends Condition {
-//    private Type itemType;
     private boolean equation;
-    private int value;
-//    private int inputValue = -1;
+    private String left;
 
     public EquationCondition() {
 
     }
 
-    public EquationCondition(boolean equation, int value) {
-//        this.itemType = itemType;
+    public EquationCondition(boolean equation, String left) {
         this.equation = equation;
-        this.value = value;
+        this.left = left;
     }
-
-//    public Type getItemType() {
-//        return itemType;
-//    }
-//
-//    public void setItemType(Type itemType) {
-//        this.itemType = itemType;
-//    }
 
     public boolean isEquation() {
         return equation;
@@ -35,29 +24,72 @@ public class EquationCondition extends Condition {
         this.equation = equation;
     }
 
-    public int getValue() {
-        return value;
+    public String getLeft() {
+        return left;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setLeft(String value) {
+        this.left = value;
     }
 
-//    public void setInputValue(int value) {
-//        inputValue = value;
-//    }
 
     @Override
     public boolean check() {
         if(inputValue == -1)    // 값이 정의 되지 않음
             return false;
 
+        String valuePrefix = "@value/";
+        int value = -1;
+        if(left.startsWith(valuePrefix)) {
+            String valueName = left.substring(valuePrefix.length());
+            Item valueItem = AutoJudgementRuleManager.findValue(valueName);
+            if(valueItem == null) {     // @value/left 값에 해당하는 값이 없다
+                return false;
+            }
+            value = Integer.parseInt(valueItem.getCode());
+        } else {
+            value = Integer.parseInt(left);
+        }
+
         boolean answer = false;
         if(equation)
-            answer = (value == inputValue);
+            answer = (inputValue == value);
         else
-            answer = (value != inputValue);
+            answer = (inputValue != value);
 
         return answer;
+    }
+
+    @Override
+    public String toXml() {
+        String operationStatement = "";
+        switch (getOperation()) {
+            case AND:
+                operationStatement = "\n" + "operation=\"AND\"";
+                break;
+            case OR:
+                operationStatement = "\n" + "operation=\"OR\"";
+                break;
+            default:
+                break;
+        }
+
+        String format = "<%s" + "\n" +
+                "item=\"%s\"" + "\n" +
+                "equation=\"%s\"" + "\n" +
+                "left=\"%s\"" +
+                "%s />";
+
+//        int value = -1;
+//        try {
+//            value = Integer.parseInt(inputValue);
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        String statement = String.format(format, Constants.EQUATION_CONDITION, valueType.toString(),
+                String.valueOf(equation), left, operationStatement);
+
+        return statement;
     }
 }

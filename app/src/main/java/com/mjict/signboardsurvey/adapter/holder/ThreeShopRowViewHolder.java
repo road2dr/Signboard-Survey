@@ -15,14 +15,17 @@ public class ThreeShopRowViewHolder {
     private TextView firstNameTextView;
     private TextView firstCategoryTextView;
     private TextView firstPhoneTextView;
+    private View firstClosedView;
     private View secondLayout;
     private TextView secondNameTextView;
     private TextView secondCategoryTextView;
     private TextView secondPhoneTextView;
+    private View secondClosedView;
     private View thirdLayout;
     private TextView thirdNameTextView;
     private TextView thirdCategoryTextView;
     private TextView thirdPhoneTextView;
+    private View thirdClosedView;
 
     public ThreeShopRowViewHolder(View v) {
         parent = v;
@@ -110,5 +113,26 @@ public class ThreeShopRowViewHolder {
             thirdPhoneTextView = (TextView)parent.findViewById(R.id.third_phone_text_view);
 
         return thirdPhoneTextView;
+    }
+
+    public View getFirstClosedView() {
+        if(firstClosedView == null)
+            firstClosedView = parent.findViewById(R.id.first_closed_view);
+
+        return firstClosedView;
+    }
+
+    public View getSecondClosedView() {
+        if(secondClosedView == null)
+            secondClosedView = parent.findViewById(R.id.second_closed_view);
+
+        return secondClosedView;
+    }
+
+    public View getThirdClosedView() {
+        if(thirdClosedView == null)
+            thirdClosedView = parent.findViewById(R.id.third_closed_view);
+
+        return thirdClosedView;
     }
 }

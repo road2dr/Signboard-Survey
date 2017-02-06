@@ -43,10 +43,10 @@ public class LoadAllSignStatusTask extends DefaultAsyncTask<String, Integer, Lon
                 break;
 
             Sign s = allSigns.get(i);
-            if(s.getStatsCode() == 1 || s.getStatsCode() == 2 || s.getStatsCode() == 3) {   // TODO 상수는 파일로 관리 혹은 enum
+            if(s.getStatsCode().equals("1") || s.getStatsCode().equals("2") || s.getStatsCode().equals("3")) {   // TODO 상수는 파일로 관리 혹은 enum
                 demolishSignCount++;
             }
-            if(s.getReviewCode() != 0) {
+            if(s.getReviewCode().equals("0") == false) {
                 reviewSignCount++;
             }
         }
@@ -65,7 +65,7 @@ public class LoadAllSignStatusTask extends DefaultAsyncTask<String, Integer, Lon
 
             Sign s = userSigns.get(i);
 
-            if(s.getReviewCode() != 0)
+            if(s.getReviewCode().equals("0") == false)
                 userReviewSignCount++;
 
             // 오늘 간판을 찾는다
@@ -94,7 +94,7 @@ public class LoadAllSignStatusTask extends DefaultAsyncTask<String, Integer, Lon
         long userDemolishShopCount = 0;
         for(int i=0; i<userShopCount; i++) {
             Shop shop = userShops.get(i);
-            if(shop.getBusinessCondition() == 1)
+            if(shop.getBusinessCondition().equals("1"))
                 userDemolishShopCount++;
         }
 

@@ -44,6 +44,7 @@ public class ShopOptionDialog extends Dialog {
         modifyButton = (View)this.findViewById(R.id.modify_shop_button);
         addSignButton = (View)this.findViewById(R.id.add_sign_button);
         shutDownButton = (View)this.findViewById(id.shut_down_shop_button);
+        deleteShopButton = this.findViewById(id.delete_shop_button);
 
         modifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +69,14 @@ public class ShopOptionDialog extends Dialog {
                     dialogListener.onShutDownButtonClicked();
             }
         });
+
+        deleteShopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dialogListener != null)
+                    dialogListener.onDeleteButtonClicked();
+            }
+        });
     }
 
     public void setTietleViewText(String text) {
@@ -78,9 +87,15 @@ public class ShopOptionDialog extends Dialog {
         dialogListener = listener;
     }
 
+    public void setDeleteButtonVisible(boolean visible) {
+        int visibility = visible ? View.VISIBLE : View.GONE;
+        deleteShopButton.setVisibility(visibility);
+    }
+
     public interface ShopOptionDialogOnClickListener {
         public void onModifyButtonClicked();
         public void onAddSignButtonClicked();//
         public void onShutDownButtonClicked();
+        public void onDeleteButtonClicked();
     }
 }

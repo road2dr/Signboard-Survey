@@ -1,11 +1,14 @@
 package com.mjict.signboardsurvey.handler;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Toast;
 
 import com.mjict.signboardsurvey.MJConstants;
+import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.BuildingProfileActivity;
 import com.mjict.signboardsurvey.activity.ShopInputActivity;
@@ -17,6 +20,7 @@ import com.mjict.signboardsurvey.model.Setting;
 import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.ui.ShopInfo;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
+import com.mjict.signboardsurvey.task.DeleteShopTask;
 import com.mjict.signboardsurvey.task.LoadShopByBuildingTask;
 import com.mjict.signboardsurvey.task.LoadValidBuildingImageTask;
 import com.mjict.signboardsurvey.task.ModifyShopShutDownTask;
@@ -80,6 +84,8 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
             activity.finish();
             return;
         }
+
+        MJContext.addRecentBuilding(currentBuilding.getId());  // 최근 건물 목록에 추가
 
         // 빌딩 정보 표시
         String baseAddr = currentBuilding.getProvince() + " " + currentBuilding.getCounty() + " " + currentBuilding.getTown();
@@ -271,6 +277,7 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
 
     private void shopItemLongClicked(final int index) {
         final Shop shop = currentShops.get(index);
+        boolean deleteEnable = shop.isSynchronized() ? false : true;    // 앱에서 추가한 데이터만 삭제 할 수 있다.
         activity.showShopOptionDialog(new ShopOptionDialog.ShopOptionDialogOnClickListener() {
             @Override
             public void onModifyButtonClicked() {
@@ -286,7 +293,13 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
                 activity.hideShopOptionDialog();
                 startToShutdown(index);
             }
-        });
+
+            @Override
+            public void onDeleteButtonClicked() {
+                activity.hideShopOptionDialog();
+                askAndDeleteShop(index);
+            }
+        }, deleteEnable);
     }
 
     private void startToShutdown(final int index) {
@@ -313,7 +326,53 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
             }
         });
         task.execute(shop);
+    }
 
+    private void startToDeleteShop(final int index) {
+        final Shop shop = currentShops.get(index);
+
+        DeleteShopTask task = new DeleteShopTask(activity.getApplicationContext());
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
+            @Override
+            public void onTaskStart() {
+                activity.showWaitingDialog(R.string.deleteing);
+            }
+
+            @Override
+            public void onTaskFinished(Boolean result) {
+                activity.hideWaitingDialog();
+                int resId = result ? R.string.failed_to_delete : R.string.succeeded_to_delete;
+                Toast.makeText(activity, resId, Toast.LENGTH_SHORT).show();
+
+                if(result) {
+                    currentShops.remove(shop);
+                    activity.removeListItem(index);
+                }
+            }
+        });
+    }
+
+    private void askAndDeleteShop(final int index) {
+        final Shop shop = currentShops.get(index);
+        if(shop.isSynchronized() == true)
+            return;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.delete_shop)
+                .setMessage(R.string.do_you_want_to_delete_shop_data)
+                .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int whichButton){
+                        startToDeleteShop(index);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int whichButton){
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog dialog = builder.create();    // 알림창 객체 생성
+        dialog.show();    // 알림창 띄우기
     }
 
     private void goToShopInput(Shop shop) {
@@ -336,7 +395,8 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
         Setting categorySetting = smgr.getShopCategory(shop.getCategory());
         String category = categorySetting == null ? smgr.getDefaultShopCategoty() : categorySetting.getName();
         String phone = shop.getPhoneNumber();
+        boolean demolished = shop.getBusinessCondition().equals("4");   // TODO 상수로 따로 빼던지 isDemolished() 함수를 만들던지 이런값들을 관리하는 클래스를 만들던지
 
-        return new ShopInfo(name, phone, category);
+        return new ShopInfo(name, phone, category, demolished);
     }
 }

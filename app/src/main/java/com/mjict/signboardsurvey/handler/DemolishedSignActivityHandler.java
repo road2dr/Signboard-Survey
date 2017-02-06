@@ -76,7 +76,7 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
 
         activity.setCountySpinnerOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
             @Override
-            public void onItemSelectionChanged(int position, int id, Object data) {
+            public void onItemSelectionChanged(int position, Object id, Object data) {
                 if(position == -1)
                     return;
 
@@ -86,7 +86,7 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
 
         activity.setTownSpinnerrOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
             @Override
-            public void onItemSelectionChanged(int position, int id, Object data) {
+            public void onItemSelectionChanged(int position, Object id, Object data) {
                 if(position == -1)
                     return;
 
@@ -96,7 +96,7 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
 
         activity.setConsonantSpinnerrOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
             @Override
-            public void onItemSelectionChanged(int position, int id, Object data) {
+            public void onItemSelectionChanged(int position, Object id, Object data) {
                 if(position == -1)
                     return;
 
@@ -410,9 +410,9 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
 
         SettingDataManager sdmgr = SettingDataManager.getInstance();
 
-        if(sign.getStatsCode() == 1)        // TODO 상수를 파일이나 다른 어딘가에 지정
+        if(sign.getStatsCode().equals("1"))        // TODO 상수를 파일이나 다른 어딘가에 지정
             status = SignStatus.DEMOLISHED;
-        else if(sign.getStatsCode() == 2)
+        else if(sign.getStatsCode().equals("2"))
             status = SignStatus.TO_BE_DEMOLISH;
         else
             status = SignStatus.NORMAL;

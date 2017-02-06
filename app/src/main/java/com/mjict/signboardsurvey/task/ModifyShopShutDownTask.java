@@ -25,7 +25,7 @@ public class ModifyShopShutDownTask extends DefaultAsyncTask<Shop, Integer, Shop
             return null;
 
         Shop shop = params[0];
-        shop.setBusinessCondition(1);       // TODO 이런 상수는 따로 파일로 혹은 enum 으로..
+        shop.setBusinessCondition("1");       // TODO 이런 상수는 따로 파일로 혹은 enum 으로..
 
         DatabaseManager dmgr = DatabaseManager.getInstance(context);
         boolean answer = dmgr.modifyShop(shop);
@@ -38,7 +38,7 @@ public class ModifyShopShutDownTask extends DefaultAsyncTask<Shop, Integer, Shop
 
         for(int i=0; i<signs.size(); i++) {
             Sign sign = signs.get(i);
-            sign.setStatsCode(3);
+            sign.setStatsCode("3");
 
             answer = dmgr.modifySign(sign);
             if(answer == false)

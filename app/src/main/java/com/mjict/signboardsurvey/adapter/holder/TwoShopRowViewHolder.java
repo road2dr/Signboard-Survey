@@ -18,6 +18,8 @@ public class TwoShopRowViewHolder {
     private TextView secondNameTextView;
     private TextView secondCategoryTextView;
     private TextView secondPhoneTextView;
+    private View firstClosedView;
+    private View secondClosedView;
 
     public TwoShopRowViewHolder(View v) {
         parent = v;
@@ -77,5 +79,19 @@ public class TwoShopRowViewHolder {
             secondPhoneTextView = (TextView)parent.findViewById(R.id.second_phone_text_view);
 
         return secondPhoneTextView;
+    }
+
+    public View getFirstClosedView() {
+        if(firstClosedView == null)
+            firstClosedView = parent.findViewById(R.id.first_closed_view);
+
+        return firstClosedView;
+    }
+
+    public View getSecondClosedView() {
+        if(secondClosedView == null)
+            secondClosedView = parent.findViewById(R.id.second_closed_view);
+
+        return secondClosedView;
     }
 }

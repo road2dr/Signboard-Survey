@@ -13,8 +13,10 @@ public class SignInfo {
     public String light;
     public String location;
     public String result;
+    public int labelColor;
 
-    public SignInfo(Bitmap image, String content, String size, String status, String light, String location, String result) {
+    public SignInfo(Bitmap image, String content, String size, String status, String light, String location,
+                    String result, int labelColor) {
         this.image = image;
         this.content = content;
         this.size = size;
@@ -22,5 +24,6 @@ public class SignInfo {
         this.light = light;
         this.location = location;
         this.result = result;
+        this.labelColor = labelColor;
     }
 }

@@ -36,6 +36,10 @@ public class Type {
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return "@type/"+name;
+    }
 
     // define type name
 

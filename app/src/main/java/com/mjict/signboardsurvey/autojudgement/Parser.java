@@ -53,7 +53,7 @@ public class Parser {
                         else if(tagName.equalsIgnoreCase(Constants.ITEM)) {
                             item = new Item();
                             String name = parser.getAttributeValue(null, Constants.NAME);
-                            int code = Integer.parseInt(parser.getAttributeValue(null, Constants.CODE));
+                            String code = parser.getAttributeValue(null, Constants.CODE);
                             String value = parser.nextText();
 
                             item.setName(name);
@@ -245,11 +245,11 @@ public class Parser {
 
 
     private static AutoJudgementRule checkAndMakeAutoJudgementRule(XmlPullParser parser) throws Exception {
-        String typeValue = parser.getAttributeValue(null, Constants.TYPE);
+        String typeValue = parser.getAttributeValue(null, Constants.SIGN_TYPE);
         String defaultResultValue = parser.getAttributeValue(null, Constants.DEFAULT_RESULT);
 
         if(typeValue == null || defaultResultValue == null) {
-            String msg = String.format("필수 항목이 없습니다. (%s, %s)", Constants.TYPE, Constants.DEFAULT_RESULT);
+            String msg = String.format("필수 항목이 없습니다. (%s, %s)", Constants.SIGN_TYPE, Constants.DEFAULT_RESULT);
             throw new Exception(msg);
         }
 
@@ -287,7 +287,7 @@ public class Parser {
 
         autoJudgementRule = new AutoJudgementRule();
         autoJudgementRule.setDefaultResult(defaultResult.getCode());
-        autoJudgementRule.setType(type.getCode());
+        autoJudgementRule.setSignType(typeValue);
 
         return autoJudgementRule;
     }
@@ -305,11 +305,16 @@ public class Parser {
         resultValue = resultValue.toLowerCase();
         orderValue = orderValue.toLowerCase();
 
-        final String resultPrefix = "@result/";
+//        final String resultPrefix = "@result/";
         final String intExpression = "\\d+";
 
-        if(resultValue.startsWith(resultPrefix) == false) {
-            String msg = String.format("잘못된 형식의 값: %s | %s 로 시작 되어야 합니다.", resultValue, resultPrefix);
+//        if(resultValue.startsWith(resultPrefix) == false) {
+//            String msg = String.format("잘못된 형식의 값: %s | %s 로 시작 되어야 합니다.", resultValue, resultPrefix);
+//            throw new Exception(msg);
+//        }
+
+        if(resultValue.equals("")) {
+            String msg = String.format("필수 항목이 없습니다. (%s)", Constants.RESULT);
             throw new Exception(msg);
         }
         if(orderValue.matches(intExpression) == false) {
@@ -317,19 +322,18 @@ public class Parser {
             throw new Exception(msg);
         }
 
-        String resultName = resultValue.substring(resultPrefix.length());
-
-        Item result = AutoJudgementRuleManager.findResult(resultName);
+//        String resultName = resultValue.substring(resultPrefix.length());
+//        Item result = AutoJudgementRuleManager.findResult(resultName);
         int order = Integer.parseInt(orderValue);
 
-        if(result == null) {
-            String msg = String.format("%s 에 해당하는 %s 값을 찾을 수 없습니다.", resultName, Constants.RESULT);
-            throw new Exception(msg);
-        }
+//        if(result == null) {
+//            String msg = String.format("%s 에 해당하는 %s 값을 찾을 수 없습니다.", resultName, Constants.RESULT);
+//            throw new Exception(msg);
+//        }
 
         Rule rule = new Rule();
         rule.setOrder(order);
-        rule.setResult(result.getCode());
+        rule.setResult(resultValue);
 
         return rule;
     }
@@ -337,17 +341,17 @@ public class Parser {
     private static EquationCondition checkAndMakeEquationCondition(XmlPullParser parser) throws Exception {
         String itemString = parser.getAttributeValue(null, Constants.ITEM);
         String equationString = parser.getAttributeValue(null, Constants.EQUATION);
-        String valueString = parser.getAttributeValue(null, Constants.VALUE);
+        String leftString = parser.getAttributeValue(null, Constants.LEFT);
         String operationString = parser.getAttributeValue(null, Constants.OPERATION);
 
-        if(itemString == null || equationString == null || valueString == null) {
-            String msg = String.format("필수 항목이 없습니다. (%s, %s, %s)", Constants.ITEM, Constants.EQUATION, Constants.VALUE);
+        if(itemString == null || equationString == null || leftString == null) {
+            String msg = String.format("필수 항목이 없습니다. (%s, %s, %s)", Constants.ITEM, Constants.EQUATION, Constants.LEFT);
             throw new Exception(msg);
         }
 
         itemString = itemString.toLowerCase();
         equationString = equationString.toLowerCase();
-        valueString = valueString.toLowerCase();
+        leftString = leftString.toLowerCase();
         if(operationString != null)
             operationString = operationString.toLowerCase();
 
@@ -365,8 +369,8 @@ public class Parser {
             throw new Exception(msg);
         }
 
-        if(valueString.matches(intExpression) == false && valueString.startsWith(valuePrefix) == false) {
-            String msg = String.format("잘못된 형식의 값: %s | 0 이상의 정수값 혹은 '%s'로 시작되는 값 만 허용 됩니다.", valueString, valuePrefix);
+        if(leftString.matches(intExpression) == false && leftString.startsWith(valuePrefix) == false) {
+            String msg = String.format("잘못된 형식의 값: %s | 0 이상의 정수값 혹은 '%s'로 시작되는 값 만 허용 됩니다.", leftString, valuePrefix);
             throw new Exception(msg);
         }
 
@@ -386,18 +390,18 @@ public class Parser {
 
         boolean equation = Boolean.parseBoolean(equationString);
         Operation operation = (operationString == null) ? Operation.END : Operation.toOperation(operationString);
-        int value = -1;
-        if(valueString.startsWith(valuePrefix)) {
-            String valueName = valueString.substring(valuePrefix.length());
-            Item valueItem = AutoJudgementRuleManager.findValue(valueName);
-            if(valueItem == null) {
-                String msg = String.format("%s 에 해당하는 %s 값을 찾을 수 없습니다.", valueName, Constants.VALUE);
-                throw new Exception(msg);
-            }
-            value = valueItem.getCode();
-        } else {
-            value = Integer.parseInt(valueString);
-        }
+        String value = leftString;
+//        if(valueString.startsWith(valuePrefix)) {
+//            String valueName = valueString.substring(valuePrefix.length());
+//            Item valueItem = AutoJudgementRuleManager.findValue(valueName);
+//            if(valueItem == null) {
+//                String msg = String.format("%s 에 해당하는 %s 값을 찾을 수 없습니다.", valueName, Constants.VALUE);
+//                throw new Exception(msg);
+//            }
+//            value = valueItem.getCode();
+//        } else {
+//            value = valueString;
+//        }
 
         EquationCondition condition = new EquationCondition(equation, value);
         condition.setValueType(itemType);
@@ -409,7 +413,7 @@ public class Parser {
         String typeString = parser.getAttributeValue(null, Constants.ITEM);
         String leftString = parser.getAttributeValue(null, Constants.LEFT);
         String leftEquationString = parser.getAttributeValue(null, Constants.LEFT_EQUATION);
-        String valueString = parser.getAttributeValue(null, Constants.VALUE);
+//        String valueString = parser.getAttributeValue(null, Constants.VALUE);
         String rightEquationString = parser.getAttributeValue(null, Constants.RIGHT_EQUATION);
         String rightString = parser.getAttributeValue(null, Constants.RIGHT);
         String operationString = parser.getAttributeValue(null, Constants.OPERATION);
@@ -422,10 +426,6 @@ public class Parser {
             String msg = String.format("필수 항목이 없습니다. (%s)", Constants.LEFT);
             throw new Exception(msg);
         }
-        if (valueString == null) {
-            String msg = String.format("필수 항목이 없습니다. (%s)", Constants.VALUE);
-            throw new Exception(msg);
-        }
         if (rightString == null) {
             String msg = String.format("필수 항목이 없습니다. (%s)", Constants.RIGHT);
             throw new Exception(msg);
@@ -435,7 +435,6 @@ public class Parser {
         leftString = leftString.toLowerCase();
         if (leftEquationString != null)
             leftEquationString = leftEquationString.toLowerCase();
-        valueString = valueString.toLowerCase();
         if (rightEquationString != null)
             rightEquationString = rightEquationString.toLowerCase();
         rightString = rightString.toLowerCase();
@@ -461,11 +460,6 @@ public class Parser {
                 String msg = String.format("잘못된 형식의 값: %s | 'true' 나 'false' 만 허용 됩니다.", leftEquationString);
                 throw new Exception(msg);
             }
-        }
-
-        if(valueString.equals("-1") == false && valueString.startsWith(valuePrefix) == false) {
-            String msg = String.format("잘못된 형식의 값: %s | -1(정의 되지 않은 값) 혹은 '%s'로 시작되는 값 만 허용 됩니다.", valueString, valuePrefix);
-            throw new Exception(msg);
         }
 
         if(rightEquationString != null) {
@@ -496,18 +490,19 @@ public class Parser {
         int left = Integer.parseInt(leftString);
         boolean leftEquation = (leftEquationString == null) ? true : Boolean.parseBoolean(leftEquationString);
 
-        int value = -1;
-        if(valueString.equals("-1"))
-            value = -1;
-        else {
-            String valueName = valueString.substring(valuePrefix.length());
-            Item valueItem = AutoJudgementRuleManager.findValue(valueName);
-            if (valueItem == null) {
-                String msg = String.format("%s 에 해당하는 %s 값을 찾을 수 없습니다.", valueName, Constants.VALUE);
-                throw new Exception(msg);
-            }
-            value = valueItem.getCode();
-        }
+//        String value = "";
+//        if(valueString.equals("-1"))
+//            value = "-1";
+//        else {
+//            String valueName = valueString.substring(valuePrefix.length());
+//            Item valueItem = AutoJudgementRuleManager.findValue(valueName);
+//            if (valueItem == null) {
+//                String msg = String.format("%s 에 해당하는 %s 값을 찾을 수 없습니다.", valueName, Constants.VALUE);
+//                throw new Exception(msg);
+//            }
+//            value = valueItem.getCode();
+//        }
+
         boolean rightEquation = (rightEquationString == null) ? false : Boolean.parseBoolean(rightEquationString);
         int right = Integer.parseInt(rightString);
         Operation operation = (operationString == null) ? Operation.END : Operation.toOperation(operationString);

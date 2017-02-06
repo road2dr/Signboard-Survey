@@ -26,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:visibility="gone"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
             <ImageView
@@ -82,6 +83,28 @@
                 android:layout_marginLeft="15dp"
                 android:gravity="center_vertical"
                 android:text="@string/shut_down"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#000000"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/delete_shop_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:text="@string/delete_shop"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="#000000"/>

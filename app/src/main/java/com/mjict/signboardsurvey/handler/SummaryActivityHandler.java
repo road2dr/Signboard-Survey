@@ -126,6 +126,8 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
         recentSigns = new ArrayList<>();
 
         // do first job
+        startToLoadSignResultStatus();
+        startToLoadAllSignStatus();
     }
 
     @Override
@@ -135,10 +137,6 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
 
         startToLoadRecentSigns();
         startToLoadRecentBuilding();
-        startToLoadSignResultStatus();
-        startToLoadAllSignStatus();
-
-
 
         super.onActivityStart();
     }

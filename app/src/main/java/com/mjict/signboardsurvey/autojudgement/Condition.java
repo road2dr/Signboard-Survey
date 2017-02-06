@@ -3,9 +3,9 @@ package com.mjict.signboardsurvey.autojudgement;
 /**
  * Created by Junseo on 2017-01-17.
  */
-public abstract class Condition implements Checkable {
+public abstract class Condition implements Checkable, Encodable {
     protected Type valueType;
-    protected int inputValue;
+    protected int inputValue = -1;
     private Operation operation = Operation.END;
 
     public void setInputValue(int value) {
@@ -32,6 +32,10 @@ public abstract class Condition implements Checkable {
         final boolean check = this.check();
         Condition cond = new Condition() {
             @Override
+            public String toXml() {
+                return null;
+            }
+            @Override
             public boolean check() {
                 return (check || target.check());
             }
@@ -43,6 +47,10 @@ public abstract class Condition implements Checkable {
     public Condition and(final Checkable target) {
         final boolean check = this.check();
         Condition cond = new Condition() {
+            @Override
+            public String toXml() {
+                return null;
+            }
             @Override
             public boolean check() {
                 return (check && target.check());

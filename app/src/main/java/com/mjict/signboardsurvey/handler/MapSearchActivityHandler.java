@@ -8,6 +8,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -89,6 +91,14 @@ public class MapSearchActivityHandler extends SABaseActivityHandler {
                 return;
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 10, mainLocationListener);
+        }
+
+        // 인터넷 상태 체크
+        boolean internetEnabled = checkInternet();
+        if(internetEnabled == false) {
+            Toast.makeText(activity, R.string.cannot_use_this_function_if_internet_disconnected, Toast.LENGTH_SHORT).show();
+            activity.finish();
+            return;
         }
 
         // gps 상태 체크
@@ -300,6 +310,24 @@ public class MapSearchActivityHandler extends SABaseActivityHandler {
         task.execute(lastLocation);
     }
 
+    private boolean checkInternet() {
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean connect = false;
+        if (activeNetwork != null) {
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI && activeNetwork.isConnectedOrConnecting()) {  // wifi
+                connect = true;
+            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE && activeNetwork.isConnectedOrConnecting()) { // 모바일 네트웍
+                connect = true;
+            } else {    // 네트워크 오프라인 상태.
+                connect = false;
+            }
+        } else {    // 네트워크 null.. 모뎀이 없는 경우??
+            connect = false;
+        }
+
+        return connect;
+    }
 
     private class MJLocationListener implements LocationListener {
         @Override

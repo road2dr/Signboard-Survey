@@ -282,6 +282,8 @@ public class BuildingPictureActivityHandler extends SABaseActivityHandler {
                     bp.setId(id);
                     buildingPictures.add(bp);
 
+                    startToLoadImage();
+
                     updatePageText();
                 }
             }
@@ -295,7 +297,12 @@ public class BuildingPictureActivityHandler extends SABaseActivityHandler {
     }
 
     private void updatePageText() {
-        String pageText = (imageIndex+1)+"/"+buildingPictures.size();
+        String pageText = null;
+        if(buildingPictures.size() <= 0)
+            pageText = "0/0";
+        else
+            pageText = (imageIndex+1)+"/"+buildingPictures.size();
+
         activity.setPageText(pageText);
     }
 }

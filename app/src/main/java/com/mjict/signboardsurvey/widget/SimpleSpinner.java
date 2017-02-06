@@ -76,7 +76,7 @@ public class SimpleSpinner extends AppCompatSpinner implements AdapterView.OnIte
         spinnerAdapter.add(new SpinnerItem(i, data));
     }
 
-    public void addSpinnerData(int id, Object data) {
+    public void addSpinnerData(Object id, Object data) {
         spinnerAdapter.add(new SpinnerItem(id, data));
     }
 
@@ -84,7 +84,7 @@ public class SimpleSpinner extends AppCompatSpinner implements AdapterView.OnIte
         spinnerAdapter.clear();
     }
 
-    public int getSelectedDataId() {
+    public Object getSelectedDataId() {
         if(spinnerAdapter == null)
             return -1;
 
@@ -117,11 +117,11 @@ public class SimpleSpinner extends AppCompatSpinner implements AdapterView.OnIte
 //        return item.data;
 //    }
 
-    public void setSpinnerSelection(int id) {
+    public void setSpinnerSelection(Object id) {
         int n = spinnerAdapter.getCount();
         for(int i=0; i<n ;i++) {
             SpinnerItem sd = spinnerAdapter.getItem(i);
-            if(sd.id == id) {
+            if(sd.id.equals(id)) {
                 this.setSelection(i, false);
                 return;
             }
@@ -169,10 +169,10 @@ public class SimpleSpinner extends AppCompatSpinner implements AdapterView.OnIte
 //    }
 
     public class SpinnerItem {
-        public int id;
+        public Object id;
         public Object data;
 
-        public SpinnerItem(int i, Object d) {
+        public SpinnerItem(Object i, Object d) {
             id = i;
             data = d;
         }
@@ -184,7 +184,7 @@ public class SimpleSpinner extends AppCompatSpinner implements AdapterView.OnIte
     }
 
     public static interface OnItemSelectionChangedListener {
-        void onItemSelectionChanged(int position, int id, Object data);
+        void onItemSelectionChanged(int position, Object id, Object data);
     }
 
     public static interface OnItemSelectionChangedByTouchListener {

@@ -15,7 +15,7 @@ public class AutoJudgementRuleManager {
     public static final String VALUE_XML_FILE_NAME = "values.xml";
     public static final String RESULT_XML_FILE_NAME = "result.xml";
 
-    private static HashMap<Integer, AutoJudgementRule> rules = new HashMap<>();
+    private static HashMap<String, AutoJudgementRule> rules = new HashMap<>();
     private static HashMap<String, Item> results = new HashMap<>();
     private static HashMap<String, Item> values = new HashMap<>();
     private static HashMap<String, Type> types = new HashMap<>();
@@ -103,15 +103,26 @@ public class AutoJudgementRuleManager {
         List<AutoJudgementRule> ruleList = Parser.getRulesFromXml(ruleXmlFilePath);
         if(ruleList == null)
             return false;
+
         for(int i=0; i<ruleList.size(); i++) {
             AutoJudgementRule rule = ruleList.get(i);
-            rules.put(rule.getType(), rule);
+            String signTypeString = rule.getSignType();
+            final String typePrefix = "@value/";
+            if(signTypeString.startsWith(typePrefix) == false) {
+                return false;
+            }
+            String typeName = signTypeString.substring(typePrefix.length());
+            Item type = AutoJudgementRuleManager.findValue(typeName);
+            if(type == null)
+                return false;
+
+            rules.put(type.getCode(), rule);
         }
 
         return true;
     }
 
-    public static AutoJudgementRule findAutoJudgementRule(int code) {
+    public static AutoJudgementRule findAutoJudgementRule(String code) {
         return rules.get(code);
     }
 }

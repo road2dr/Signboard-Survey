@@ -81,6 +81,23 @@ public class ThreeShopListAdapter extends ArrayAdapter<ThreeShopInfo> {
         return item;
     }
 
+    public void removeColumnItem(int position) {
+        if(position < 0 || position >= getCount()*3)
+            return;
+
+        ThreeShopInfo row = getItem(position/3);
+
+        if(position % 3 == 0)
+            remove(row);
+        else if(position % 3 == 1)
+            row.second = null;
+        else
+            row.third = null;
+//        ShopInfo item = (index % 3 == 0) ? row.first : row.second;
+
+        notifyDataSetChanged();
+    }
+
     public void setOnColumnClickListener(OnColumnClickListener listener) {
         columnClickListener = listener;
     }
@@ -127,9 +144,11 @@ public class ThreeShopListAdapter extends ArrayAdapter<ThreeShopInfo> {
             }
         });
 
+        int visibility = first.demolished ? View.VISIBLE : View.GONE;
         holder.getFirstNameTextView().setText(first.name);
         holder.getFirstCategoryTextView().setText(first.category);
         holder.getFirstPhoneTextView().setText(first.phone);
+        holder.getFirstClosedView().setVisibility(visibility);
 
         if(second == null) {
             holder.getSecondLayout().setVisibility(View.INVISIBLE);
@@ -157,9 +176,11 @@ public class ThreeShopListAdapter extends ArrayAdapter<ThreeShopInfo> {
                 }
             });
 
+            visibility = second.demolished ? View.VISIBLE : View.GONE;
             holder.getSecondNameTextView().setText(second.name);
             holder.getSecondCategoryTextView().setText(second.category);
             holder.getSecondPhoneTextView().setText(second.phone);
+            holder.getSecondClosedView().setVisibility(visibility);
 
         }
 
@@ -189,9 +210,11 @@ public class ThreeShopListAdapter extends ArrayAdapter<ThreeShopInfo> {
                 }
             });
 
+            visibility = third.demolished ? View.VISIBLE : View.GONE;
             holder.getThirdNameTextView().setText(third.name);
             holder.getThirdCategoryTextView().setText(third.category);
             holder.getThirdPhoneTextView().setText(third.phone);
+            holder.getThirdClosedView().setVisibility(visibility);
         }
 
         return view;

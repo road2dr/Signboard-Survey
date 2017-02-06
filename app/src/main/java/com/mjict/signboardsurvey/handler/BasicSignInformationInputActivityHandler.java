@@ -131,19 +131,24 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
             }
         } else if (requestCode == MJConstants.REQUEST_MEASURE_SIGN) {
             if(resultCode == Activity.RESULT_OK) {
-                float width = data.getFloatExtra(MJConstants.SIZE_X, 0)/1000;
-                float length = data.getFloatExtra(MJConstants.SIZE_Y, 0)/1000;
+                float x = data.getFloatExtra(MJConstants.SIZE_X, 0);
+                float y = data.getFloatExtra(MJConstants.SIZE_Y, 0);
+                float width = (x > 0) ? x/1000 : 0;
+                float length =(y > 0) ? y/1000 : 0;
                 float area = width*length;
 
-                width = Float.parseFloat(String.format("%.2f",width));
-                length = Float.parseFloat(String.format("%.2f",length));
-                area = Float.parseFloat(String.format("%.2f",area));
+                String widthText = String.format("%.2f",width);
+                String lengthText = String.format("%.2f",length);
+                String areaText = String.format("%.2f",area);
 
-                currentSign.setWidth(width);
-                currentSign.setLength(length);
-                currentSign.setArea(area);
+                activity.setWidthText(widthText);
+                activity.setLengthText(lengthText);
 
-                updateToUI();
+//                currentSign.setWidth(width);
+//                currentSign.setLength(length);
+//                currentSign.setArea(area);
+//
+//                updateToUI();
             } else {
                 Toast.makeText(activity, R.string.sign_measure_canceled, Toast.LENGTH_SHORT).show();
             }
@@ -285,6 +290,8 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         currentSign.setIntersection(isIntersection);
         currentSign.setFrontBackRoad(isFrontBack);
         currentSign.setPicNumber(picName);
+        float area = currentSign.getWidth() * currentSign.getLength();
+        currentSign.setArea(area);
 
         goToSignExtraInformation();
     }
@@ -359,7 +366,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         String time = Utilities.getCurrentTimeAsString();
         int hash = Math.abs((int)Utilities.hash(time));
         String dir = SyncConfiguration.getDirectoryForSingPicture(true);
-        final String fileName = String.format("sign_%10d.jpg", hash);
+        final String fileName = String.format("sign_%010d.jpg", hash);
         String path = dir + fileName;
 
         Intent intent = new Intent(activity, CameraActivity.class);
@@ -423,7 +430,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         String mobileId = String.valueOf(MJContext.getCurrentUser().getMobileId());
         boolean isSynchronized = false;
         String syncDate = "";
-        int type = -1;
+        String type = "";
         float width = 0f;
         float length = 0f;
         float height = 0f;
@@ -433,17 +440,17 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         String content = "";
         int placedFloor = 0;
         boolean isFront = false;
-        int lightType = -1;
+        String lightType = "";
         String placement = "";
         boolean isCollision = false;
         float collisionWidth = 0f;
         float collisionLength = 0f;
-        int inspectionResult = -1;
+        String inspectionResult = "";
         String permissionNumber = "";
 //        String needReinspection = "";
         String inputter = MJContext.getCurrentUser().getUserId();
         String inputDate = "";
-        int statsCode = -1;
+        String statsCode = "";
         String picNumber = "";
         String modifier = MJContext.getCurrentUser().getUserId();;
         String modifyDate = "";
@@ -454,12 +461,12 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         boolean isFrontBackRoad = false;
         String demolitionPicPath = "";
         String demolishedDate = "";
-        int reviewCode = -1;
+        String reviewCode = "";
         long shopId = -1;
         int addressId = -1;
         String sgCode = "";
-        int placedSide = -1;
-        int uniqueness = -1;
+        String placedSide = "";
+        String uniqueness = "";
         String memo = "";
         boolean modified = true;
 

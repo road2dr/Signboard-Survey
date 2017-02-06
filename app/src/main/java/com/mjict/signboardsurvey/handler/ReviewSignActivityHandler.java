@@ -64,7 +64,7 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
 
         activity.setCountySpinnerOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
             @Override
-            public void onItemSelectionChanged(int position, int id, Object data) {
+            public void onItemSelectionChanged(int position, Object id, Object data) {
                 if(position == -1)
                     return;
 
@@ -74,7 +74,7 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
 
         activity.setTownSpinnerrOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
             @Override
-            public void onItemSelectionChanged(int position, int id, Object data) {
+            public void onItemSelectionChanged(int position, Object Object, Object data) {
                 if(position == -1)
                     return;
 
@@ -84,7 +84,7 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
 
         activity.setConsonantSpinnerrOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
             @Override
-            public void onItemSelectionChanged(int position, int id, Object data) {
+            public void onItemSelectionChanged(int position, Object id, Object data) {
                 if(position == -1)
                     return;
 

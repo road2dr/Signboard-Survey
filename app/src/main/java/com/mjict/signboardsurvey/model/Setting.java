@@ -16,7 +16,7 @@ public class Setting {
 	private String name;
 	
 	@DatabaseField
-	private int ord;
+	private String ord;
 
 //	@DatabaseField
 //	private int group;
@@ -25,7 +25,7 @@ public class Setting {
 		
 	}
 	
-	public Setting(int category, String code, String name, int ord) {
+	public Setting(int category, String code, String name, String ord) {
 		this.category = category;
 		this.code = code;
 		this.name = name;
@@ -41,14 +41,8 @@ public class Setting {
 		this.category = category;
 	}
 	
-	public int getCode() {
-		int value = 0;
-		try {
-			value = Integer.valueOf(code); 
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		return value;
+	public String getCode() {
+		return code;
 	}
 
 	public String getCodeString() {
@@ -68,10 +62,16 @@ public class Setting {
 	}
 	
 	public int getOrd() {
-		return ord;
+		int value = 0;
+		try {
+			value = Integer.valueOf(ord);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return value;
 	}
 	
-	public void setOrd(int ord) {
+	public void setOrd(String ord) {
 		this.ord = ord;
 	}
 	

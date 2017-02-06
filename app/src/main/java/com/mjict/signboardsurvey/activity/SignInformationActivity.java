@@ -1,13 +1,14 @@
 package com.mjict.signboardsurvey.activity;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.mjict.signboardsurvey.R;
 
@@ -26,8 +27,9 @@ public class SignInformationActivity extends SABaseActivity {
     private CheckBox frontBackCheckBox;
     private EditText typeTextView;
     private EditText sizeTextView;
-    private TextView lightTypeTextView;
+    private EditText lightTypeTextView;
     private EditText statusTextView;
+    private EditText installSideTextView;
 
     private OnOptionMenuItemClickListener optionMenuItemClickListener;
 
@@ -66,12 +68,16 @@ public class SignInformationActivity extends SABaseActivity {
         frontBackCheckBox = (CheckBox)this.findViewById(R.id.front_back_check_box);
         typeTextView = (EditText)this.findViewById(R.id.type_edit_text);
         sizeTextView = (EditText)this.findViewById(R.id.size_edit_text);
-        lightTypeTextView = (TextView)this.findViewById(R.id.light_type_text_view);
+        lightTypeTextView = (EditText)this.findViewById(R.id.light_type_text_view);
         statusTextView = (EditText)this.findViewById(R.id.status_edit_text);
+        installSideTextView = (EditText)this.findViewById(R.id.placed_side_edit_text);
 
         frontCheckBox.setEnabled(false);
         intersectionCheckBox.setEnabled(false);
         frontBackCheckBox.setEnabled(false);
+
+        InputMethodManager mgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        mgr.hideSoftInputFromWindow(typeTextView.getWindowToken(), 0);
 
 //        signImageLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -133,6 +139,10 @@ public class SignInformationActivity extends SABaseActivity {
 
     public void setStatusText(String text) {
         statusTextView.setText(text);
+    }
+
+    public void setInstallSideText(String text) {
+        installSideTextView.setText(text);
     }
 
     public static interface OnOptionMenuItemClickListener {

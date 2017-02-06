@@ -10,22 +10,22 @@ import java.util.List;
 /**
  * Created by Junseo on 2017-01-17.
  */
-public class Rule {
+public class Rule implements Encodable {
 
-    private int result;
+    private String result;
     private int order;
     private List<Condition> conditions;
 
     public Rule() {
-        result = -1;
+        result = "";
         conditions = new ArrayList<>();
     }
 
-    public void setResult(int result) {
+    public void setResult(String result) {
         this.result = result;
     }
 
-    public int getResult() {
+    public String getResult() {
         return result;
     }
 
@@ -84,6 +84,25 @@ public class Rule {
         }
 
         return last.check();
+    }
+
+    @Override
+    public String toXml() {
+        String format = "<%s" + "\n" +
+                "result=\"%s\"" + "\n" +
+                "order=\"%d\"" + ">" + "\n" +
+                "%s" +
+                "</%s>";
+
+        String conditionsXml = "";
+        for(int i=0; i<conditions.size(); i++) {
+            Condition cond = conditions.get(i);
+            conditionsXml = conditionsXml + cond.toXml();
+        }
+
+        String statement = String.format(format, Constants.RULE, result, order, conditionsXml, Constants.RULE);
+
+        return statement;
     }
 
     private class ConditionComparator implements Comparator<Condition> {

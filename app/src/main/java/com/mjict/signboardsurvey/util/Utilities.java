@@ -12,6 +12,7 @@ import com.mjict.signboardsurvey.autojudgement.AutoJudgementRule;
 import com.mjict.signboardsurvey.autojudgement.AutoJudgementRuleManager;
 import com.mjict.signboardsurvey.autojudgement.Condition;
 import com.mjict.signboardsurvey.autojudgement.InputType;
+import com.mjict.signboardsurvey.autojudgement.Item;
 import com.mjict.signboardsurvey.autojudgement.Rule;
 import com.mjict.signboardsurvey.autojudgement.Type;
 import com.mjict.signboardsurvey.model.Address;
@@ -256,7 +257,7 @@ public class Utilities {
 //	String strDate = fm.format(cal.getTime());
 //
 	public static String getCurrentTimeAsString() {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREAN);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREAN);
 		String date = format.format(Calendar.getInstance().getTime());
 
 		return date;
@@ -293,14 +294,14 @@ public class Utilities {
 	};
 
 	public static String toTimeString(Date time) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREAN);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREAN);
 		String date = format.format(time);
 
 		return date;
 	}
 
 	public static Date stringToDate(String time) {
-		DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREAN);
+		DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREAN);
 		Date date = null;
 		try {
 			date = sdFormat.parse(time);
@@ -338,12 +339,16 @@ public class Utilities {
 //
 //	}
 
-	public static int autoJudgement(int signType, AutoJudgementValue value) {
+	public static String autoJudgement(String signType, AutoJudgementValue value) {
+		// TODO value 에 몇몇 안들어 오는 값이 있어 보인다
+		// SCOPE_TOTAL_FLOOR_COUNT, SCOPE_PROJECTED_SIGN_COUNT, SCOPE_HORIZONTAL_SIGN_COUNT,
+		// "SCOPE_PILLAR_SIGN_COUNT", "SCOPE_ROOFTOP_SIGN_COUNT", "SCOPE_INSTALL_FLOOR_COUNT",
+		// "EQUATION_TOTAL_FLOOR_COUNT"
 		AutoJudgementRule signRule = AutoJudgementRuleManager.findAutoJudgementRule(signType);
 		if(signRule == null)	// 해당 간판을 위한 룰 정보가 없음
-			return -1;
+			return "-1";
 
-		// 각 값을 룰에 대입 함
+		// 각 조건의 inputValue 에 파라메터로 받은 value 에서 값을 찾아 대입
 		int n = signRule.sizeOfRules();
 		for(int i=0; i<n; i++) {
 			Rule rule = signRule.getRule(i);
@@ -365,14 +370,28 @@ public class Utilities {
 		// 조건에 맞는 룰 찾기
 		List<Rule> rules = signRule.getRules();
 		Collections.sort(rules, new RuleComparator());
-		int judgement = signRule.getDefaultResult();
+		String resultValue = signRule.getDefaultResult();
 		for(int i=0; i<rules.size(); i++) {
 			Rule rule = rules.get(i);
 			if(rule.checkConditions()) {
-				judgement = rule.getResult();
+				resultValue = rule.getResult();
 				break;
 			}
 		}
+
+		// result 값이 @result 로 시작하면 result 테이블에서 값을 찾아 리턴
+		final String resultPrefix = "@result/";
+		String judgement = resultValue;
+        if(resultValue.startsWith(resultPrefix)) {
+			String resultName = resultValue.substring(resultPrefix.length());
+			Item resultItem = AutoJudgementRuleManager.findResult(resultName);
+			if(resultItem == null) {
+				// 해당 값을 result 테이블에서 찾을 수 없다
+				judgement = "-1";
+			} else {
+				judgement = resultItem.getCode();
+			}
+        }
 
 		return judgement;
 	}

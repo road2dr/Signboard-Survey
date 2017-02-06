@@ -31,10 +31,10 @@ public class Shop implements Serializable {
 	private String phoneNumber;
 	
 	@DatabaseField
-	private int businessCondition;	// 정상, 폐업
+	private String businessCondition;	// 정상, 폐업
 	
 	@DatabaseField
-	private int category;
+	private String category;
 	
 	@DatabaseField
 	private long buildingId;
@@ -70,7 +70,7 @@ public class Shop implements Serializable {
 
 
 	public Shop(long id, String licenseNumber, String ssn, String name, String representative,
-				String phoneNumber, int businessCondition, int category, long buildingId,
+				String phoneNumber, String businessCondition, String category, long buildingId,
 				String inputter, String inputDate, int tblNumber, int addressId, boolean isDeleted,
 				String sgCode, boolean isSynchronized, String syncDate) {
 		this.id = id;
@@ -144,19 +144,19 @@ public class Shop implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public int getBusinessCondition() {
+	public String getBusinessCondition() {
 		return businessCondition;
 	}
 
-	public void setBusinessCondition(int businessCondition) {
+	public void setBusinessCondition(String businessCondition) {
 		this.businessCondition = businessCondition;
 	}
 
-	public int getCategory() {
+	public String getCategory() {
 		return category;
 	}
 
-	public void setCategory(int category) {
+	public void setCategory(String category) {
 		this.category = category;
 	}
 

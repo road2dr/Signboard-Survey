@@ -17,6 +17,7 @@ public class Constants {
     public static final String SCOPE_CONDITION = "scope_condition";
 
     // Attributes
+    public static final String SIGN_TYPE = "sign_type";
     public static final String NAME = "name";
     public static final String CODE = "code";
     public static final String CATEGORY = "category";

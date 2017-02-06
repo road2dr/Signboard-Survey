@@ -105,11 +105,15 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
 
         Setting typeSetting =  smgr.getSignType(currentSign.getType());
         Setting statusSetting = smgr.getSignStatus(currentSign.getStatsCode());
+        Setting lightSetting = smgr.getLightType(currentSign.getLightType());
+        Setting installSideSetting = smgr.getInstallSide(currentSign.getInstallSide());
 
         String content = currentSign.getContent();
         String displayLocation = activity.getString(R.string.display_location_format, currentSign.getPlacedFloor(), currentSign.getTotalFloor());
         String type = typeSetting == null ? smgr.getDefaultSignTypeName() : typeSetting.getName();
         String status = statusSetting == null ? smgr.getDefaultSignStatus() : statusSetting.getName();
+        String light = lightSetting == null ? smgr.getDefaultLightTypeName() : lightSetting.getName();
+        String installSide = installSideSetting == null ? smgr.getDefaultInstallSideName() : installSideSetting.getName();
         String size = currentSign.getWidth() +" X "+currentSign.getLength();
         if(currentSign.getHeight() != 0)
             size = size + currentSign.getHeight();
@@ -122,6 +126,8 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
         activity.setDisplayLocationText(displayLocation);
         activity.setTypeText(type);
         activity.setStatusText(status);
+        activity.setLightTypeText(light);
+        activity.setInstallSideText(installSide);
         activity.setSizeText(size);
         activity.setFrontChecked(isFront);
         activity.setFrontBackChecked(isFrontBack);
@@ -290,19 +296,19 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
             int value = -1;
             switch(type) {
                 case SCOPE_HORIZONTAL_SIGN_COUNT:
-                    value = getSignCount(1);  // TODO 가로형 간판 - 나중에 상수는 따로
+                    value = getSignCount("01");  // TODO 가로형 간판 - 나중에 상수는 따로
                     break;
 
                 case SCOPE_ROOFTOP_SIGN_COUNT:
-                    value = getSignCount(5);    // TODO 옥상 간판 - 나중에 상수는 따로
+                    value = getSignCount("05");    // TODO 옥상 간판 - 나중에 상수는 따로
                     break;
 
                 case SCOPE_PILLAR_SIGN_COUNT:
-                    value = getSignCount(6);    // TODO 지주 이용 간판 - 나중에 상수는 따로
+                    value = getSignCount("06");    // TODO 지주 이용 간판 - 나중에 상수는 따로
                     break;
 
                 case SCOPE_PROJECTED_SIGN_COUNT:
-                    value = getSignCount(3);    // TODO 돌출 간판 - 나중에 상수는 따로
+                    value = getSignCount("03");    // TODO 돌출 간판 - 나중에 상수는 따로
                     break;
 
                 default:
@@ -314,14 +320,14 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
         return autoJudgementValue;
     }
 
-    private int getSignCount(int type) {
-        if(type == -1)
+    private int getSignCount(String type) {
+        if(type == null || type.equals(""))
             return shopSigns.size();
 
         int value = 0;
         for(int j=0; j<shopSigns.size(); j++) {
             Sign s = shopSigns.get(j);
-            if(s.getType() == type)
+            if(s.getType().equals(type))
                 value++;
         }
 

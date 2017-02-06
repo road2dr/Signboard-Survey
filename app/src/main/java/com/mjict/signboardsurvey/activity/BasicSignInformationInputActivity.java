@@ -161,7 +161,7 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
 //        });
 //    }
 
-    public void addToSignTypeSpinner(int id, Object data) {
+    public void addToSignTypeSpinner(Object id, Object data) {
         signTypeSpinner.addSpinnerData(id, data);
     }
 
@@ -169,11 +169,11 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
         return signTypeSpinner.getSelectedData();
     }
 
-    public void setSignTypeSpinnerSelection(int id) {
+    public void setSignTypeSpinnerSelection(Object id) {
         signTypeSpinner.setSpinnerSelection(id);
     }
 
-    public void addToStatusSpinner(int id, Object data) {
+    public void addToStatusSpinner(Object id, Object data) {
         statusSpinner.addSpinnerData(id, data);
     }
 
@@ -181,7 +181,7 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
         return statusSpinner.getSelectedData();
     }
 
-    public void setStatusSpinnerSelection(int id) {
+    public void setStatusSpinnerSelection(Object id) {
         statusSpinner.setSpinnerSelection(id);
     }
 

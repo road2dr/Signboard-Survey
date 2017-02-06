@@ -184,7 +184,7 @@ public class UserDataSearchActivity extends SABaseActivity {
         return countySpinner.getSelectedData();
     }
 
-    public int getSelectedCountyId() {
+    public Object getSelectedCountyId() {
         return countySpinner.getSelectedDataId();
     }
 
@@ -192,7 +192,7 @@ public class UserDataSearchActivity extends SABaseActivity {
         countySpinner.setOnItemSelectionChangedListener(listener);
     }
 
-    public void addToTownSpinner(int id, Object data) {
+    public void addToTownSpinner(Object id, Object data) {
         townSpinner.addSpinnerData(id, data);
     }
 
@@ -200,7 +200,7 @@ public class UserDataSearchActivity extends SABaseActivity {
         return townSpinner.getSelectedData();
     }
 
-    public int getSelectedTownId() {
+    public Object getSelectedTownId() {
         return townSpinner.getSelectedDataId();
     }
 

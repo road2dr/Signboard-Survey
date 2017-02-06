@@ -29,7 +29,7 @@ public class Sign implements Serializable {
 	private String syncDate;
 	
 	@DatabaseField
-	private int type;
+	private String type;
 	
 	@DatabaseField
 	private float width;
@@ -61,7 +61,7 @@ public class Sign implements Serializable {
 	private boolean isFront;
 	
 	@DatabaseField
-	private int lightType;
+	private String lightType;
 	
 	@DatabaseField
 	private String placement;		// TODO 얘 무슨 필드 인지 확인 해봐 자꾸 헷갈린다
@@ -78,7 +78,7 @@ public class Sign implements Serializable {
 	private float collisionLength;
 
 	@DatabaseField
-	private int inspectionResult;
+	private String inspectionResult;
 	
 	@DatabaseField
 	private String permissionNumber;
@@ -93,7 +93,7 @@ public class Sign implements Serializable {
 	private String inputDate;
 
 	@DatabaseField(columnName="checkCode")
-	private int statsCode;
+	private String statsCode;
 	
 	@DatabaseField
 	private String picNumber;
@@ -114,7 +114,7 @@ public class Sign implements Serializable {
 	private int tblNumber;
 
 //	@DatabaseField
-//	private boolean isDeleted;	// TODO 얘도 삭제 하는게 좋아 보이는데
+//	private boolean isDeleted;
 
 	@DatabaseField(columnName = "frontBackRoad")
 	private boolean isFrontBackRoad;
@@ -126,7 +126,7 @@ public class Sign implements Serializable {
 	private String demolishedDate;
 
 	@DatabaseField(columnName = "reInspectionCode")
-	private int reviewCode;		// TODO 코드 내용에 대해선 서버 & 명진하고 얘기 해봐야 함
+	private String reviewCode;
 
 	@DatabaseField
 	private long shopId;
@@ -138,10 +138,10 @@ public class Sign implements Serializable {
 	private String sgCode;	// 지역 코드 인듯? 서버에서 넣어주길 원함. 없으면 빌딩의 값을 넣어주자
 
 	@DatabaseField(columnName = "placedCode")
-	private int installSide;
+	private String installSide;
 
 	@DatabaseField(columnName = "placedExt")
-	private int uniqueness;
+	private String uniqueness;
 
 	@DatabaseField
 	private String memo;
@@ -204,14 +204,14 @@ public class Sign implements Serializable {
 	}
 
 	public Sign(long id, String inspectionNumber, String inspectionDate, String mobileId,
-				boolean isSynchronized, String syncDate, int type, float width, float length,
+				boolean isSynchronized, String syncDate, String type, float width, float length,
 				float height, float area, float extraSize, int quantity, String content,
-				int placedFloor, boolean isFront, int lightType, String placement, boolean isCollision,
-				float collisionWidth, float collisionLength, int inspectionResult, String permissionNumber,
-				/*String needReinspection, */String inputter, String inputDate, int statsCode, String picNumber,
+				int placedFloor, boolean isFront, String lightType, String placement, boolean isCollision,
+				float collisionWidth, float collisionLength, String inspectionResult, String permissionNumber,
+				/*String needReinspection, */String inputter, String inputDate, String statsCode, String picNumber,
 				String modifier, String modifyDate, int totalFloor, boolean isIntersection, int tblNumber,/* boolean isDeleted,*/
-				boolean isFrontBackRoad, String demolitionPicPath, String demolishedDate, int reviewCode,
-				long shopId, int addressId, String sgCode, int installSide, int uniqueness, String memo, boolean modified) {
+				boolean isFrontBackRoad, String demolitionPicPath, String demolishedDate, String reviewCode,
+				long shopId, int addressId, String sgCode, String installSide, String uniqueness, String memo, boolean modified) {
 		this.id = id;
 		this.inspectionNumber = inspectionNumber;
 		this.inspectionDate = inspectionDate;
@@ -311,11 +311,11 @@ public class Sign implements Serializable {
 		this.syncDate = syncDate;
 	}
 
-	public int getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -391,11 +391,11 @@ public class Sign implements Serializable {
 		isFront = front;
 	}
 
-	public int getLightType() {
+	public String getLightType() {
 		return lightType;
 	}
 
-	public void setLightType(int lightType) {
+	public void setLightType(String lightType) {
 		this.lightType = lightType;
 	}
 
@@ -431,11 +431,11 @@ public class Sign implements Serializable {
 		this.collisionLength = collisionLength;
 	}
 
-	public int getInspectionResult() {
+	public String getInspectionResult() {
 		return inspectionResult;
 	}
 
-	public void setInspectionResult(int inspectionResult) {
+	public void setInspectionResult(String inspectionResult) {
 		this.inspectionResult = inspectionResult;
 	}
 
@@ -471,11 +471,11 @@ public class Sign implements Serializable {
 		this.inputDate = inputDate;
 	}
 
-	public int getStatsCode() {
+	public String getStatsCode() {
 		return statsCode;
 	}
 
-	public void setStatsCode(int statsCode) {
+	public void setStatsCode(String statsCode) {
 		this.statsCode = statsCode;
 	}
 
@@ -559,11 +559,11 @@ public class Sign implements Serializable {
 		this.demolishedDate = demolishedDate;
 	}
 
-	public int getReviewCode() {
+	public String getReviewCode() {
 		return reviewCode;
 	}
 
-	public void setReviewCode(int reviewCode) {
+	public void setReviewCode(String reviewCode) {
 		this.reviewCode = reviewCode;
 	}
 
@@ -591,19 +591,19 @@ public class Sign implements Serializable {
 		this.sgCode = sgCode;
 	}
 
-	public int getInstallSide() {
+	public String getInstallSide() {
 		return installSide;
 	}
 
-	public void setInstallSide(int installSide) {
+	public void setInstallSide(String installSide) {
 		this.installSide = installSide;
 	}
 
-	public int getUniqueness() {
+	public String getUniqueness() {
 		return uniqueness;
 	}
 
-	public void setUniqueness(int uniqueness) {
+	public void setUniqueness(String uniqueness) {
 		this.uniqueness = uniqueness;
 	}
 

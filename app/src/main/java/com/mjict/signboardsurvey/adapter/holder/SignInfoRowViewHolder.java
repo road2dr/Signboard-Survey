@@ -1,17 +1,17 @@
 package com.mjict.signboardsurvey.adapter.holder;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mjict.signboardsurvey.R;
+import com.mjict.signboardsurvey.widget.LabelImageView;
 
 /**
  * Created by Junseo on 2016-12-16.
  */
 public class SignInfoRowViewHolder {
     private View parent;
-    private ImageView imageView;
+    private LabelImageView imageView;
     private TextView nameTextView;
     private TextView sizeTextView;
     private TextView resultTextView;
@@ -20,9 +20,9 @@ public class SignInfoRowViewHolder {
         parent = view;
     }
 
-    public ImageView getImageView() {
+    public LabelImageView getImageView() {
         if(imageView == null)
-            imageView = (ImageView)parent.findViewById(R.id.image_view);
+            imageView = (LabelImageView)parent.findViewById(R.id.image_view);
 
         return imageView;
     }

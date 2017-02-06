@@ -134,6 +134,9 @@ public abstract class SABaseActivity extends AppCompatSActivity {
         reviewSignButton = (Button)this.findViewById(R.id.review_sign_button);
         mapSearchButton = (Button)this.findViewById(R.id.map_search_button);
         userStatisticsButton = (Button)this.findViewById(R.id.user_statistics_button);
+        homeButton = (ImageButton)this.findViewById(R.id.home_button);
+        settingButton = (ImageButton)this.findViewById(R.id.setting_button);
+        quitButton = (ImageButton)this.findViewById(R.id.quit_button);
     }
 
     @Override
@@ -210,6 +213,10 @@ public abstract class SABaseActivity extends AppCompatSActivity {
         super.onDestroy();
     }
 
+    public void closeDrawer() {
+        drawer.closeDrawer(GravityCompat.START);
+    }
+
     public void addDrawerListener(DrawerLayout.DrawerListener listener) {
         drawer.addDrawerListener(listener);
     }
@@ -240,6 +247,18 @@ public abstract class SABaseActivity extends AppCompatSActivity {
 
     public void setUserStatisticsButtonOnClickListener(View.OnClickListener listener) {
         userStatisticsButton.setOnClickListener(listener);
+    }
+
+    public void setHomeButtonOnClickListener(View.OnClickListener listener) {
+        homeButton.setOnClickListener(listener);
+    }
+
+    public void setSettingButtonOnClickListener(View.OnClickListener listener) {
+        settingButton.setOnClickListener(listener);
+    }
+
+    public void setQuitButtonOnClickListener(View.OnClickListener listener) {
+        quitButton.setOnClickListener(listener);
     }
 
     public void showOptionButton() {

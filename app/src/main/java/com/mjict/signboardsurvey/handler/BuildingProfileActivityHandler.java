@@ -12,7 +12,6 @@ import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.BuildingProfileActivity;
 import com.mjict.signboardsurvey.activity.PictureActivity;
-import com.mjict.signboardsurvey.adapter.ImageViewPagerAdapter;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.BuildingPicture;
 import com.mjict.signboardsurvey.model.IndexBitmap;
@@ -74,9 +73,15 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
             }
         });
 
-        activity.setImagePagerOnItemClickListener(new ImageViewPagerAdapter.OnPagerItemClickListener() {
+//        activity.setImagePagerOnItemClickListener(new ImageViewPagerAdapter.OnPagerItemClickListener() {
+//            @Override
+//            public void onItemClick(int position) {
+//                goToBuildingPicture();
+//            }
+//        });
+        activity.setViewPagerLayoutOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(int position) {
+            public void onClick(View v) {
                 goToBuildingPicture();
             }
         });

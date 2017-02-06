@@ -61,6 +61,11 @@ public class SignListAdapter extends ArrayAdapter<SignInfo> {
         holder.getResultTextView().setText(s.result);
         holder.getSizeTextView().setText(s.size);
 
+        boolean labelVisible = (s.labelColor != -1);
+        holder.getImageView().setLabelText(s.status);
+        holder.getImageView().setLabelBackgroundColor(s.labelColor);
+        holder.getImageView().setLabelVisual(labelVisible);
+
 //        final int[] colors = {0xffFFFFA5, 0xffE7FFC0, 0xffFFD2FF};
 //        int color = colors[position%3];
 //        view.setBackgroundColor(color);

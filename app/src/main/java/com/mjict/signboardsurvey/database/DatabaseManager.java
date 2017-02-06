@@ -799,6 +799,18 @@ public class DatabaseManager {
 		return (result == 1);
 	}
 
+	public boolean deleteShop(long shopId) {
+		int result = -1;
+
+		try {
+			result = helper.getShopDao().deleteById(shopId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return (result == 1);
+	}
+
 	public int findAddressId(String province, String county, String town) {
 		HashMap<String, Object> argMap = new HashMap<String, Object>(3);
 		argMap.put("province", province);

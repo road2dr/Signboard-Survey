@@ -6,113 +6,142 @@
     android:paddingTop="0dp"
     android:paddingBottom="0dp">
 
-    <LinearLayout
-        android:id="@+id/first_layout"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:background="@drawable/bg_white_box"
-        android:padding="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="2.55dp">
-        <TextView
-            android:id="@+id/first_name_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:textSize="18sp"
-            android:maxLines="1"
-            android:gravity="center"/>
+        android:layout_weight="1">
         <LinearLayout
+            android:id="@+id/first_layout"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/bg_white_box"
+            android:padding="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="2.55dp">
             <TextView
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:text="@string/shop_category"/>
-            <TextView
-                android:id="@+id/first_category_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textColor="@color/secondary_text"
-                android:gravity="center" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp">
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:text="@string/phone_number"/>
-            <TextView
-                android:id="@+id/first_phone_text_view"
+                android:id="@+id/first_name_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondary_text"
-                android:gravity="center" />
+                android:layout_marginBottom="5dp"
+                android:textSize="18sp"
+                android:maxLines="1"
+                android:gravity="center"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:text="@string/shop_category"/>
+                <TextView
+                    android:id="@+id/first_category_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/secondary_text"
+                    android:gravity="center" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:text="@string/phone_number"/>
+                <TextView
+                    android:id="@+id/first_phone_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary_text"
+                    android:gravity="center" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/first_closed_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_closed"
+            android:background="@null"
+            android:visibility="gone"/>
+    </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/second_layout"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:background="@drawable/bg_white_box"
-        android:padding="10dp"
-        android:layout_marginLeft="2.5dp"
-        android:layout_marginRight="5dp">
-        <TextView
-            android:id="@+id/second_name_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:textSize="18sp"
-            android:maxLines="1"
-            android:gravity="center"/>
+        android:layout_weight="1">
         <LinearLayout
+            android:id="@+id/second_layout"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/bg_white_box"
+            android:padding="10dp"
+            android:layout_marginLeft="2.5dp"
+            android:layout_marginRight="5dp">
             <TextView
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:text="@string/shop_category"/>
-            <TextView
-                android:id="@+id/second_category_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textColor="@color/secondary_text"
-                android:gravity="center" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp">
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:text="@string/phone_number"/>
-            <TextView
-                android:id="@+id/second_phone_text_view"
+                android:id="@+id/second_name_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondary_text"
-                android:gravity="center" />
+                android:layout_marginBottom="5dp"
+                android:textSize="18sp"
+                android:maxLines="1"
+                android:gravity="center"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:text="@string/shop_category"/>
+                <TextView
+                    android:id="@+id/second_category_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/secondary_text"
+                    android:gravity="center" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:text="@string/phone_number"/>
+                <TextView
+                    android:id="@+id/second_phone_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary_text"
+                    android:gravity="center" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
+        <ImageView
+            android:id="@+id/second_closed_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_closed"
+            android:background="@null"
+            android:visibility="gone"/>
+    </RelativeLayout>
 
 </LinearLayout>

@@ -68,7 +68,7 @@ public class UserDataSearchActivityHandler extends SABaseActivityHandler {
         // register listener
         activity.setCountySpinnerOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
             @Override
-            public void onItemSelectionChanged(int position, int id, Object data) {
+            public void onItemSelectionChanged(int position, Object id, Object data) {
                 if(position == -1)
                     return;
 
@@ -130,8 +130,8 @@ public class UserDataSearchActivityHandler extends SABaseActivityHandler {
     }
 
 
-    public void countySpinnerItemChanged(int id, String county) {
-        if(id == ALL) {
+    public void countySpinnerItemChanged(Object id, String county) {
+        if(id.equals(ALL)) {
             activity.clearTownSpinner();
             return;
         }
@@ -206,8 +206,8 @@ public class UserDataSearchActivityHandler extends SABaseActivityHandler {
 
         // filter
         String province = SyncConfiguration.getProvinceForSync();
-        String county = (activity.getSelectedCountyId() == ALL) ? null : (String)activity.getSelectedCounty();
-        String town = (activity.getSelectedTownId() == ALL) ? null : (String)activity.getSelectedTown();
+        String county = (activity.getSelectedCountyId().equals(ALL)) ? null : (String)activity.getSelectedCounty();
+        String town = (activity.getSelectedTownId().equals(ALL)) ? null : (String)activity.getSelectedTown();
         Calendar searchTime = getTimeForSearch();
         FilterOutSignTask.SearchFilter filter = new FilterOutSignTask.SearchFilter(province, county, town, searchTime);
 

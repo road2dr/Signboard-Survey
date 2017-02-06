@@ -52,7 +52,7 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
 
         activity.setCountySpinnerOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
             @Override
-            public void onItemSelectionChanged(int position, int id, Object data) {
+            public void onItemSelectionChanged(int position, Object id, Object data) {
                 if(position == -1)
                     return;
 
@@ -62,7 +62,7 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
 
         activity.setTownSpinnerrOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
             @Override
-            public void onItemSelectionChanged(int position, int id, Object data) {
+            public void onItemSelectionChanged(int position, Object id, Object data) {
                 if(position == -1)
                     return;
 
@@ -72,7 +72,7 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
 
         activity.setConsonantSpinnerrOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
             @Override
-            public void onItemSelectionChanged(int position, int id, Object data) {
+            public void onItemSelectionChanged(int position, Object id, Object data) {
                 if(position == -1)
                     return;
 
@@ -139,7 +139,6 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
 
         Building building = buildingList.get(position);
 
-        // TODO 건물 보기로 이동
         Intent intent = new Intent(activity, ShopListActivity.class);
         intent.putExtra(HANDLER_CLASS, ShopListActivityHandler.class);
         intent.putExtra(MJConstants.BUILDING, building);

@@ -1,9 +1,11 @@
 package com.mjict.signboardsurvey.handler;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.mjict.signboardsurvey.R;
@@ -12,6 +14,7 @@ import com.mjict.signboardsurvey.activity.DemolishedSignActivity;
 import com.mjict.signboardsurvey.activity.MapSearchActivity;
 import com.mjict.signboardsurvey.activity.ReviewSignActivity;
 import com.mjict.signboardsurvey.activity.SABaseActivity;
+import com.mjict.signboardsurvey.activity.SummaryActivity;
 import com.mjict.signboardsurvey.activity.UserDataSearchActivity;
 import com.mjict.signboardsurvey.receiver.WiFiMonitor;
 import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
@@ -63,6 +66,20 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
             @Override
             public void onClick(View v) {
                 goToUserStatistics();
+            }
+        });
+
+        activity.setHomeButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToSummary();
+            }
+        });
+
+        activity.setQuitButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                askAndQuit();
             }
         });
 
@@ -121,6 +138,36 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
         intent.putExtra(HANDLER_CLASS, UserDataSearchActivityHandler.class);
 
         activity.startActivity(intent);
+    }
+
+    private void goToSummary() {
+        Intent intent = new Intent(activity, SummaryActivity.class);
+        intent.putExtra(HANDLER_CLASS, SummaryActivityHandler.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        activity.startActivity(intent);
+    }
+
+    private void askAndQuit() {
+        activity.closeDrawer();
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.quit)
+                .setMessage(R.string.do_you_want_to_quit)
+                .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener(){
+                    // 확인 버튼 클릭시 설정
+                    public void onClick(DialogInterface dialog, int whichButton){
+                        startToQuit();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int whichButton){
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();    // 알림창 객체 생성
+        dialog.show();    // 알림창 띄우기
     }
 
     protected void startToQuit() {

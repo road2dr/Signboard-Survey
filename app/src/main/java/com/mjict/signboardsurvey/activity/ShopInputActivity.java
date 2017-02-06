@@ -62,7 +62,7 @@ public class ShopInputActivity extends SABaseActivity {
         return phoneEditText.getText().toString();
     }
 
-    public void addToConditionSpinner(int id, Object data) {
+    public void addToConditionSpinner(Object id, Object data) {
         conditionSpinner.addSpinnerData(id, data);
     }
 
@@ -70,11 +70,11 @@ public class ShopInputActivity extends SABaseActivity {
         return conditionSpinner.getSelectedData();
     }
 
-    public void setConditionSelection(int id) {
+    public void setConditionSelection(Object id) {
         conditionSpinner.setSpinnerSelection(id);
     }
 
-    public void addToCategorySpinner(int id, Object data) {
+    public void addToCategorySpinner(Object id, Object data) {
         categorySpinner.addSpinnerData(id, data);
     }
 
@@ -82,7 +82,7 @@ public class ShopInputActivity extends SABaseActivity {
         return categorySpinner.getSelectedData();
     }
 
-    public void setCategorySelection(int id) {
+    public void setCategorySelection(Object id) {
         categorySpinner.setSpinnerSelection(id);
     }
 }

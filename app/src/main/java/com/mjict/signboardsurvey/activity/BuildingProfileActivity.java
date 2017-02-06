@@ -19,6 +19,7 @@ public class BuildingProfileActivity extends SABaseActivity {
     // TODO 건물 사진 갯수에 따라 다른 UI를 쓸 수도 있음. 확인 해볼 것
     private TextView titleTextView;
     private ViewPager imagePager;
+    private View viewPagerLayout;
     private CircleIndicator imageIndicator;
     private TextView streetAddressTextView;
     private TextView houseAddressTextView;
@@ -48,6 +49,7 @@ public class BuildingProfileActivity extends SABaseActivity {
         signInfoTextView = (TextView) this.findViewById(R.id.sign_info_text_view);
         areaTypeSpinner = (SimpleSpinner)this.findViewById(R.id.area_type_spinner);
         applyButton = (Button)this.findViewById(R.id.apply_button);
+        viewPagerLayout = this.findViewById(R.id.view_page_layout);
 
         imageAdapter = new ImageViewPagerAdapter(this);
         imagePager.setAdapter(imageAdapter);
@@ -92,8 +94,25 @@ public class BuildingProfileActivity extends SABaseActivity {
         imagePager.setCurrentItem(page);
     }
 
-    public void setImagePagerOnItemClickListener(ImageViewPagerAdapter.OnPagerItemClickListener listener) {
-        imageAdapter.setOnItemClickListener(listener);
+//    public void setImagePagerOnItemClickListener(final ImageViewPagerAdapter.OnPagerItemClickListener listener) {
+////        imageAdapter.setOnItemClickListener(listener);
+//        imagePager.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int cur = imagePager.getCurrentItem();
+//                listener.onItemClick(cur);
+//            }
+//        });
+//    }
+
+    public void setViewPagerLayoutOnClickListener(final View.OnClickListener listener) {
+        viewPagerLayout.setOnClickListener(listener);
+        imageAdapter.setOnItemClickListener(new ImageViewPagerAdapter.OnPagerItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                listener.onClick(viewPagerLayout);
+            }
+        });
     }
 
     public void showImage(Bitmap image) {
@@ -128,11 +147,11 @@ public class BuildingProfileActivity extends SABaseActivity {
         shopInfoTextView.setText(text);
     }
 
-    public void addToAreaTypeSpinner(int id, Object data) {
+    public void addToAreaTypeSpinner(Object id, Object data) {
         areaTypeSpinner.addSpinnerData(id, data);
     }
 
-    public void setAreaTypeSelection(int id) {
+    public void setAreaTypeSelection(Object id) {
         areaTypeSpinner.setSpinnerSelection(id);
     }
 

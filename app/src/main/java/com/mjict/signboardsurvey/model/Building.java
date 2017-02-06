@@ -53,7 +53,7 @@ public class Building implements Serializable {
 	private int addressId;
 
 	@DatabaseField
-	private int areaType;
+	private String areaType;
 
 	@DatabaseField
 	private double latitude;
@@ -76,7 +76,7 @@ public class Building implements Serializable {
 
 	public Building(long id, String province, String county, String town, String village, String additionalAddress, String houseNumber,
 			String streetName, String firstBuildingNumber, String secondBuildingNumber, String name, boolean isMountain,
-			String plcd, int addressId, int areaType, double latitude, double longitude, String sgCode, boolean isSync, String syncDate) {
+			String plcd, int addressId, String areaType, double latitude, double longitude, String sgCode, boolean isSync, String syncDate) {
 		super();
 		this.id = id;
 		this.province = province;
@@ -212,11 +212,11 @@ public class Building implements Serializable {
 		this.addressId = addressId;
 	}
 
-	public int getAreaType() {
+	public String getAreaType() {
 		return areaType;
 	}
 
-	public void setAreaType(int areaType) {
+	public void setAreaType(String areaType) {
 		this.areaType = areaType;
 	}
 

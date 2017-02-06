@@ -242,6 +242,7 @@
     <string name="integrated_search">통합 검색</string>
     <string name="input_sign_information_canceled">간판 정보 입력을 취소 했습니다.</string>
     <string name="cannot_delete_that_sign_information">해당 사진 정보를 지울 수 없습니다.</string>
+    <string name="cannot_use_this_function_if_internet_disconnected">해당 기능은 인터넷이 연결되어 있지 않으면 사용 할 수 없습니다.</string>
 
 
     <!-- !!!!!!!!!!!!!!!!!!!!!! -->

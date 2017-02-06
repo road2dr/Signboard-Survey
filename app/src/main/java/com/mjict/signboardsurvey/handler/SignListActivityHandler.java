@@ -252,7 +252,17 @@ public class SignListActivityHandler extends SABaseActivityHandler {
         String result = resultSetting == null ? smgr.getDefaultResultName() : resultSetting.getName();
         String location = s.getPlacedFloor() +" / "+s.getTotalFloor();
 
-        SignInfo si = new SignInfo(null, content, size, status, light, location, result);
+        int color = -1;
+//        0xffFFFFA5, 0xffE7FFC0, 0xffFFD2FF
+        if(s.getStatsCode().equals("2")) {
+            color = 0xff0099fd;
+        } else if(s.getStatsCode().equals("3")) {
+            color = 0xff75b3f2;
+        } else {
+            color = -1;
+        }
+
+        SignInfo si = new SignInfo(null, content, size, status, light, location, result, color);
         return si;
     }
 

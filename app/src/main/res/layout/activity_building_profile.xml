@@ -9,6 +9,7 @@
     android:paddingTop="5dp">
 
     <RelativeLayout
+        android:id="@+id/view_page_layout"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:background="@color/white">

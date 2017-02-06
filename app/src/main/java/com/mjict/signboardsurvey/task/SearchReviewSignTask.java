@@ -99,7 +99,7 @@ public class SearchReviewSignTask extends DefaultAsyncTask<Address, Integer, Lis
                 for(int k=0; k<signs.size(); k++) {
                     Sign sign = signs.get(k);
 
-                    if(sign.getReviewCode() == 0)
+                    if(sign.getReviewCode().equals("0"))
                         continue;
 
                     Setting reviewSetting = sdmgr.getReviewCode(sign.getReviewCode());

@@ -131,8 +131,8 @@ public class ShopInputActivityHandler extends SABaseActivityHandler {
         String name = "";
         String representative = "";
         String phoneNumber = "";
-        int businessCondition = -1;
-        int category = -1;
+        String businessCondition = "";
+        String category = "";
         long buildingId = -1;
         String inputter = MJContext.getCurrentUser().getUserId();;
         String inputDate = currentTime;

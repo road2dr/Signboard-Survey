@@ -9,6 +9,8 @@ import com.mjict.signboardsurvey.database.DatabaseManager;
 import com.mjict.signboardsurvey.model.Setting;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -67,19 +69,19 @@ public class SettingDataManager {
 	}
 
 
-	public Setting getShopCondition(int code) {
+	public Setting getShopCondition(String code) {
 		return searchSetting(SHOP_CONDITON, code);
 	}
 
-	public Setting getShopCategory(int code) {
+	public Setting getShopCategory(String code) {
 		return searchSetting(SHOP_CATEGORY, code);
 	}
 
-	public Setting getSignType(int code) {
+	public Setting getSignType(String code) {
 		return searchSetting(SIGN_TYPE, code);
 	}
 
-	public Setting getLightType(int code) {
+	public Setting getLightType(String code) {
 		return searchSetting(LIGHT_TYPE, code);
 	}
 
@@ -89,6 +91,10 @@ public class SettingDataManager {
 
 	public String getDefaultLightTypeName() {
 		return "비조명";		// TODO 나중에 상수로 묶어 놓든가 해
+	}
+
+	public String getDefaultInstallSideName() {
+		return "기타";
 	}
 
 	public String getDefaultResultName() {
@@ -111,7 +117,7 @@ public class SettingDataManager {
 		return "지정되지 않음";
 	}
 
-	public Setting getResult(int code) {
+	public Setting getResult(String code) {
 		return searchSetting(RESULT, code);
 	}
 
@@ -141,7 +147,7 @@ public class SettingDataManager {
 		return searchSetting(SIGN_STATUS);
 	}
 
-	public Setting getSignStatus(int code) {
+	public Setting getSignStatus(String code) {
 		return searchSetting(SIGN_STATUS, code);
 	}
 
@@ -149,7 +155,7 @@ public class SettingDataManager {
 		return searchSetting(REVIEW_CODE);
 	}
 
-	public Setting getReviewCode(int code) {
+	public Setting getReviewCode(String code) {
 		return searchSetting(REVIEW_CODE, code);
 	}
 
@@ -157,7 +163,7 @@ public class SettingDataManager {
 		return searchSetting(AREA_TYPE);
 	}
 
-	public Setting getAreaTypeCode(int code) {
+	public Setting getAreaTypeCode(String code) {
 		return searchSetting(AREA_TYPE, code);
 	}
 
@@ -165,7 +171,7 @@ public class SettingDataManager {
 		return searchSetting(INSTALL_SIDE);
 	}
 
-	public Setting getInstallSide(int code) {
+	public Setting getInstallSide(String code) {
 		return searchSetting(INSTALL_SIDE, code);
 	}
 
@@ -173,7 +179,7 @@ public class SettingDataManager {
 		return searchSetting(UNIQUENESS);
 	}
 
-	public Setting getUniqueness(int code) {
+	public Setting getUniqueness(String code) {
 		return searchSetting(UNIQUENESS, code);
 	}
 
@@ -220,21 +226,31 @@ public class SettingDataManager {
 				list.add(s);
 		}
 
+		Collections.sort(list, new SettingComparator());
+
 		Setting[] settings = new Setting[list.size()];
 		return list.toArray(settings);
 	}
 
-	private Setting searchSetting(int category, int code) {
+	private Setting searchSetting(int category, String code) {
 		if(settings == null)
 			return null;
 
 		for(int i=0; i<settings.size(); i++) {
 			Setting s = settings.get(i);
-			if(s.getCategory() == category && s.getCode() == code )
+			if(s.getCategory() == category && s.getCode().equals(code) )
 				return s;
 		}
 
 		return null;
+	}
+
+	// 오름차순 정렬
+	public static class SettingComparator implements Comparator<Setting> {
+		@Override
+		public int compare(Setting lhs, Setting rhs) {
+			return lhs.getOrd() < rhs.getOrd() ? -1 : lhs.getOrd() > rhs.getOrd() ? 1:0;
+		}
 	}
 	
 }

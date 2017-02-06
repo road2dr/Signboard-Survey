@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.mjict.signboardsurvey.MJConstants;
-import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.BuildingListActivity;
 import com.mjict.signboardsurvey.activity.BuildingSearchActivity;
@@ -101,7 +100,6 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO 그냥 화면 깨긋이 하고 새로 로딩 하는게 나아 보인다.
         activity.clearAddressResult();
         activity.clearBuildingResult();
         activity.clearShopResult();
@@ -184,7 +182,6 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
 
     private void buildingItemClicked(int index) {
         Building building = buildingResults.get(index).building;
-        MJContext.addRecentBuilding(building.getId());
 
         goToShopList(building);
     }

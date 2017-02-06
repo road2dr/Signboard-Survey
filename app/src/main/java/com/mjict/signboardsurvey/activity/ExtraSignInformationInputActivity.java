@@ -153,11 +153,11 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
 //    uniquenessSpinner = (SimpleSpinner)this.findViewById(R.id.uniqueness_spinner);
 //    memoEditText = (EditText)this.findViewById(R.id.memo_edit_text);
 
-    public void addToReviewSpinner(int id, Object data) {
+    public void addToReviewSpinner(Object id, Object data) {
         reviewSpinner.addSpinnerData(id, data);
     }
 
-    public void setReviewSpinnerSelection(int id) {
+    public void setReviewSpinnerSelection(Object id) {
         reviewSpinner.setSpinnerSelection(id);
     }
 
@@ -165,11 +165,11 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
         return reviewSpinner.getSelectedData();
     }
 
-    public void addToInstalledSideSpinner(int id, Object data) {
+    public void addToInstalledSideSpinner(Object id, Object data) {
         installedSideSpinner.addSpinnerData(id, data);
     }
 
-    public void setInstalledSideSpinnerSelection(int id) {
+    public void setInstalledSideSpinnerSelection(Object id) {
         installedSideSpinner.setSpinnerSelection(id);
     }
 
@@ -177,11 +177,11 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
         return installedSideSpinner.getSelectedData();
     }
 
-    public void addToUniquenessSpinner(int id, Object data) {
+    public void addToUniquenessSpinner(Object id, Object data) {
         uniquenessSpinner.addSpinnerData(id, data);
     }
 
-    public void setUniquenessSpinnerSelection(int id) {
+    public void setUniquenessSpinnerSelection(Object id) {
         uniquenessSpinner.setSpinnerSelection(id);
     }
 
@@ -207,6 +207,10 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
         demolitionImageView.setImageBitmap(image);
     }
 
+    public void setDemolitionPicImage(int resId) {
+        demolitionImageView.setImageResource(resId);
+    }
+
     public void addPicButtonOnClickListener(View.OnClickListener listener) {
         addPicButton.setOnClickListener(listener);
     }
@@ -223,11 +227,11 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
         demolishDateTextView.setOnClickListener(listener);
     }
 
-    public void addToResultSpinner(int id, Object data) {
+    public void addToResultSpinner(Object id, Object data) {
         resultSpinner.addSpinnerData(id, data);
     }
 
-    public void setResultSpinnerSelection(int id) {
+    public void setResultSpinnerSelection(Object id) {
         resultSpinner.setSpinnerSelection(id);
     }
 

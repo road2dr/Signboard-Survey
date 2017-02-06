@@ -8,12 +8,17 @@ import android.widget.Toast;
 
 import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.R;
+import com.mjict.signboardsurvey.activity.CameraActivity;
 import com.mjict.signboardsurvey.activity.ExtraSignInformationInputActivity;
 import com.mjict.signboardsurvey.autojudgement.InputType;
 import com.mjict.signboardsurvey.model.AutoJudgementValue;
+import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.model.Setting;
 import com.mjict.signboardsurvey.model.Sign;
+import com.mjict.signboardsurvey.task.AsyncTaskListener;
+import com.mjict.signboardsurvey.task.LoadImageTask;
 import com.mjict.signboardsurvey.util.SettingDataManager;
+import com.mjict.signboardsurvey.util.SyncConfiguration;
 import com.mjict.signboardsurvey.util.Utilities;
 import com.mjict.signboardsurvey.util.WrongNumberFormatException;
 import com.mjict.signboardsurvey.util.WrongNumberScopeException;
@@ -48,10 +53,14 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
             activity.finish();
             return;
         }
+
         autoJudgementValue = (AutoJudgementValue)intent.getSerializableExtra(MJConstants.AUTO_JUDGEMENT_VALUE);
         if(autoJudgementValue == null) {
             autoJudgementValue = new AutoJudgementValue();
         }
+
+        if(currentSign.getDemolitionPicPath() != null && currentSign.getDemolitionPicPath().equals("") == false)
+            demolishPicPath = SyncConfiguration.getDirectoryForSingPicture(currentSign.isModified())+currentSign.getDemolitionPicPath();
 
         // register listener
         activity.setBackButtonOnClickListener(new View.OnClickListener() {
@@ -83,6 +92,13 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
             }
         });
 
+        activity.addPicButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToCamera();
+            }
+        });
+
         activity.setTimePickerConfirmButtonOnClickListener(new TimePickerDialog.ConfirmButtonOnClickListener() {
             @Override
             public void onClicked(Date time) {
@@ -97,6 +113,25 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
         initSpinner();
 
         updateUI();
+
+        startToLoadDemolishImage();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == MJConstants.REQUEST_TAKE_AND_SAVE) {
+            if(resultCode == Activity.RESULT_OK) {
+                Boolean result = data.getBooleanExtra(MJConstants.RESPONSE, false);
+                if(result == false) {
+                    // TODO 사진 저장 실패
+                } else {
+                    // 사진 찍기 성공
+                    demolishPicPath = data.getStringExtra(MJConstants.PATH);
+
+                    startToLoadDemolishImage();
+                }
+            }
+        }
     }
 
     private void nextButtonClicked() {
@@ -109,6 +144,7 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
         String demolishDate = activity.getInputDemolishDate();
         Setting resultSetting = (Setting)activity.getSelectedResult();
         Setting reviewSetting = (Setting)activity.getSelectedReview();
+        String picPath = (demolishPicPath == null) ? "" : demolishPicPath.substring(demolishPicPath.lastIndexOf("/")+1);
 
         try {
             checkNumberValue(collisionWidthText, collisionLengthText);
@@ -121,6 +157,7 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
             return;
         }
 
+        currentSign.setDemolitionPicPath(picPath);
         currentSign.setCollision(collisionChecked);
         currentSign.setInstallSide(installedSideSetting.getCode());
         currentSign.setUniqueness(uniquenessSetting.getCode());
@@ -140,8 +177,8 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
     private void doAutoJudgement() {
         putAutoJudgementValues();
 
-        int judgement = Utilities.autoJudgement(currentSign.getType(), autoJudgementValue);
-        if(judgement == -1)
+        String judgement = Utilities.autoJudgement(currentSign.getType(), autoJudgementValue);
+        if(judgement.equals("-1"))
             return;
 
         activity.setResultSpinnerSelection(judgement);
@@ -169,12 +206,12 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
         float collisionWidth = currentSign.getCollisionWidth();
         float collisionLength = currentSign.getCollisionLength();
 
-        int installedSideCode = currentSign.getInstallSide();
-        int uniquenessCode = currentSign.getUniqueness();
+        Object installedSideCode = currentSign.getInstallSide();
+        Object uniquenessCode = currentSign.getUniqueness();
         String memo = currentSign.getMemo();
 
         String demolishDate = currentSign.getDemolishedDate();
-        int result = currentSign.getInspectionResult();
+        Object result = currentSign.getInspectionResult();
 
 
 //        if(status == 철거 ) {
@@ -193,6 +230,51 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
         activity.setInstalledSideSpinnerSelection(installedSideCode);
         activity.setUniquenessSpinnerSelection(uniquenessCode);
         activity.setReviewSpinnerSelection(currentSign.getReviewCode());
+    }
+
+    private void startToLoadDemolishImage() {
+        if(demolishPicPath == null)
+            return;
+
+        LoadImageTask task = new LoadImageTask();
+        task.setSampleSize(8);
+        task.setDefaultAsyncTaskListener(new AsyncTaskListener<IndexBitmap, Boolean>() {
+            @Override
+            public void onTaskStart() {
+                activity.showWaitingDialog(R.string.loading_sign_picture);
+            }
+            @Override
+            public void onTaskProgressUpdate(IndexBitmap... values) {
+                if(values == null)
+                    return;
+
+                if(values.length > 0) {
+                    if(values[0].image != null)
+                        activity.setDemolitionPicImage(values[0].image);
+                    else
+                        activity.setDemolitionPicImage(R.drawable.ic_no_image); // 이미지 없거나 로드 실패
+                }
+            }
+            @Override
+            public void onTaskFinished(Boolean result) {
+                activity.hideWaitingDialog();
+            }
+        });
+        task.execute(demolishPicPath);
+    }
+
+    private void goToCamera() {
+        String time = Utilities.getCurrentTimeAsString();
+        int hash = Math.abs((int)Utilities.hash(time));
+        String dir = SyncConfiguration.getDirectoryForSingPicture(true);
+        final String fileName = String.format("sign_%010d.jpg", hash);
+        String path = dir + fileName;
+
+        Intent intent = new Intent(activity, CameraActivity.class);
+        intent.putExtra(HANDLER_CLASS, CameraActivityHandler.class);
+        intent.putExtra(MJConstants.PATH, path);
+
+        activity.startActivityForResult(intent, MJConstants.REQUEST_TAKE_AND_SAVE);
     }
 
 
@@ -263,13 +345,13 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
                     break;
 
                 case EQUATION_LIGHT:
-                    value = currentSign.getLightType();
+                    value = Integer.valueOf(currentSign.getLightType());
                     break;
 
                 case EQUATION_INSTALL_SIDE:
                     Setting s = (Setting)activity.getSelectedInstalledSide();
                     if(s != null)
-                        value = s.getCode();
+                        value = Integer.valueOf(s.getCode());
                     break;
 
                 case EQUATION_INTERSECTION:

@@ -71,6 +71,20 @@ public class TwoShopListAdapter extends ArrayAdapter<TwoShopInfo> {
         return item;
     }
 
+    public void removeColumnItem(int position) {
+        if(position < 0 || position >= getCount()*2)
+            return;
+
+        TwoShopInfo row = getItem(position/2);
+
+        if(position % 2 == 0)
+            remove(row);
+        else
+            row.second = null;
+
+        notifyDataSetChanged();
+    }
+
     public void setOnColumnClickListener(OnColumnClickListener listener) {
         columnClickListener = listener;
     }
@@ -112,9 +126,11 @@ public class TwoShopListAdapter extends ArrayAdapter<TwoShopInfo> {
             }
         });
 
+        int visibility = first.demolished ? View.VISIBLE : View.GONE;
         holder.getFirstNameTextView().setText(first.name);
         holder.getFirstCategoryTextView().setText(first.category);
         holder.getFirstPhoneTextView().setText(first.phone);
+        holder.getFirstClosedView().setVisibility(visibility);
 
         if(second == null) {
             holder.getSecondLayout().setVisibility(View.INVISIBLE);
@@ -140,10 +156,11 @@ public class TwoShopListAdapter extends ArrayAdapter<TwoShopInfo> {
                 }
             });
 
+            visibility = second.demolished ? View.VISIBLE : View.GONE;
             holder.getSecondNameTextView().setText(second.name);
             holder.getSecondCategoryTextView().setText(second.category);
             holder.getSecondPhoneTextView().setText(second.phone);
-
+            holder.getSecondClosedView().setVisibility(visibility);
         }
 
         return view;

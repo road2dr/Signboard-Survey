@@ -222,6 +222,11 @@ public class ShopListActivity extends SABaseActivity {
         threeShopListAdapter.replaceItem(index, info);
     }
 
+    public void removeListItem(int index) {
+        twoShopAdapter.removeColumnItem(index);
+        threeShopListAdapter.removeColumnItem(index);
+    }
+
     public void clearList() {
         twoShopAdapter.clear();
         threeShopListAdapter.clear();
@@ -231,8 +236,9 @@ public class ShopListActivity extends SABaseActivity {
         listItemClickListener = listener;
     }
 
-    public void showShopOptionDialog(ShopOptionDialog.ShopOptionDialogOnClickListener listener) {
+    public void showShopOptionDialog(ShopOptionDialog.ShopOptionDialogOnClickListener listener, boolean delete) {
         shopOptionDialog.setShopOptionDailogOnClickListener(listener);
+        shopOptionDialog.setDeleteButtonVisible(delete);
         shopOptionDialog.show();
     }
 

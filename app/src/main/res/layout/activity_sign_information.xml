@@ -62,8 +62,8 @@
                         android:id="@+id/content_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:inputType="none"
                         android:clickable="false"
                         android:enabled="false"/>
@@ -88,8 +88,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clickable="false"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:inputType="none"
                         android:enabled="false"/>
                 </LinearLayout>
@@ -231,8 +231,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clickable="false"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:inputType="none"
                         android:enabled="false"/>
                 </LinearLayout>
@@ -256,8 +256,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clickable="false"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:inputType="none"
                         android:enabled="false"/>
                 </LinearLayout>
@@ -276,10 +276,15 @@
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:text="@string/light_type"/>
-                    <TextView
+                    <EditText
                         android:id="@+id/light_type_text_view"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none"
+                        android:enabled="false"/>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/status_layout"
@@ -300,9 +305,9 @@
                         android:id="@+id/status_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:focusable="true"
+                        android:focusable="false"
                         android:clickable="false"
-                        android:focusableInTouchMode="true"
+                        android:focusableInTouchMode="false"
                         android:inputType="none"
                         android:enabled="false"/>
                 </LinearLayout>
@@ -326,9 +331,9 @@
                         android:id="@+id/placed_side_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:focusable="true"
+                        android:focusable="false"
                         android:clickable="false"
-                        android:focusableInTouchMode="true"
+                        android:focusableInTouchMode="false"
                         android:inputType="none"
                         android:enabled="false"/>
                 </LinearLayout>

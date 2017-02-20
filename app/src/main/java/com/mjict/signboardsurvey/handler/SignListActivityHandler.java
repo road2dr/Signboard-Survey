@@ -151,7 +151,7 @@ public class SignListActivityHandler extends SABaseActivityHandler {
                 String[] paths = new String[shopSigns.size()];
                 for(int i=0; i<shopSigns.size(); i++) {
                     Sign sign = shopSigns.get(i);
-                    String path = SyncConfiguration.getDirectoryForSingPicture(sign.isModified()) + sign.getPicNumber();
+                    String path = SyncConfiguration.getDirectoryForSingPicture(sign.isSignPicModified()) + sign.getPicNumber();
                     paths[i] = path;
                 }
 
@@ -202,7 +202,7 @@ public class SignListActivityHandler extends SABaseActivityHandler {
                     sign.setId(result);
 
                     SignInfo si = signToSignInfo(sign);
-                    String path = SyncConfiguration.getDirectoryForSingPicture(sign.isModified()) + sign.getPicNumber();
+                    String path = SyncConfiguration.getDirectoryForSingPicture(sign.isSignPicModified()) + sign.getPicNumber();
                     shopSigns.add(sign);
                     activity.addToList(si);
 
@@ -227,7 +227,7 @@ public class SignListActivityHandler extends SABaseActivityHandler {
         }
         if(position != -1) {
             SignInfo si = signToSignInfo(sign);
-            String path = SyncConfiguration.getDirectoryForSingPicture(sign.isModified()) + sign.getPicNumber();
+            String path = SyncConfiguration.getDirectoryForSingPicture(sign.isSignPicModified()) + sign.getPicNumber();
             shopSigns.set(position, sign);
             activity.setSignInfo(position, si);
             startToLoadSignImage(position, path);
@@ -262,7 +262,7 @@ public class SignListActivityHandler extends SABaseActivityHandler {
             color = -1;
         }
 
-        SignInfo si = new SignInfo(null, content, size, status, light, location, result, color);
+        SignInfo si = new SignInfo(null, content, "", size, status, light, location, result, color);
         return si;
     }
 

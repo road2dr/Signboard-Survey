@@ -60,7 +60,7 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
         }
 
         if(currentSign.getDemolitionPicPath() != null && currentSign.getDemolitionPicPath().equals("") == false)
-            demolishPicPath = SyncConfiguration.getDirectoryForSingPicture(currentSign.isModified())+currentSign.getDemolitionPicPath();
+            demolishPicPath = SyncConfiguration.getDirectoryForSingPicture(currentSign.isDemolishPicModified())+currentSign.getDemolitionPicPath();
 
         // register listener
         activity.setBackButtonOnClickListener(new View.OnClickListener() {
@@ -103,7 +103,7 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
             @Override
             public void onClicked(Date time) {
                 activity.hideTimePickerDialog();
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREAN);
+                SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.KOREAN);
                 String timeText = format.format(time);
                 activity.setDemolishDateText(timeText);
             }
@@ -117,6 +117,7 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
         startToLoadDemolishImage();
     }
 
+    boolean imageChanged = false;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == MJConstants.REQUEST_TAKE_AND_SAVE) {
@@ -124,8 +125,10 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
                 Boolean result = data.getBooleanExtra(MJConstants.RESPONSE, false);
                 if(result == false) {
                     // TODO 사진 저장 실패
+                    imageChanged = false;
                 } else {
                     // 사진 찍기 성공
+                    imageChanged = true;
                     demolishPicPath = data.getStringExtra(MJConstants.PATH);
 
                     startToLoadDemolishImage();
@@ -158,6 +161,7 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
         }
 
         currentSign.setDemolitionPicPath(picPath);
+        currentSign.setDemolishPicModified(imageChanged);
         currentSign.setCollision(collisionChecked);
         currentSign.setInstallSide(installedSideSetting.getCode());
         currentSign.setUniqueness(uniquenessSetting.getCode());

@@ -7,7 +7,7 @@ import com.mjict.signboardsurvey.R;
 /**
  * Created by Junseo on 2016-11-23.
  */
-public class SignInformationActivity2 extends SABaseActivity {
+public class TempSignInformationActivity2 extends SABaseActivity {
 
     private ViewPager signInformationPager;
 

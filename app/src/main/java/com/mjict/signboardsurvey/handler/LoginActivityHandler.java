@@ -9,6 +9,7 @@ import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.LocalStatisticsActivity;
 import com.mjict.signboardsurvey.activity.LoginActivity;
+import com.mjict.signboardsurvey.activity.ModeSelector;
 import com.mjict.signboardsurvey.activity.SummaryActivity;
 import com.mjict.signboardsurvey.model.User;
 import com.mjict.signboardsurvey.task.LoadUserDataTask;
@@ -38,7 +39,10 @@ public class LoginActivityHandler extends SABaseActivityHandler {
                     User user = ((UserWrapper)activity.getSelectedUser()).user;
                     MJContext.setCurrentUser(user);
                     SyncConfiguration.setMobileNo(user.getMobileId());  // 동기화쪽 요청으로 추가. 백업 만들때 쓴다고 한다.
-                    goToSummary();
+
+                    goToModeSelector();
+
+//                    goToSummary();
                     // TODO 임시
 //                    goToTemp();
                     return;
@@ -103,6 +107,12 @@ public class LoginActivityHandler extends SABaseActivityHandler {
     private void goToTemp() {
         Intent intent = new Intent(activity, LocalStatisticsActivity.class);
         intent.putExtra(HANDLER_CLASS, LocalStatisticsActivityHandler.class);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
+    private void goToModeSelector() {
+        Intent intent = new Intent(activity, ModeSelector.class);
         activity.startActivity(intent);
         activity.finish();
     }

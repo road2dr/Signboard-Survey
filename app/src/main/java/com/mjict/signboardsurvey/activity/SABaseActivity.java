@@ -213,6 +213,7 @@ public abstract class SABaseActivity extends AppCompatSActivity {
         super.onDestroy();
     }
 
+
     public void closeDrawer() {
         drawer.closeDrawer(GravityCompat.START);
     }

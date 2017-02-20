@@ -5,7 +5,7 @@ import android.content.Context;
 import com.mjict.signboardsurvey.database.DatabaseManager;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.Shop;
-import com.mjict.signboardsurvey.model.ShopAndSign;
+import com.mjict.signboardsurvey.model.ShopWithSign;
 import com.mjict.signboardsurvey.model.Sign;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Junseo on 2016-12-25.
  */
-public class LoadShopAndSignByBuildingTask extends DefaultAsyncTask<Building, ShopAndSign, Boolean> {
+public class LoadShopAndSignByBuildingTask extends DefaultAsyncTask<Building, ShopWithSign, Boolean> {
     private Context context;
 
     public LoadShopAndSignByBuildingTask(Context c) {
@@ -40,7 +40,7 @@ public class LoadShopAndSignByBuildingTask extends DefaultAsyncTask<Building, Sh
                 signs = dmgr.findSignsByShopId(shop.getId());
             }
 
-            ShopAndSign sas = new ShopAndSign(i, shopsInBuilding, signs);
+            ShopWithSign sas = new ShopWithSign(i, shopsInBuilding, signs);
             publishProgress(sas);
         }
 

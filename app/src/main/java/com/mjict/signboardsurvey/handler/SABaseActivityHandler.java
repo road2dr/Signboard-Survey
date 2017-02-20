@@ -14,6 +14,7 @@ import com.mjict.signboardsurvey.activity.DemolishedSignActivity;
 import com.mjict.signboardsurvey.activity.MapSearchActivity;
 import com.mjict.signboardsurvey.activity.ReviewSignActivity;
 import com.mjict.signboardsurvey.activity.SABaseActivity;
+import com.mjict.signboardsurvey.activity.SettingActivity;
 import com.mjict.signboardsurvey.activity.SummaryActivity;
 import com.mjict.signboardsurvey.activity.UserDataSearchActivity;
 import com.mjict.signboardsurvey.receiver.WiFiMonitor;
@@ -80,6 +81,13 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
             @Override
             public void onClick(View v) {
                 askAndQuit();
+            }
+        });
+
+        activity.setSettingButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToSetting();
             }
         });
 
@@ -186,6 +194,13 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
         task.execute();
     }
 
+    protected void goToSetting() {
+        activity.closeDrawer();
+
+        Intent intent = new Intent(activity, SettingActivity.class);
+
+        activity.startActivity(intent);
+    }
 
 
 

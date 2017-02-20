@@ -6,4 +6,7 @@
     <dimen name="floating_button_size">90dp</dimen>
     <dimen name="floating_button_margin">20dp</dimen>
 
+    <dimen name="view_pager_indicator_height">30dp</dimen>
+    <dimen name="view_pager_indicator_size">11dp</dimen>
+
 </resources>

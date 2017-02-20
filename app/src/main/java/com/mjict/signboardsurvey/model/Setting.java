@@ -80,7 +80,20 @@ public class Setting {
 		return name;
 	}
 
-//	public int getGroup() {
+	@Override
+	public boolean equals(Object obj) {
+		if((obj instanceof Setting) == false)
+			return false;
+
+		Setting target = (Setting)obj;
+
+		if(target.getCategory() == this.getCategory() && target.getCode().equals(this.getCode()))
+			return true;
+		else
+			return false;
+	}
+
+	//	public int getGroup() {
 //		return group;
 //	}
 //

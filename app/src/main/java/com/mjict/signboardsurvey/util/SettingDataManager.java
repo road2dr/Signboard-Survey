@@ -85,6 +85,10 @@ public class SettingDataManager {
 		return searchSetting(LIGHT_TYPE, code);
 	}
 
+	public String getDefaultAreaTypeName() {
+		return "지정 되지 않음";
+	}
+
 	public String getDefaultShopCategoty() {
 		return "기타";
 	}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@drawable/bg_white_box"
+    android:focusable="false"
+    android:focusableInTouchMode="false">
+    <TextView
+        android:id="@+id/shop_name_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center" />
+    <TextView
+        android:id="@+id/shop_category_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/shop_name_text_view"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical" />
+    <TextView
+        android:id="@+id/owner_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@+id/shop_category_text_view"
+        android:gravity="center_vertical" />
+
+    <ImageButton
+        android:id="@+id/option_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:padding="10dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_r_option_sel"
+        android:background="@null"/>
+    <TextView
+        android:id="@+id/sign_count_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/option_button"
+        android:layout_marginRight="10dp"
+        android:gravity="center" />
+
+</RelativeLayout>

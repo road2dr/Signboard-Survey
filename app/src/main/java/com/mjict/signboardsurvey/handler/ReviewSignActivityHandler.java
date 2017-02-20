@@ -230,7 +230,7 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
 
         for(int i=0; i<n; i++) {
             Sign sign = searchResult.get(i);
-            String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isModified());
+            String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isSignPicModified());
             String signImagePath = signPicDir+sign.getPicNumber();
             signImagePaths[i] = signImagePath;
         }
@@ -243,7 +243,7 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
             return;
 
         Sign sign = searchResult.get(position);
-        String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isModified());
+        String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isSignPicModified());
         String signImagePath = signPicDir+sign.getPicNumber();
 
         runImageLoadTask(signImagePath);

@@ -83,14 +83,14 @@
         </activity>
 
         <activity
-            android:name=".activity.SignListRecentStyleActivity"
+            android:name=".activity.TempSignListRecentStyleActivity"
             android:theme="@style/AppTheme.Base"
             android:screenOrientation="portrait"
             android:hardwareAccelerated="false">
         </activity>
 
         <activity
-            android:name=".activity.SignListCoverFlowActivity"
+            android:name=".activity.TempSignListCoverFlowActivity"
             android:theme="@style/AppTheme.Base"
             android:screenOrientation="portrait">
         </activity>
@@ -103,7 +103,7 @@
         </activity>
 
         <activity
-            android:name=".activity.SignListPagerActivity"
+            android:name=".activity.TempSignListPagerActivity"
             android:theme="@style/AppTheme.Base"
             android:screenOrientation="portrait">
         </activity>
@@ -115,7 +115,7 @@
         </activity>
 
         <activity
-            android:name=".activity.SignInformationActivity2"
+            android:name=".activity.TempSignInformationActivity2"
             android:theme="@style/AppTheme.Base"
             android:screenOrientation="portrait">
         </activity>
@@ -196,6 +196,26 @@
 
         <activity
             android:name=".activity.BuildingListActivity"
+            android:theme="@style/AppTheme.Base"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activity.SettingActivity"
+            android:theme="@style/AppTheme.Base"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activity.ModeSelector"
+            android:theme="@style/AppTheme.Base"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activity.BuildingTotalInformationActivity"
+            android:theme="@style/AppTheme.Base"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activity.SignPageActivity"
             android:theme="@style/AppTheme.Base"
             android:screenOrientation="portrait">
         </activity>

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 public class SignInfo {
     public Bitmap image;
     public String content;
+    public String type;
     public String size;
     public String status;
     public String light;
@@ -15,10 +16,11 @@ public class SignInfo {
     public String result;
     public int labelColor;
 
-    public SignInfo(Bitmap image, String content, String size, String status, String light, String location,
+    public SignInfo(Bitmap image, String content, String type, String size, String status, String light, String location,
                     String result, int labelColor) {
         this.image = image;
         this.content = content;
+        this.type = type;
         this.size = size;
         this.status = status;
         this.light = light;

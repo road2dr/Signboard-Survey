@@ -9,7 +9,7 @@ import com.mjict.signboardsurvey.widget.RecentsList;
 /**
  * Created by Junseo on 2016-11-15.
  */
-public class SignListRecentStyleActivity extends SABaseActivity {
+public class TempSignListRecentStyleActivity extends SABaseActivity {
 
     private RecentsList signListView;
     private SignListRecentStyleAdapter signListAdapter;

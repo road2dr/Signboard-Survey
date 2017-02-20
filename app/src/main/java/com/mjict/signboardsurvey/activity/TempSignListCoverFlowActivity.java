@@ -8,7 +8,7 @@ import it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow;
 /**
  * Created by Junseo on 2016-11-16.
  */
-public class SignListCoverFlowActivity extends SABaseActivity {
+public class TempSignListCoverFlowActivity extends SABaseActivity {
 
     private FeatureCoverFlow signCoverFlow;
     private SignListCoverFlowAdapter adapter;

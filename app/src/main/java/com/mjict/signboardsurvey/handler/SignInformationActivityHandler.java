@@ -163,7 +163,7 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
 //    }
 
     private void startToLoadSignImage() {
-        String path = SyncConfiguration.getDirectoryForSingPicture(currentSign.isModified())+currentSign.getPicNumber();
+        String path = SyncConfiguration.getDirectoryForSingPicture(currentSign.isSignPicModified())+currentSign.getPicNumber();
         LoadImageTask task = new LoadImageTask();
         task.setSampleSize(8);
         task.setDefaultAsyncTaskListener(new AsyncTaskListener<IndexBitmap, Boolean>() {
@@ -208,6 +208,8 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
                 } else {
                     currentSign = target;
 
+                    // TODO 조사번호 새로 받은거면 seq++ 시키기
+
                     updateToUI();
                     startToLoadSignImage();
 
@@ -249,6 +251,8 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
         tempSign.setDemolitionPicPath(sign.getDemolitionPicPath());
         tempSign.setDemolishedDate(sign.getDemolishedDate());
         tempSign.setInspectionResult(sign.getInspectionResult());
+        tempSign.setSignPicModified(sign.isSignPicModified());
+        tempSign.setDemolishPicModified(sign.isDemolishPicModified());
 
         // 나머지 정보 채우기
         Calendar current = Calendar.getInstance();
@@ -261,8 +265,8 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
         tempSign.setSyncDate(syncDate);
         tempSign.setModifyDate(currentTimeString);
         tempSign.setModifier(MJContext.getCurrentUser().getUserId());
-        tempSign.setModified(true);
-        if(tempSign.getInspectionNumber().equals("")) { // 조사 번호가 없으면 넣어준다
+
+        if(tempSign.getInspectionNumber().equals("")) { // 조사 번호가 없으면 넣어준다  // TODO 조사번호 넣어 줬을 때 => 수정 완료후 seq++ 시키기 추가
             long inspectionNo = SyncConfiguration.generateInspectionNo();
             tempSign.setInspectionNumber(String.valueOf(inspectionNo));
         }

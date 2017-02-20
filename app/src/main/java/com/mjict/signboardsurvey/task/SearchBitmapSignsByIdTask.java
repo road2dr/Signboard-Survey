@@ -35,7 +35,7 @@ public class SearchBitmapSignsByIdTask extends DefaultAsyncTask<Long, BitmapSign
             if(sign == null)
                 continue;
 
-            String path = SyncConfiguration.getDirectoryForSingPicture(sign.isModified()) + sign.getPicNumber();
+            String path = SyncConfiguration.getDirectoryForSingPicture(sign.isSignPicModified()) + sign.getPicNumber();
             Bitmap image = Utilities.loadImage(path, 8);
             bs = new BitmapSign(image, sign);
 

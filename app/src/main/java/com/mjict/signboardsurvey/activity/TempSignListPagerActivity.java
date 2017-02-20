@@ -4,17 +4,17 @@ import android.support.v4.view.ViewPager;
 
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.adapter.SignSimpleCoverFlowAdapter;
-import com.mjict.signboardsurvey.adapter.SignViewPagerAdapter;
+import com.mjict.signboardsurvey.adapter.TempSignViewPagerAdapter;
 
 import it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow;
 
 /**
  * Created by Junseo on 2016-11-16.
  */
-public class SignListPagerActivity extends SABaseActivity {
+public class TempSignListPagerActivity extends SABaseActivity {
 
     private ViewPager signListPager;
-    private SignViewPagerAdapter adapter;
+    private TempSignViewPagerAdapter adapter;
 
     private FeatureCoverFlow signCoverFlow;
     private SignSimpleCoverFlowAdapter coverFlowAdapter;
@@ -30,7 +30,7 @@ public class SignListPagerActivity extends SABaseActivity {
         this.setTitle(R.string.signboard_list);
 
         signListPager = (ViewPager)this.findViewById(R.id.sign_list_pager);
-        adapter = new SignViewPagerAdapter(this);
+        adapter = new TempSignViewPagerAdapter(this);
         signListPager.setAdapter(adapter);
 
         signCoverFlow = (FeatureCoverFlow)this.findViewById(R.id.sign_cover_flow);

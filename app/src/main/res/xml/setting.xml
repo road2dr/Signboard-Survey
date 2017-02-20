@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="expert_mode"
+        android:summaryOff="@string/using_beginner_mode"
+        android:summaryOn="@string/using_expert_mode"
+        android:switchTextOff="@string/beginner_mode"
+        android:switchTextOn="@string/expert_mode"
+        android:title="@string/expert_mode" />
+
+    <Preference
+        android:title="@string/develop_information" >
+        <!--<intent-->
+            <!--android:targetClass="whdghks913.tistory.examplepreferenceactivity.MadeByActivity"-->
+            <!--android:targetPackage="whdghks913.tistory.examplepreferenceactivity" />-->
+    </Preference>
+
+
+    <Preference
+        android:title="@string/open_source_license" >
+        <!--<intent-->
+            <!--android:action="android.intent.action.SENDTO"-->
+            <!--android:data="mailto:whdghks913@naver.com" />-->
+    </Preference>
+
+
+
+</PreferenceScreen>

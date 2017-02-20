@@ -278,7 +278,7 @@ public class UserDataSearchActivityHandler extends SABaseActivityHandler {
 
         for(int i=0; i<n; i++) {
             Sign sign = filteredSigns.get(firstVisibleItem+i);
-            String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isModified());
+            String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isSignPicModified());
             String signImagePath = signPicDir+sign.getPicNumber();
             signImagePaths[i] = signImagePath;
         }

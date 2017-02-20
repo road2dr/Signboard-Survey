@@ -250,6 +250,11 @@ public class CircleIndicator extends LinearLayout {
         }
     };
 
+    public void setIndicatorSize(int dip) {
+        mIndicatorWidth = dip;
+        mIndicatorHeight = dip;
+    }
+
     public DataSetObserver getDataSetObserver() {
         return mInternalDataSetObserver;
     }

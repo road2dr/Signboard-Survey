@@ -63,7 +63,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
 
 
         if(currentSign.getPicNumber() != null && currentSign.getPicNumber().equals("") == false)
-            imagePath = SyncConfiguration.getDirectoryForSingPicture(currentSign.isModified())+currentSign.getPicNumber();
+            imagePath = SyncConfiguration.getDirectoryForSingPicture(currentSign.isSignPicModified())+currentSign.getPicNumber();
 
         SettingDataManager smgr = SettingDataManager.getInstance();
         statusSettings = smgr.getSignStatus();
@@ -110,6 +110,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         startToLoadSignImage();
     }
 
+    boolean imageChanged = false;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == MJConstants.REQUEST_TAKE_AND_SAVE) {
@@ -117,9 +118,11 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
                 Boolean result = data.getBooleanExtra(MJConstants.RESPONSE, false);
                 if(result == false) {
                     // TODO 사진 저장 실패
+                    imageChanged = false;
                 } else {
                     // 사진 찍기 성공
                     imagePath = data.getStringExtra(MJConstants.PATH);
+                    imageChanged = true;
 
                     // 초점거리, 화각 등의 값을 가져온다
                     float horizontalAngle = data.getFloatExtra(MJConstants.HORIZONTAL_ANGLE, -1);
@@ -290,6 +293,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         currentSign.setIntersection(isIntersection);
         currentSign.setFrontBackRoad(isFrontBack);
         currentSign.setPicNumber(picName);
+        currentSign.setSignPicModified(imageChanged);
         float area = currentSign.getWidth() * currentSign.getLength();
         currentSign.setArea(area);
 
@@ -351,7 +355,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
     private void goToSignPicture() {
         String path = null;
         if(imagePath == null)
-            path = SyncConfiguration.getDirectoryForSingPicture(currentSign.isModified())+currentSign.getPicNumber();
+            path = SyncConfiguration.getDirectoryForSingPicture(currentSign.isSignPicModified())+currentSign.getPicNumber();
         else
             path = imagePath;
 
@@ -468,14 +472,15 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         String placedSide = "";
         String uniqueness = "";
         String memo = "";
-        boolean modified = true;
+        boolean signPicModified = true;
+        boolean demolishPicModified = true;
 
         Sign sign = new Sign(id, inspectionNumber,inspectionDate,mobileId,isSynchronized,syncDate,
                 type,width,length,height,area,extraSize,quantity,content,placedFloor,isFront,lightType,
                 placement,isCollision,collisionWidth,collisionLength,inspectionResult,permissionNumber,
                 inputter,inputDate, statsCode,picNumber,modifier,modifyDate,
                 totalFloor,isIntersection,tblNumber,isFrontBackRoad,demolitionPicPath,
-                demolishedDate,reviewCode,shopId,addressId,sgCode,placedSide,uniqueness,memo, modified);
+                demolishedDate,reviewCode,shopId,addressId,sgCode,placedSide,uniqueness,memo, signPicModified, demolishPicModified);
 
         return sign;
     }

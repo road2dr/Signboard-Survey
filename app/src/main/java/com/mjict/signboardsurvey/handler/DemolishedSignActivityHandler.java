@@ -297,11 +297,13 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
             return;
 
         Sign sign = searchList.get(position);
-        String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isModified());
+        String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isSignPicModified());
+        String demolPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isDemolishPicModified());
+
         String signImagePath = signPicDir+sign.getPicNumber();
         String demolitionImagePath = null;
         if(sign.getDemolitionPicPath() != null && sign.getDemolitionPicPath().isEmpty() == false)
-            demolitionImagePath = signPicDir+sign.getDemolitionPicPath();
+            demolitionImagePath = demolPicDir+sign.getDemolitionPicPath();
 
         runSignImageLoadTask(signImagePath);
         runDemolishImageLoadTask(demolitionImagePath);
@@ -316,11 +318,13 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
         String[] demolitionImagePaths = new String[n];
         for(int i=0; i<n; i++) {
             Sign sign = searchList.get(i);
-            String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isModified());
+            String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isDemolishPicModified());
+            String demolPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isDemolishPicModified());
             String signImagePath = signPicDir+sign.getPicNumber();
+
             String demolitionImagePath = null;
             if(sign.getDemolitionPicPath() != null && sign.getDemolitionPicPath().isEmpty() == false)
-                 demolitionImagePath = signPicDir+sign.getDemolitionPicPath();
+                 demolitionImagePath = demolPicDir+sign.getDemolitionPicPath();
 
             signImagePaths[i] = signImagePath;
             demolitionImagePaths[i] = demolitionImagePath;

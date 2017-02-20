@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scroll_view"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_gray"
+        android:padding="5dp">
+
+        <com.mjict.signboardsurvey.widget.JExpandableLinearLayout
+            android:id="@+id/shop_info_Layout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_white_box"
+            app:expandHeight="270dp" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp" >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/shop_info_expand_button"
+                    android:gravity="center"
+                    android:textSize="19sp"
+                    android:text="@string/shop_information" />
+                <ImageButton
+                    android:id="@+id/shop_info_expand_button"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="5dp"
+                    android:padding="5dp"
+                    android:background="@drawable/bg_blue_oval"
+                    android:src="@drawable/ic_arrow_down"
+                    android:scaleType="centerInside"/>
+            </RelativeLayout>
+
+            <include
+                layout="@layout/layout_shop_information" />
+        </com.mjict.signboardsurvey.widget.JExpandableLinearLayout>
+
+        <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <android.support.v4.view.ViewPager
+            android:id="@+id/sign_information_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="1000dp"
+            android:layout_marginTop="5dp"/>
+
+        <!--<com.mjict.signboardinvestigation.widget.CircleIndicator-->
+        <!--android:id="@+id/pager_indicator"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true" />-->
+        <!--</RelativeLayout>-->
+
+
+
+
+
+    </LinearLayout>
+
+
+</ScrollView>

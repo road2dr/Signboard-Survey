@@ -152,6 +152,29 @@ public class Utilities {
 //		return modiDate.after(lastSyncDate);
 //	}
 
+	/**
+	 * 소수점 2자자리 까지만 비교해서 같은지
+	 * @param num1
+	 * @param num2
+     * @return
+     */
+	public static int floatCompare(float num1, float num2) {
+		num1 = num1 * 100;
+		num2 = num2 * 100;
+
+		int n1 = (int)num1;
+		int n2 = (int)num2;
+
+		if(n1 > n2)
+			return 1;
+		if(n2 > n1)
+			return -1;
+		if(n1 == n2)
+			return 0;
+
+		return -1;
+	}
+
 	public static Address getAddressFromLocation(Context context, Location location) {
 		Geocoder geoCoder = new Geocoder(context);
 		double lat = location.getLatitude();

@@ -80,6 +80,10 @@ public class SimpleSpinner extends AppCompatSpinner implements AdapterView.OnIte
         spinnerAdapter.add(new SpinnerItem(id, data));
     }
 
+    public void addSpinnerData(SpinnerItem item) {
+        spinnerAdapter.add(item);
+    }
+
     public void clearSpinner() {
         spinnerAdapter.clear();
     }
@@ -168,7 +172,7 @@ public class SimpleSpinner extends AppCompatSpinner implements AdapterView.OnIte
 //        void onItemSelected(int position, SpinnerData data);
 //    }
 
-    public class SpinnerItem {
+    public static class SpinnerItem {
         public Object id;
         public Object data;
 

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@drawable/bg_white_box"
+    android:descendantFocusability="blocksDescendants" >
+
+    <ImageView
+        android:id="@+id/sign_image_view"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:transitionName="image_transition"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/sign_image_view"
+        android:layout_toLeftOf="@+id/modify_button"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
+            <TextView
+                android:id="@+id/type_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@drawable/bg_sign_property"/>
+            <TextView
+                android:id="@+id/size_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/bg_sign_property"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
+            <TextView
+                android:id="@+id/location_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@drawable/bg_sign_property"/>
+            <TextView
+                android:id="@+id/light_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/bg_sign_property"/>
+            <TextView
+                android:id="@+id/result_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/bg_sign_property"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/modify_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY"
+        android:background="#ffffff"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

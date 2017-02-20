@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray">
+
+    <com.mjict.signboardsurvey.widget.JExpandableLinearLayout
+        android:id="@+id/building_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        app:expandHeight="270dp"
+        android:background="@drawable/bg_white_box">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp" >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/building_info_expand_button"
+                android:gravity="center"
+                android:textSize="19sp"
+                android:text="@string/building_information" />
+            <ImageButton
+                android:id="@+id/building_info_expand_button"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/bg_blue_oval"
+                android:src="@drawable/ic_arrow_down"
+                android:scaleType="centerInside"/>
+        </RelativeLayout>
+
+        <include
+            layout="@layout/layout_building_information" />
+    </com.mjict.signboardsurvey.widget.JExpandableLinearLayout>
+
+    <TextView
+        android:id="@+id/status_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:paddingLeft="5dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_white_box"/>
+
+
+    <ExpandableListView
+        android:id="@+id/sign_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:dividerHeight="1dp"
+        android:childDivider="@null"
+        android:divider="@null"
+        android:clickable="true"
+        android:groupIndicator="@null"/>
+
+</LinearLayout>

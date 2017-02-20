@@ -287,6 +287,31 @@
     <string name="uniqueness">특이 사항</string>
     <string name="memo">메모</string>
     <string name="review_stats">재조사 상태</string>
+    <string name="detail_sign_information">간판 상세 정보</string>
+
+
+    /////////////////
+    <string name="expert_mode">숙련자 모드</string>
+    <string name="beginner_mode">초보자 모드</string>
+    <string name="using_beginner_mode">초보자 모드를 사용중 입니다.</string>
+    <string name="using_expert_mode">숙련자 모드를 사용중 입니다.</string>
+    <string name="open_source_license">오픈소스 라이선스</string>
+    <string name="develop_information">개발 정보</string>
+    <string name="sign_type">광고물 종류</string>
+    <string name="demolition">철거</string>
+    <string name="demolition_target">철거 대상</string>
+    <string name="collision">저촉</string>
+    <string name="change_picture">사진 변경</string>
+    <string name="change_and_measure">사진 변경 후 측정</string>
+    <string name="measure_again">규격 다시 측정</string>
+    <string name="there_are_no_shop_or_sign_information">간판 혹은 업소 정보가 없습니다. 시스템 관리자에게 문의 하세요.</string>
+    <string name="error_occurred_while_load_sign_information">간판 정보를 불러오는 오류가 발생 했습니다. 시스템 관리자에게 문의 하세요.</string>
+    <string name="register_sign_picture">간판 사진을 등록해 주세요.</string>
+    <string name="registering_inspection_data">조사 정보를 등록 중...</string>
+    <string name="there_are_changes">변경 사항 있음</string>
+    <string name="do_you_want_to_quit_even_if_there_are_changes">변경사항이 있습니다. 저장하지 않고 이전 화면으로 이동 하겠습니까?</string>
+    <string name="cannot_measure_because_wrong_picture_info">사진 정보가 올바르지 않아 측정을 할 수 없습니다. 시스템 관리자에게 문의 하세요.</string>
+    <string name="major_setting_is_changed_move_to_first_page">주요 설정이 바뀌어 첫 화면으로 이동 합니다.</string>
 
 
 

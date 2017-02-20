@@ -29,6 +29,7 @@ public class MJConstants {
     public static final String SIZE_Y = "size_y";
     public static final String AUTO_JUDGEMENT_VALUE = "auto_judgement_value";
     public static final String SIGN_LIST = "sign_list";
+    public static final String ONE_SIGN_MODE = "one_sign_mode";
 
     public static final String RESPONSE = "response";
     public static final String PATH = "path";
@@ -41,4 +42,8 @@ public class MJConstants {
     public static final int REQUEST_BUILDING_INFORMATION = 4449;
     public static final int REQUEST_MEASURE_SIGN = 3388;
     public static final int REQUEST_SHOP_INFORMATION = 892;
+    public static final int REQUEST_SIGN_LIST_MODIFY = 9982;
+
+//    public static final int REQUEST_SIGN_PICTURE = 189;
+//    public static final int REQUEST_DEMOLISH_PICTURE = 2176;
 }

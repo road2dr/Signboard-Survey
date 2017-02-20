@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/add_sign"
+        android:orderInCategory="100"
+        android:title="@string/add_new_sign"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/modify_shop"
+        android:orderInCategory="101"
+        android:title="@string/modify_shop"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/delete_shop"
+        android:orderInCategory="102"
+        android:title="@string/delete_shop"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/shutdown_shop"
+        android:orderInCategory="103"
+        android:title="@string/shut_down"
+        app:showAsAction="never" />
+
+
+</menu>

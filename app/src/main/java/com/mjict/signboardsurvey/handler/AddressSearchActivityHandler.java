@@ -1,20 +1,25 @@
 package com.mjict.signboardsurvey.handler;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Toast;
 
 import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.AddressSearchActivity;
+import com.mjict.signboardsurvey.activity.BuildingTotalInformationActivity;
 import com.mjict.signboardsurvey.activity.ShopListActivity;
 import com.mjict.signboardsurvey.model.Address;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.model.Shop;
-import com.mjict.signboardsurvey.model.ShopAndSign;
+import com.mjict.signboardsurvey.model.ShopWithSign;
 import com.mjict.signboardsurvey.model.Sign;
 import com.mjict.signboardsurvey.model.StreetAddress;
 import com.mjict.signboardsurvey.model.ui.BuildingResult;
@@ -39,6 +44,8 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
     private LoadValidBuildingImageTask imageLoadTask;
     private List<Building> buildingList;
 
+    private boolean expertMode = false;
+
     @Override
     public void onActivityCreate(Bundle savedInstanceState) {
         super.onActivityCreate(savedInstanceState);
@@ -49,6 +56,10 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
         String province = SyncConfiguration.getProvinceForSync();
         String county = SyncConfiguration.getCountyForSync();
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        expertMode = sharedPreferences.getBoolean("expert_mode", false);
+        if(expertMode)
+            activity.setFinishWithBackButton(false);
 
         activity.setCountySpinnerOnItemSelectionChangedListener(new SimpleSpinner.OnItemSelectionChangedListener() {
             @Override
@@ -114,6 +125,33 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
     }
 
     @Override
+    public void onBackPressed() {
+        if(expertMode) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setTitle(R.string.quit)
+                    .setMessage(R.string.do_you_want_to_quit)
+                    .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener(){
+                        // 확인 버튼 클릭시 설정
+                        public void onClick(DialogInterface dialog, int whichButton){
+                            startToQuit();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int whichButton){
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog dialog = builder.create();    // 알림창 객체 생성
+            dialog.show();    // 알림창 띄우기
+            return;
+        }
+
+        super.onBackPressed();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -136,15 +174,20 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
             imageLoadTask.cancel(true);
 
         requestBuildingIndex = position;
-
         Building building = buildingList.get(position);
 
-        Intent intent = new Intent(activity, ShopListActivity.class);
-        intent.putExtra(HANDLER_CLASS, ShopListActivityHandler.class);
-        intent.putExtra(MJConstants.BUILDING, building);
+        Intent intent = null;
+        if(expertMode) {
+            intent = new Intent(activity, BuildingTotalInformationActivity.class);
+            intent.putExtra(HANDLER_CLASS, BuildingTotalInformationActivityHandler.class);
+            intent.putExtra(MJConstants.BUILDING, building);
+        } else {
+            intent = new Intent(activity, ShopListActivity.class);
+            intent.putExtra(HANDLER_CLASS, ShopListActivityHandler.class);
+            intent.putExtra(MJConstants.BUILDING, building);
+        }
 
         activity.startActivity(intent);
-//        activity.startActivityForResult(intent, REQUEST_BUILDING_INFO);
     }
 
     private void findStreetAddress() {
@@ -209,19 +252,19 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
         buildings = buildingList.toArray(buildings);
 
         LoadShopAndSignByBuildingTask task = new LoadShopAndSignByBuildingTask(activity.getApplicationContext());
-        task.setDefaultAsyncTaskListener(new AsyncTaskListener<ShopAndSign, Boolean>() {
+        task.setDefaultAsyncTaskListener(new AsyncTaskListener<ShopWithSign, Boolean>() {
             @Override
             public void onTaskStart() {
                 activity.showWaitingDialog(R.string.loading_shop_and_sign_information);
             }
 
             @Override
-            public void onTaskProgressUpdate(ShopAndSign... values) {
+            public void onTaskProgressUpdate(ShopWithSign... values) {
                 if(values == null)
                     return;
 
                 for(int i=0; i<values.length; i++) {
-                    ShopAndSign sas = values[i];
+                    ShopWithSign sas = values[i];
                     Building b = buildingList.get(sas.index);
                     BuildingResult br = buildingToBuildingResult(b, sas.shops, sas.signs);
                     activity.addToList(br);

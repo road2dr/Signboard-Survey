@@ -92,6 +92,26 @@ public class Shop implements Serializable {
 		this.syncDate = syncDate;
 	}
 
+	public Shop(Shop shop) {	// copy constructor
+		this.id = shop.id;
+		this.licenseNumber = shop.licenseNumber;
+		this.ssn = shop.ssn;
+		this.name = shop.name;
+		this.representative = shop.representative;
+		this.phoneNumber = shop.phoneNumber;
+		this.businessCondition = shop.businessCondition;
+		this.category = shop.category;
+		this.buildingId = shop.buildingId;
+		this.inputter = shop.inputter;
+		this.inputDate = shop.inputDate;
+		this.tblNumber = shop.tblNumber;
+		this.addressId = shop.addressId;
+		this.isDeleted = shop.isDeleted;
+		this.sgCode = shop.sgCode;
+		this.isSynchronized = shop.isSynchronized;
+		this.syncDate = shop.syncDate;
+	}
+
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
 	}

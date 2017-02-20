@@ -41,6 +41,8 @@ public class AddressSearchActivity extends SABaseActivity {
 
     private BuildingListItemOnClickListener listItemOnClickListener;
 
+//    private boolean backFinishEnabled = true;
+
     @Override
     protected int getContentLayout() {
         return R.layout.activity_address_search;
@@ -89,6 +91,7 @@ public class AddressSearchActivity extends SABaseActivity {
         streetSearchButton = (Button)this.findViewById(R.id.street_address_search_button);
         houseSearchButton = (Button)this.findViewById(R.id.house_address_search_button);
     }
+
 
     public void setListImage(int index, Bitmap image) {
         listAdapter.setImage(index, image);

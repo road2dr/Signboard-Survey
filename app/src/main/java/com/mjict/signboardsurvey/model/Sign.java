@@ -146,8 +146,11 @@ public class Sign implements Serializable {
 	@DatabaseField
 	private String memo;
 
-	@DatabaseField
-	private boolean modified;
+	@DatabaseField(columnName = "modified")
+	private boolean signPicModified;
+
+	@DatabaseField(columnName = "mol_modified")
+	private boolean demolishPicModified;
 
 
 
@@ -201,6 +204,8 @@ public class Sign implements Serializable {
 		this.uniqueness = s.uniqueness;
 		this.memo = s.memo;
 		this.mobileId = s.mobileId;
+		this.signPicModified = s.signPicModified;
+		this.demolishPicModified = s.demolishPicModified;
 	}
 
 	public Sign(long id, String inspectionNumber, String inspectionDate, String mobileId,
@@ -211,7 +216,8 @@ public class Sign implements Serializable {
 				/*String needReinspection, */String inputter, String inputDate, String statsCode, String picNumber,
 				String modifier, String modifyDate, int totalFloor, boolean isIntersection, int tblNumber,/* boolean isDeleted,*/
 				boolean isFrontBackRoad, String demolitionPicPath, String demolishedDate, String reviewCode,
-				long shopId, int addressId, String sgCode, String installSide, String uniqueness, String memo, boolean modified) {
+				long shopId, int addressId, String sgCode, String installSide, String uniqueness, String memo,
+				boolean signPicModified, boolean demolishPicModified) {
 		this.id = id;
 		this.inspectionNumber = inspectionNumber;
 		this.inspectionDate = inspectionDate;
@@ -256,7 +262,8 @@ public class Sign implements Serializable {
 		this.installSide = installSide;
 		this.uniqueness = uniqueness;
 		this.memo = memo;
-		this.modified = modified;
+		this.signPicModified = signPicModified;
+		this.demolishPicModified = demolishPicModified;
 	}
 
 	public static long getSerialVersionUID() {
@@ -615,11 +622,19 @@ public class Sign implements Serializable {
 		this.memo = memo;
 	}
 
-	public boolean isModified() {
-		return modified;
+	public boolean isSignPicModified() {
+		return signPicModified;
 	}
 
-	public void setModified(boolean modified) {
-		this.modified = modified;
+	public void setSignPicModified(boolean signPicModified) {
+		this.signPicModified = signPicModified;
+	}
+
+	public boolean isDemolishPicModified() {
+		return demolishPicModified;
+	}
+
+	public void setDemolishPicModified(boolean demolishPicModified) {
+		this.demolishPicModified = demolishPicModified;
 	}
 }

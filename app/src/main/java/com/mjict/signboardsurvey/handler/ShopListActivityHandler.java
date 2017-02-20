@@ -395,8 +395,8 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
         Setting categorySetting = smgr.getShopCategory(shop.getCategory());
         String category = categorySetting == null ? smgr.getDefaultShopCategoty() : categorySetting.getName();
         String phone = shop.getPhoneNumber();
-        boolean demolished = shop.getBusinessCondition().equals("4");   // TODO 상수로 따로 빼던지 isDemolished() 함수를 만들던지 이런값들을 관리하는 클래스를 만들던지
+        boolean demolished = shop.getBusinessCondition().equals("4") ? false : true;   // TODO 상수로 따로 빼던지 isDemolished() 함수를 만들던지 이런값들을 관리하는 클래스를 만들던지
 
-        return new ShopInfo(name, phone, category, demolished);
+        return new ShopInfo(name, phone, category, "", demolished);
     }
 }

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
@@ -42,6 +43,12 @@ import magick.MagickImage;
 public class Utilities {
 
 	private static final String FIRST_TIME_CHECK_FILE = "sign";
+
+	private static boolean USE_CMYK_LIBRARY = true;
+
+	static {
+		USE_CMYK_LIBRARY = (Build.MODEL.equals("LG-F700K") ? false : true);	// g5 에서는 cmyk 라이브러리 사용 안한다.
+	}
 
 	public static boolean checkRootingFiles() {
 		final String ROOT_PATH = Environment.getExternalStorageDirectory() + "";
@@ -424,8 +431,8 @@ public class Utilities {
 		Bitmap image = null;
 		if (file.exists()) {
 			try {
-				BitmapFactory.Options opt = new BitmapFactory.Options();
-				opt.inSampleSize = sampleSize;
+//				BitmapFactory.Options opt = new BitmapFactory.Options();
+//				opt.inSampleSize = sampleSize;
 
 //				FileInputStream fis = new FileInputStream(path);
 //				BufferedInputStream bis = new BufferedInputStream(fis, 1024 * 8);
@@ -446,11 +453,15 @@ public class Utilities {
 
 //				image = BitmapFactory.decodeStream(new FlushedInputStream(fis));
 
-				ImageInfo i = new ImageInfo(path);
-				MagickImage m = new MagickImage(i);
-
-
-				image = MagickBitmap.ToBitmap(m, sampleSize);
+				if(USE_CMYK_LIBRARY) {
+					ImageInfo i = new ImageInfo(path);
+					MagickImage m = new MagickImage(i);
+					image = MagickBitmap.ToBitmap(m, sampleSize);
+				} else {
+					BitmapFactory.Options opt = new BitmapFactory.Options();
+					opt.inSampleSize = sampleSize;
+					image = BitmapFactory.decodeFile(path, opt);
+				}
 
 			} catch (Exception e) {
 				e.printStackTrace();

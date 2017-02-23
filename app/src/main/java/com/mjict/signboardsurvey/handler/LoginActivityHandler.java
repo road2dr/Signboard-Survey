@@ -29,6 +29,7 @@ public class LoginActivityHandler extends SABaseActivityHandler {
     public void onActivityCreate(Bundle savedInstanceState) {
         super.onActivityCreate(savedInstanceState);
 
+
         // register listener
         activity = (LoginActivity)this.getActivity();
         activity.setLoginButtonOnClickListener(new View.OnClickListener() {

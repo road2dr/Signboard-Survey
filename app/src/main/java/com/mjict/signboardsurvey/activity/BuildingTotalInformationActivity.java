@@ -87,10 +87,14 @@ public class BuildingTotalInformationActivity extends SABaseActivity {
         areaTypeTextView = (TextView) this.findViewById(R.id.area_type_text_view);
 
         shopInfoDlg = new ShopInformationDialog(this);
-        shopInfoDlg.create();
+        shopInfoDlg.show();
+        shopInfoDlg.hide();
+//        shopInfoDlg.create();
 
         signOptDlg = new SignOptionDialog(this);
-        signOptDlg.create();
+        signOptDlg.show();
+        signOptDlg.hide();
+//        signOptDlg.create();
 
 
         buildingExpandButton.setOnClickListener(new View.OnClickListener() {

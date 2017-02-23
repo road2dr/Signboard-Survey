@@ -1,9 +1,11 @@
 package com.mjict.signboardsurvey.handler;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -247,6 +249,7 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
     }
 
     private void startToModifyShop(final int index, final Shop shop) {
+        Log.d("junseo", "startToModifyShop: "+shop.getBusinessCondition());
         ModifyShopTask task = new ModifyShopTask(activity.getApplicationContext());
         task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
             @Override
@@ -304,7 +307,7 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
 
     private void startToShutdown(final int index) {
         final Shop shop = currentShops.get(index);
-
+        Log.d("junseo", "startToShutdown: "+shop.getBusinessCondition());
         ModifyShopShutDownTask task = new ModifyShopShutDownTask(activity.getApplicationContext());
         task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Shop>() {
             @Override
@@ -317,6 +320,8 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
                 activity.hideWaitingDialog();
                 int resId = (shop == null) ? R.string.failed_to_save : R.string.succeeded_to_save;
                 Toast.makeText(activity, resId, Toast.LENGTH_SHORT).show();
+
+                Log.d("junseo", "onTaskFinished: "+shop.getBusinessCondition());
 
                 if(shop != null) {
                     currentShops.set(index, shop);

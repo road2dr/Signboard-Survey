@@ -24,9 +24,8 @@ public class SignMeasureActivity extends SABaseActivity implements JoystickView.
     private ImageZoomView zoomView;
 
     private Button measureButton;
-    private Button applyButton;
+    private Button doneButton;
     private Button cancelButton;
-    private Button closeButton;
 
     private TextView widthTextView;
     private TextView heightTextView;
@@ -66,11 +65,12 @@ public class SignMeasureActivity extends SABaseActivity implements JoystickView.
 		joystick.setOnJoystickMoveListener(this, 100);
 
         zoomView = (ImageZoomView)this.findViewById(R.id.image_zoom_view);
+        zoomView.setZoom(6);
 
         measureButton = (Button)this.findViewById(R.id.measure_button);
-        applyButton = (Button)this.findViewById(R.id.apply_button);
+        doneButton = (Button)this.findViewById(R.id.done_button);
         cancelButton = (Button)this.findViewById(R.id.cancel_button);
-        closeButton = (Button)this.findViewById(R.id.close_button);
+//        closeButton = (Button)this.findViewById(R.id.close_button);
 
         widthTextView = (TextView)this.findViewById(R.id.width_text_view);
         heightTextView = (TextView)this.findViewById(R.id.height_text_view);
@@ -101,7 +101,13 @@ public class SignMeasureActivity extends SABaseActivity implements JoystickView.
 
 		imageView.setVertexSize(35);
 		imageView.setVertexPosition(pos);
-		imageView.setLineWidth(2);
+		imageView.setLineWidth(4);
+
+        int zoom = zoomView.getZoom();
+        int paddingX = (image.getWidth()/zoom)/2;
+        int paddingY = (image.getHeight()/zoom)/2;
+        imageView.setTouchPaddingX(paddingX);
+        imageView.setTouchPaddingY(paddingY);
 
 //		Point bp = findBitmapPosition(pos[0].x, pos[0].y);
 //		zoomView.setZoomPosition(bp.x, bp.y);
@@ -121,17 +127,17 @@ public class SignMeasureActivity extends SABaseActivity implements JoystickView.
         measureButton.setOnClickListener(listener);
     }
 
-    public void setApplyButtonOnClickListener(OnClickListener listener) {
-        applyButton.setOnClickListener(listener);
+    public void setDoneButtonOnClickListener(OnClickListener listener) {
+        doneButton.setOnClickListener(listener);
     }
 
     public void setCancelButtonOnClickListener(OnClickListener listener) {
         cancelButton.setOnClickListener(listener);
     }
 
-    public void setCloseButtonOnClickListener(OnClickListener listener) {
-        closeButton.setOnClickListener(listener);
-    }
+//    public void setCloseButtonOnClickListener(OnClickListener listener) {
+//        closeButton.setOnClickListener(listener);
+//    }
 
     public void setWidthText(String text) {
         widthTextView.setText(text);
@@ -173,7 +179,10 @@ public class SignMeasureActivity extends SABaseActivity implements JoystickView.
     }
 
     @Override
-    public void onValueChanged(int angle, int power, int direction) {
+    public void onValueChanged(int angle, int power, int direction) {   // JoystickView - onValueChanged
+        if(image == null)
+            return;
+
         int curX = zoomView.getCurrentPositionX();
         int curY = zoomView.getCurrentPositionY();
 
@@ -188,10 +197,26 @@ public class SignMeasureActivity extends SABaseActivity implements JoystickView.
 		Point ip = imageView.getSelectedPosition();
 		int mx = ip.x+tx;
 		int my = ip.y+ty;
-		imageView.setSelecteVertexPosition(mx, my);
 
-		Point zp = findBitmapPosition(mx, my);
-		zoomView.setZoomPosition(zp.x, zp.y);
+        Point zp = findBitmapPosition(mx, my);
+        int w = image.getWidth();
+        int h = image.getHeight();
+        int zoom = zoomView.getZoom();
+
+        int minx = (w/zoom)/2;
+        int maxx = image.getWidth() - (w/zoom)/2;
+        int miny = (h/zoom)/2;
+        int maxy = image.getHeight() - (h/zoom)/2;
+
+        if(zp.x < minx || zp.x >= maxx)
+            return;
+        if(zp.y < miny || zp.y >= maxy)
+            return;
+
+        /////////////////////////////////////
+
+		imageView.setSelecteVertexPosition(mx, my);
+        zoomView.setZoomPosition(zp.x, zp.y);
 
 		// temp
 		String temp = tx+", "+ty+" 만큼 뷰에서 이동, 줌뷰 에서는 "+(zp.x-curX)+", "+(zp.y-curY)+" 만큼 이동";

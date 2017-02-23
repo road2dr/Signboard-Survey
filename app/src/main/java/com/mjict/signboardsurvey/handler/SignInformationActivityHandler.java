@@ -10,6 +10,7 @@ import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.BasicSignInformationInputActivity;
+import com.mjict.signboardsurvey.activity.PictureActivity;
 import com.mjict.signboardsurvey.activity.SignInformationActivity;
 import com.mjict.signboardsurvey.autojudgement.InputType;
 import com.mjict.signboardsurvey.model.AutoJudgementValue;
@@ -287,7 +288,14 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
     }
 
     private void goToSignPicture() {
+        String path = null;
+        path = SyncConfiguration.getDirectoryForSingPicture(currentSign.isSignPicModified())+currentSign.getPicNumber();
 
+        Intent intent = new Intent(activity, PictureActivity.class);
+        intent.putExtra(HANDLER_CLASS, SignPictureActivityHandler.class);
+        intent.putExtra(MJConstants.PATH, path);
+
+        activity.startActivity(intent);
     }
 
     // 자동판단 값 생성

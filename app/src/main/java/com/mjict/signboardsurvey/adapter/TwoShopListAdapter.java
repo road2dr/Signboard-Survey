@@ -1,6 +1,7 @@
 package com.mjict.signboardsurvey.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,7 @@ public class TwoShopListAdapter extends ArrayAdapter<TwoShopInfo> {
     }
 
     public void replaceItem(int position, ShopInfo data) {
-        if(position < 0 || position >= getCount())
+        if(position < 0 || position >= getCount()*2)
             return;
 
         TwoShopInfo row = getItem(position/2);
@@ -91,6 +92,7 @@ public class TwoShopListAdapter extends ArrayAdapter<TwoShopInfo> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Log.d("junseo", "getView");
         View view = convertView;
         TwoShopRowViewHolder holder = null;
         if(view == null) {
@@ -132,6 +134,8 @@ public class TwoShopListAdapter extends ArrayAdapter<TwoShopInfo> {
         holder.getFirstPhoneTextView().setText(first.phone);
         holder.getFirstClosedView().setVisibility(visibility);
 
+        Log.d("junseo", first.name+" 폐업: "+first.demolished);
+
         if(second == null) {
             holder.getSecondLayout().setVisibility(View.INVISIBLE);
         } else {
@@ -155,6 +159,8 @@ public class TwoShopListAdapter extends ArrayAdapter<TwoShopInfo> {
                     return true;
                 }
             });
+
+            Log.d("junseo", second.name+" 폐업: "+second.demolished);
 
             visibility = second.demolished ? View.VISIBLE : View.GONE;
             holder.getSecondNameTextView().setText(second.name);

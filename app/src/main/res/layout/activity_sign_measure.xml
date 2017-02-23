@@ -18,6 +18,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/joystick_layout"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
         android:scaleType="fitCenter"/>
 
     <LinearLayout
@@ -40,7 +41,7 @@
             android:id="@+id/joystick_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="40dp"/>
+            android:layout_marginLeft="25dp"/>
     </LinearLayout>
     
     <LinearLayout
@@ -97,35 +98,35 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
 		android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/measure_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="2.5dp"
             android:layout_weight="1"
             android:text="@string/calculation" />
 
         <Button
-            android:id="@+id/apply_button"
+            android:id="@+id/done_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="2.5dp"
+            android:layout_marginRight="2.5dp"
             android:layout_weight="1"
-            android:text="@string/apply" />
+            android:text="@string/done" />
 
         <Button
             android:id="@+id/cancel_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="2.5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:text="@string/cancel" />
-
-        <Button
-            android:id="@+id/close_button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/close" />
     </LinearLayout>
     
 </RelativeLayout>

@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/upperBottomlayout"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
         android:visibility="visible"
         android:transitionName="image_transition"/>
     <RelativeLayout

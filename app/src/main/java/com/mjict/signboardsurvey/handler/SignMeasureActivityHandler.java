@@ -44,6 +44,8 @@ public class SignMeasureActivityHandler extends SABaseActivityHandler {
     private float sizeXForResponse = -1f;
     private float sizeYForResponse = -1f;
 
+    private boolean measured = false;
+
     @Override
     public void onActivityCreate(Bundle savedInstanceState) {
         super.onActivityCreate(savedInstanceState);
@@ -71,17 +73,17 @@ public class SignMeasureActivityHandler extends SABaseActivityHandler {
             }
         });
 
-        activity.setCloseButtonOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeButtonClicked();
-            }
-        });
+//        activity.setCloseButtonOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                closeButtonClicked();
+//            }
+//        });
 
-        activity.setApplyButtonOnClickListener(new View.OnClickListener() {
+        activity.setDoneButtonOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                applyhButtonClicked();
+                doneButtonClicked();
             }
         });
 
@@ -96,6 +98,8 @@ public class SignMeasureActivityHandler extends SABaseActivityHandler {
 
         ImageBitmapLoadTask task = new ImageBitmapLoadTask(activity);
         task.execute(targetImage);
+
+        measured = false;
     }
 
     private void cancelButtonClicked() {
@@ -103,11 +107,13 @@ public class SignMeasureActivityHandler extends SABaseActivityHandler {
         sizeXForResponse = -1;
         sizeYForResponse = -1;
 
-
         activity.setWidthText("");
         activity.setHeightText("");
         activity.setResultText("");
         activity.clearImageViewVertex();
+
+        activity.setResult(responseCode, responseIntent);
+        activity.finish();
     }
 
     public void closeButtonClicked() {
@@ -115,14 +121,17 @@ public class SignMeasureActivityHandler extends SABaseActivityHandler {
         activity.finish();
     }
 
-    public void applyhButtonClicked() {
+    public void doneButtonClicked() {
+        if(measured == false) {
+            Toast.makeText(activity, R.string.sign_not_measured_yet, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         responseCode = Activity.RESULT_OK;
         responseIntent.putExtra(MJConstants.SIZE_X, sizeXForResponse);
         responseIntent.putExtra(MJConstants.SIZE_Y, sizeYForResponse);
-
-
         activity.setResult(responseCode, responseIntent);
-        // TODO 토스트 하나 띄워?
+        activity.finish();
     }
 
     private void mesureButtonClicked() {
@@ -244,6 +253,8 @@ public class SignMeasureActivityHandler extends SABaseActivityHandler {
 
         sizeXForResponse = (float) real_bd;
         sizeYForResponse = (float) c;
+
+        measured = true;
     }
 
     private double getDistance(int ax, int ay, int bx, int by) {

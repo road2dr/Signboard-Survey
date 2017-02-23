@@ -114,6 +114,7 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
     }
 
     private void goToAddressSearch() {
+        activity.closeDrawer();
         Intent intent = new Intent(activity, AddressSearchActivity.class);
         intent.putExtra(HANDLER_CLASS, AddressSearchActivityHandler.class);
 
@@ -128,6 +129,7 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
     }
 
     private void goToReviewSign() {
+        activity.closeDrawer();
         Intent intent = new Intent(activity, ReviewSignActivity.class);
         intent.putExtra(HANDLER_CLASS, ReviewSignActivityHandler.class);
 
@@ -135,6 +137,7 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
     }
 
     private void goToMapSearch() {
+        activity.closeDrawer();
         Intent intent = new Intent(activity, MapSearchActivity.class);
         intent.putExtra(HANDLER_CLASS, MapSearchActivityHandler.class);
 
@@ -142,6 +145,7 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
     }
 
     private void goToUserStatistics() {
+        activity.closeDrawer();
         Intent intent = new Intent(activity, UserDataSearchActivity.class);
         intent.putExtra(HANDLER_CLASS, UserDataSearchActivityHandler.class);
 
@@ -149,6 +153,7 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
     }
 
     private void goToSummary() {
+        activity.closeDrawer();
         Intent intent = new Intent(activity, SummaryActivity.class);
         intent.putExtra(HANDLER_CLASS, SummaryActivityHandler.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

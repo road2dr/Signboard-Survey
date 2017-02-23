@@ -57,7 +57,9 @@ public class SignListActivity extends SABaseActivity {
         signListView.setAdapter(adapter);
 
         signOptionDialog = new SignOptionDialog(this);
-        signOptionDialog.create();
+        signOptionDialog.show();
+        signOptionDialog.hide();
+//        signOptionDialog.create();
     }
 
     @Override

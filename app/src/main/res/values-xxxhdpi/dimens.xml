@@ -1,0 +1,15 @@
+<resources>
+
+    <dimen name="view_pager_indicator_height">30dp</dimen>
+    <dimen name="view_pager_indicator_size">11dp</dimen>
+
+    <!-- -->
+    <dimen name="logo_layout_margin_top">120dp</dimen>
+    <dimen name="login_layout_margin_top">40dp</dimen>
+    <dimen name="login_input_height">40dp</dimen>
+
+    <dimen name="sign_label_width">90dp</dimen>
+    <dimen name="sign_label_dot_padding">12dp</dimen>
+    <dimen name="sign_floor_text_width">50dp</dimen>
+
+</resources>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -40,6 +41,9 @@ public class RetangleDrawImageView extends ImageView {
 	
 	private int imageWidth;
 	private int imageHeight;
+
+	private int touchPaddingX;
+	private int touchPaddingY;
 	
 	public RetangleDrawImageView(Context context) {
 		super(context);
@@ -77,7 +81,7 @@ public class RetangleDrawImageView extends ImageView {
 		selectedVertex = 0;
 		
 		linePaint = new Paint();
-		linePaint.setColor(0x88ffff00);
+		linePaint.setColor(0x88ff0000);
 		linePaint.setStrokeWidth(lineWidth);
 		
 		vertexPaint = new Paint();
@@ -96,6 +100,9 @@ public class RetangleDrawImageView extends ImageView {
 		
 		imageWidth = 0;
 		imageHeight = 0;
+
+		touchPaddingX = 0;
+		touchPaddingY = 0;
 	}
 
 	@Override
@@ -121,6 +128,14 @@ public class RetangleDrawImageView extends ImageView {
 	public int getImageHeight() {
 		return imageHeight;
 	}
+
+	public void setTouchPaddingX(int padding) {
+		touchPaddingX = padding;
+	}
+
+	public void setTouchPaddingY(int padding) {
+		touchPaddingY = padding;
+	}
 	
 	public void setVertexPosition(Point[] pos) {		
 		if(pos.length != 4)
@@ -134,7 +149,7 @@ public class RetangleDrawImageView extends ImageView {
 		vertexes[2] = pos[2];
 		vertexes[3] = pos[3];
 		
-		int k = vertexSize/2+25;	// ��ġ�ϰ� ���� ��¦ ũ�� ����
+		int k = vertexSize/2+35;	// ��ġ�ϰ� ���� ��¦ ũ�� ����
 		
 		for(int i=0; i<4; i++)
 			vertexRects[i] = new Rect(pos[i].x-k, pos[i].y-k , pos[i].x+k, pos[i].y+k);
@@ -203,18 +218,30 @@ public class RetangleDrawImageView extends ImageView {
 			break;
 		case MotionEvent.ACTION_MOVE:
 			if(selectedVertex != -1 && vertexPressed == true) {
-				vertexes[selectedVertex].x = x;
-				vertexes[selectedVertex].y = y;
-				
-				int k = vertexSize/2;
-				vertexRects[selectedVertex].left = vertexes[selectedVertex].x-k;
-				vertexRects[selectedVertex].top = vertexes[selectedVertex].y-k;
-				vertexRects[selectedVertex].right = vertexes[selectedVertex].x+k;
-				vertexRects[selectedVertex].bottom = vertexes[selectedVertex].y+k;
-				
-				if(getDrawable() != null)
-					moveListener.onMove(selectedVertex, x, y);
-				
+
+				float[] eventXY = new float[] {x, y};
+				Matrix invertMatrix = new Matrix();
+				getImageMatrix().invert(invertMatrix);
+				invertMatrix.mapPoints(eventXY);
+				int tx = Integer.valueOf((int)eventXY[0]);
+				int ty = Integer.valueOf((int)eventXY[1]);
+
+				if(tx < touchPaddingX || tx >= (imageWidth-touchPaddingX) || ty < touchPaddingY || ty >= (imageHeight-touchPaddingY)) {
+
+				} else {
+
+					vertexes[selectedVertex].x = x;
+					vertexes[selectedVertex].y = y;
+
+					int k = vertexSize / 2;
+					vertexRects[selectedVertex].left = vertexes[selectedVertex].x - k;
+					vertexRects[selectedVertex].top = vertexes[selectedVertex].y - k;
+					vertexRects[selectedVertex].right = vertexes[selectedVertex].x + k;
+					vertexRects[selectedVertex].bottom = vertexes[selectedVertex].y + k;
+
+					if (getDrawable() != null)
+						moveListener.onMove(selectedVertex, x, y);
+				}
 			}
 			break;
 		}

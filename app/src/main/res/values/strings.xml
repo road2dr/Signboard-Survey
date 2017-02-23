@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">옥외공고물 전수조사</string>
+    <string name="app_name">옥외광고물 전수조사</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -290,7 +290,7 @@
     <string name="detail_sign_information">간판 상세 정보</string>
 
 
-    /////////////////
+    <string name="user_sign_information_inquiry">사용자 간판 정보 조회</string>
     <string name="expert_mode">숙련자 모드</string>
     <string name="beginner_mode">초보자 모드</string>
     <string name="using_beginner_mode">초보자 모드를 사용중 입니다.</string>
@@ -312,7 +312,7 @@
     <string name="do_you_want_to_quit_even_if_there_are_changes">변경사항이 있습니다. 저장하지 않고 이전 화면으로 이동 하겠습니까?</string>
     <string name="cannot_measure_because_wrong_picture_info">사진 정보가 올바르지 않아 측정을 할 수 없습니다. 시스템 관리자에게 문의 하세요.</string>
     <string name="major_setting_is_changed_move_to_first_page">주요 설정이 바뀌어 첫 화면으로 이동 합니다.</string>
-
+    <string name="sign_not_measured_yet">측정이 되어 있지 않습니다.</string>
 
 
 </resources>

@@ -51,20 +51,34 @@
             <RelativeLayout
                 android:layout_width="300dp"
                 android:layout_height="200dp"
+                android:layout_marginTop="10dp"
                 android:layout_gravity="center_horizontal">
                 <ImageView
                     android:id="@+id/sign_image_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitCenter" />
+
+                <ImageButton
+                    android:id="@+id/sign_measure_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="10dp"
+                    android:scaleType="centerInside"
+                    android:layout_alignParentRight="true"
+                    android:layout_above="@+id/add_sign_image_button"
+                    android:background="@null"
+                    android:src="@drawable/ic_measure_sel"
+                    android:visibility="gone"/>
                 <ImageButton
                     android:id="@+id/add_sign_image_button"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="centerInside"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:background="@null"
-                    android:src="@drawable/btn_camera_gray"/>
+                    android:src="@drawable/ic_camera2_sel"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -75,13 +89,13 @@
                 android:layout_marginRight="10dp"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="@dimen/sign_label_width"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:textSize="18sp"
                     android:text="@string/content"
                     android:drawableLeft="@drawable/ic_dot_resize"
-                    android:drawablePadding="15dp"/>
+                    android:drawablePadding="@dimen/sign_label_dot_padding"/>
                 <EditText
                     android:id="@+id/content_edit_text"
                     android:layout_width="match_parent"
@@ -96,13 +110,13 @@
                 android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="@dimen/sign_label_width"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:textSize="18sp"
                     android:text="@string/type"
                     android:drawableLeft="@drawable/ic_dot_resize"
-                    android:drawablePadding="15dp"/>
+                    android:drawablePadding="@dimen/sign_label_dot_padding"/>
                 <com.mjict.signboardsurvey.widget.SimpleSpinner
                     android:id="@+id/sign_type_spinner"
                     android:layout_width="170dp"
@@ -117,13 +131,13 @@
                 android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="@dimen/sign_label_width"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:textSize="18sp"
                     android:text="@string/status"
                     android:drawableLeft="@drawable/ic_dot_resize"
-                    android:drawablePadding="15dp"/>
+                    android:drawablePadding="@dimen/sign_label_dot_padding"/>
                 <com.mjict.signboardsurvey.widget.SimpleSpinner
                     android:id="@+id/status_spinner"
                     android:layout_width="170dp"
@@ -138,13 +152,13 @@
                 android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="@dimen/sign_label_width"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:textSize="18sp"
                     android:text="@string/size"
                     android:drawableLeft="@drawable/ic_dot_resize"
-                    android:drawablePadding="15dp"/>
+                    android:drawablePadding="@dimen/sign_label_dot_padding"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -177,13 +191,13 @@
                 android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="@dimen/sign_label_width"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:textSize="18sp"
                     android:text="@string/light"
                     android:drawableLeft="@drawable/ic_dot_resize"
-                    android:drawablePadding="15dp"/>
+                    android:drawablePadding="@dimen/sign_label_dot_padding"/>
                 <Spinner
                     android:id="@+id/light_type_spinner"
                     android:layout_width="170dp"
@@ -200,20 +214,20 @@
                 android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="@dimen/sign_label_width"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:textSize="18sp"
                     android:text="@string/placed_location"
                     android:drawableLeft="@drawable/ic_dot_resize"
-                    android:drawablePadding="15dp"/>
+                    android:drawablePadding="@dimen/sign_label_dot_padding"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp">
                     <EditText
                         android:id="@+id/placed_floor_edit_text"
-                        android:layout_width="60dp"
+                        android:layout_width="@dimen/sign_floor_text_width"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:textSize="18sp"/>
@@ -227,7 +241,7 @@
                         android:text="@string/divide_sign"/>
                     <EditText
                         android:id="@+id/total_floor_edit_text"
-                        android:layout_width="60dp"
+                        android:layout_width="@dimen/sign_floor_text_width"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:textSize="18sp"/>
@@ -243,14 +257,14 @@
                         android:id="@+id/height_edit_text"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="15dp"
                         android:gravity="center_vertical"
                         android:textSize="18sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="3dp"
                         android:layout_marginRight="5dp"
                         android:textSize="18sp"
                         android:text="@string/meter"/>
@@ -266,7 +280,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="10dp"
                 android:drawableLeft="@drawable/ic_dot_resize"
-                android:drawablePadding="15dp"/>
+                android:drawablePadding="@dimen/sign_label_dot_padding"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

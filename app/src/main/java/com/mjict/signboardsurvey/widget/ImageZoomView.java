@@ -44,9 +44,9 @@ public class ImageZoomView extends View {
 		borderPaint.setStrokeWidth(3);
 		
 		centerPaint = new Paint();
-		centerPaint.setColor(0x80ffff00);
+		centerPaint.setColor(0x80ff0000);
 		centerPaint.setStyle(Paint.Style.STROKE);
-		centerPaint.setStrokeWidth(2);
+		centerPaint.setStrokeWidth(4);
 		
 		textPaint = new Paint();
 		textPaint.setColor(Color.RED);
@@ -70,6 +70,10 @@ public class ImageZoomView extends View {
 		
 		invalidate();
 	}
+
+	public int getZoom() {
+		return zoom;
+	}
 	
 	public void setZoomPosition(int x, int y) {
 		int w = image.getWidth();
@@ -82,11 +86,6 @@ public class ImageZoomView extends View {
 		
 		panx = (x > xmax || x < xmin) ? panx : x;
 		pany = (y > ymax || y < ymin) ? pany : y;
-		
-//		panx = (x>image.getWidth()||x<0)? panx : x;
-//		pany = (y>image.getHeight()||y<0)? pany : y;
-		
-//		Log.d("junseo", "ZoomView - zoom position: "+panx+", "+pany);
 		
 		invalidate();
 	}
@@ -110,19 +109,11 @@ public class ImageZoomView extends View {
 		int bw = image.getWidth();
 		int bh = image.getHeight();
 		
-		// �̹����� ��� �κ��� �׷���� ���� ���ؾ���.
-		// ũ��� ��Ʈ�� ũ��/zoom
-		///////////////////////////
-		// TODO ���� �� ���� ���߿� ���� �ؾ� �ҵ�.
-		// ���� ���� ũ�⸦ ����� ���� ��� �Ǿ����.
 		srcRect.left = panx - (bw/zoom)/2;
 		srcRect.right = panx + (bw/zoom)/2;
 		srcRect.top = pany - (bh/zoom)/2;
 		srcRect.bottom = pany + (bh/zoom)/2;
-		
-//		Log.d("junseo", "ImageZoomView - onDraw3: "+srcRect.left+", "+srcRect.right+", "+srcRect.top+", "+srcRect.bottom);
-//		Log.d("junseo", "ImageZoomView - src ũ�� "+(srcRect.right-srcRect.left)+", "+(srcRect.bottom-srcRect.top));
-		
+
 		destRect.left = 0; 
 		destRect.top = 0; 
 		destRect.right = vw; 
@@ -135,9 +126,6 @@ public class ImageZoomView extends View {
 		canvas.drawRect(destRect, borderPaint);
 		canvas.drawLine(cw, 0, cw, canvas.getHeight(), centerPaint);
 		canvas.drawLine(0, ch, canvas.getWidth(), ch, centerPaint);
-		
-		String temp = "�ܺ� ��ġ: "+panx+", "+pany;
-		canvas.drawText(temp, 10, 30, textPaint);
 		
 //		invalidate();
 	}

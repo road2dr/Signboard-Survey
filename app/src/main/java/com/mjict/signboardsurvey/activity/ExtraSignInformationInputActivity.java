@@ -70,7 +70,9 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
         nextButton = this.findViewById(R.id.next_button);
 
         timePickerDialog = new TimePickerDialog(this);
-        timePickerDialog.create();
+        timePickerDialog.show();
+        timePickerDialog.hide();
+//        timePickerDialog.create();
     }
 
 //    public void setFrontChecked(boolean checked) {

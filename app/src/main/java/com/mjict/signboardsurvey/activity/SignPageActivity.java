@@ -115,15 +115,19 @@ public class SignPageActivity extends SABaseActivity {
         adapter.registerDataSetObserver(pagerIndicator.getDataSetObserver());
 
         signImageOptionDialog = new SignImageOptionDialog(this);
-        signImageOptionDialog.create();
+        signImageOptionDialog.show();
+        signImageOptionDialog.hide();
+//        signImageOptionDialog.create();
 
         timePickerDialog = new TimePickerDialog(this);
-        timePickerDialog.create();
-
-
+        timePickerDialog.show();
+        timePickerDialog.hide();
+//        timePickerDialog.create();
 
         demolitionImageOptionDialog = new DemolitionImageOptionDialog(this);
-        demolitionImageOptionDialog.create();
+        demolitionImageOptionDialog.show();
+        demolitionImageOptionDialog.hide();
+//        demolitionImageOptionDialog.create();
 
         addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override

@@ -95,7 +95,7 @@ public class PictureActivity extends SABaseActivity {
         buildingImageView.setVisibility(View.VISIBLE);
 
         if(image == null)
-            buildingImageView.setImageResource(R.drawable.ic_building);
+            buildingImageView.setImageResource(R.drawable.ic_no_image);
         else
             buildingImageView.setImageBitmap(image);
 

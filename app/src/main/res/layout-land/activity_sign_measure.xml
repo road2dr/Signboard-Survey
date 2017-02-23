@@ -105,29 +105,28 @@
             android:id="@+id/measure_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="2.5dp"
             android:layout_weight="1"
             android:text="@string/calculation" />
 
         <Button
-            android:id="@+id/apply_button"
+            android:id="@+id/done_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp"
             android:layout_weight="1"
-            android:text="@string/apply" />
+            android:text="@string/done" />
 
         <Button
             android:id="@+id/cancel_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:text="@string/cancel" />
-
-        <Button
-            android:id="@+id/close_button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/close" />
     </LinearLayout>
     
 </RelativeLayout>

@@ -50,7 +50,7 @@ public class ThreeShopListAdapter extends ArrayAdapter<ThreeShopInfo> {
     }
 
     public void replaceItem(int position, ShopInfo data) {
-        if(position < 0 || position >= getCount())
+        if(position < 0 || position >= getCount()*3)
             return;
 
         ThreeShopInfo row = getItem(position/3);

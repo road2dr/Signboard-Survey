@@ -39,6 +39,7 @@ public class UserDataSearchActivity extends SABaseActivity {
     @Override
     protected void init() {
         super.init();
+        this.setTitle(R.string.user_sign_information_inquiry);
 
         userInfoTextView = (TextView)this.findViewById(R.id.user_information_text_view);
         termRadioGroup = (RadioGroup)this.findViewById(R.id.term_radio_group);

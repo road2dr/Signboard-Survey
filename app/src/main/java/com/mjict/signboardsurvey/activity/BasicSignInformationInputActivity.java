@@ -22,6 +22,7 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
     private ImageButton backImageButton;
     private ImageView signImageView;
     private ImageButton addSignImageButton;
+    private ImageButton measureImageButton;
     private EditText contentEditText;
     private SimpleSpinner signTypeSpinner;
     private SimpleSpinner statusSpinner;
@@ -53,6 +54,7 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
         backImageButton = (ImageButton)this.findViewById(R.id.back_image_button);
         signImageView = (ImageView)this.findViewById(R.id.sign_image_view);
         addSignImageButton = (ImageButton)this.findViewById(R.id.add_sign_image_button);
+        measureImageButton = (ImageButton)this.findViewById(R.id.sign_measure_button);
 
         lightSpinner = (Spinner)this.findViewById(R.id.light_type_spinner);
         lightSpinnerAdapter = new ImageSpinnerAdapter(this);
@@ -102,6 +104,15 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
 
     public void setAddSignImageButtonOnClickListener(View.OnClickListener listener) {
         addSignImageButton.setOnClickListener(listener);
+    }
+
+    public void setMeasureButtonOnclickListener(View.OnClickListener listener) {
+        measureImageButton.setOnClickListener(listener);
+    }
+
+    public void setMeasureButtonVisible(boolean visible) {
+        int visibility = visible ? View.VISIBLE : View.INVISIBLE;
+        measureImageButton.setVisibility(visibility);
     }
 
     public void setContentText(String text) {

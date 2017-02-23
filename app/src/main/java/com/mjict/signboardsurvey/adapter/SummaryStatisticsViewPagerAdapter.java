@@ -58,6 +58,12 @@ public class SummaryStatisticsViewPagerAdapter extends PagerAdapter {
             reviewSignCountText = text[3];
             demolishSignCountText = text[4];
 
+//            result[0] = allBuildingCount;
+//            result[1] = allShopCount;
+//            result[2] = allSignCount;
+//            result[3] = reviewSignCount;
+//            result[4] = demolishSignCount;
+
             updateUI(0);
         }
     }

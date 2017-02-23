@@ -71,7 +71,9 @@ public class ShopListActivity extends SABaseActivity {
         shopListView.setAdapter(twoShopAdapter);
 
         shopOptionDialog = new ShopOptionDialog(this);
-        shopOptionDialog.create();
+        shopOptionDialog.show();
+        shopOptionDialog.hide();
+//        shopOptionDialog.create();
 
         listOptionRadioGroup = (RadioGroup)this.findViewById(R.id.list_option_radio_group);
         listOptionRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -217,7 +219,7 @@ public class ShopListActivity extends SABaseActivity {
         threeShopListAdapter.add(info);
     }
 
-    public void replaceListItem(int index, ShopInfo info) {
+    public void replaceListItem(final int index, final ShopInfo info) {
         twoShopAdapter.replaceItem(index, info);
         threeShopListAdapter.replaceItem(index, info);
     }

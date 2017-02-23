@@ -127,7 +127,9 @@ public abstract class SABaseActivity extends AppCompatSActivity {
         optionButton.setVisibility(View.INVISIBLE);
 
         waitingDialog = new WaitingDialog(this);
-        waitingDialog.create();
+        waitingDialog.show();
+        waitingDialog.hide();
+//        waitingDialog.create();
 
         addressSearchButton = (Button)this.findViewById(R.id.address_search_button);
         demolishedSignButton = (Button)this.findViewById(R.id.demolished_sign_button);

@@ -125,6 +125,7 @@
                     android:layout_marginRight="15dp"
                     android:layout_marginBottom="10dp"
                     android:src="@drawable/ic_refresh_sel"
+                    android:duplicateParentState="false"
                     style="@style/MJImageButtonStyle"/>     <!-- TODO 이미지 버튼은 왜 안 먹는지 모르겠다. 나중에 확인 해봐-->
             </RelativeLayout>
 

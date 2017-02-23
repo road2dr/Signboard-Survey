@@ -56,13 +56,13 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp">
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="@dimen/sign_label_width"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:textSize="18sp"
                     android:text="@string/street_collision"
                     android:drawableLeft="@drawable/ic_dot_resize"
-                    android:drawablePadding="15dp"/>
+                    android:drawablePadding="@dimen/sign_label_dot_padding"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -76,7 +76,7 @@
                         android:text="@string/whether_collision"/>
                     <EditText
                         android:id="@+id/collision_width_edit_text"
-                        android:layout_width="60dp"
+                        android:layout_width="@dimen/sign_floor_text_width"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="15dp"
                         android:gravity="center_vertical"
@@ -91,7 +91,7 @@
                         android:text="@string/multiply_sign"/>
                     <EditText
                         android:id="@+id/collision_length_edit_text"
-                        android:layout_width="60dp"
+                        android:layout_width="@dimen/sign_floor_text_width"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:textSize="20sp"/>
@@ -108,13 +108,13 @@
                     android:layout_height="45dp"
                     android:orientation="horizontal">
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="@dimen/sign_label_width"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:textSize="18sp"
                         android:text="@string/review_stats"
                         android:drawableLeft="@drawable/ic_dot_resize"
-                        android:drawablePadding="15dp"/>
+                        android:drawablePadding="@dimen/sign_label_dot_padding"/>
                     <com.mjict.signboardsurvey.widget.SimpleSpinner
                         android:id="@+id/review_spinner"
                         android:layout_width="170dp"
@@ -135,13 +135,13 @@
                     android:layout_height="45dp"
                     android:orientation="horizontal">
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="@dimen/sign_label_width"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:textSize="18sp"
                         android:text="@string/installed_side"
                         android:drawableLeft="@drawable/ic_dot_resize"
-                        android:drawablePadding="15dp"/>
+                        android:drawablePadding="@dimen/sign_label_dot_padding"/>
                     <com.mjict.signboardsurvey.widget.SimpleSpinner
                         android:id="@+id/installed_side_spinner"
                         android:layout_width="170dp"
@@ -162,13 +162,13 @@
                     android:layout_height="45dp"
                     android:orientation="horizontal">
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="@dimen/sign_label_width"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:textSize="18sp"
                         android:text="@string/uniqueness"
                         android:drawableLeft="@drawable/ic_dot_resize"
-                        android:drawablePadding="15dp"/>
+                        android:drawablePadding="@dimen/sign_label_dot_padding"/>
                     <com.mjict.signboardsurvey.widget.SimpleSpinner
                         android:id="@+id/uniqueness_spinner"
                         android:layout_width="170dp"
@@ -189,13 +189,13 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="@dimen/sign_label_width"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:textSize="18sp"
                         android:text="@string/memo"
                         android:drawableLeft="@drawable/ic_dot_resize"
-                        android:drawablePadding="15dp"/>
+                        android:drawablePadding="@dimen/sign_label_dot_padding"/>
                     <EditText
                         android:id="@+id/memo_edit_text"
                         android:layout_width="250dp"
@@ -214,7 +214,7 @@
                 android:textSize="18sp"
                 android:text="@string/demolition_information"
                 android:drawableLeft="@drawable/ic_dot_resize"
-                android:drawablePadding="15dp"
+                android:drawablePadding="@dimen/sign_label_dot_padding"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"/>
 
@@ -230,12 +230,12 @@
                     android:scaleType="fitCenter" />
                 <ImageButton
                     android:id="@+id/add_pic_image_button"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:background="@null"
-                    android:src="@drawable/btn_camera_gray"/>
+                    android:src="@drawable/ic_camera2_sel"/>
             </RelativeLayout>
 
             <TextView
@@ -259,13 +259,13 @@
                     android:layout_height="45dp"
                     android:orientation="horizontal">
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="@dimen/sign_label_width"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:textSize="18sp"
                         android:text="@string/survey_result"
                         android:drawableLeft="@drawable/ic_dot_resize"
-                        android:drawablePadding="15dp"/>
+                        android:drawablePadding="@dimen/sign_label_dot_padding"/>
                     <Button
                         android:id="@+id/auto_judgement_button"
                         android:layout_width="80dp"

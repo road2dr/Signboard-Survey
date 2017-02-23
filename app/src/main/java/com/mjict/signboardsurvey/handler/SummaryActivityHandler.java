@@ -310,6 +310,7 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
 
                 activity.setFirstAllSignPageText(allBuildingCountText, allShopCountText, allSignCountText,
                         reviewSignCountText, demolishSignCountText);
+
                 activity.setSecondAllSignPageText(userAllSignCountText, userTodaySignCountText, userReviewSignCountText,
                         userShopCountText, userDemolishSignCountText);
             }

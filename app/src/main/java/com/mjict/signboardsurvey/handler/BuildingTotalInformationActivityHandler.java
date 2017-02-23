@@ -176,6 +176,7 @@ public class BuildingTotalInformationActivityHandler extends SABaseActivityHandl
             }
             @Override
             public void onShutdownShopClicked(int position) {
+                // TODO 폐업 처리
 
             }
         });

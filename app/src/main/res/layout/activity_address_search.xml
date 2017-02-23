@@ -128,7 +128,7 @@
                 </LinearLayout>
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/street_address_search_button"
-                    android:layout_width="140dp"
+                    android:layout_width="120dp"
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
                     android:text="@string/search"/>
@@ -168,7 +168,7 @@
                     android:layout_height="40dp"/>
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/house_address_search_button"
-                    android:layout_width="140dp"
+                    android:layout_width="120dp"
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
                     android:text="@string/search"/>

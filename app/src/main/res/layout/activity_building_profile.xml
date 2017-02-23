@@ -39,7 +39,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="15dp"
-            android:src="@drawable/btn_camera_gray"
+            android:src="@drawable/ic_camera2_sel"
             android:background="@null"
             android:visibility="gone"/>
     </RelativeLayout>

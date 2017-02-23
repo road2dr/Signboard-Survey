@@ -22,7 +22,7 @@ public class WaitingDialog extends Dialog {
 	private TextView statusTextView;
 	
 	public WaitingDialog(Context context) {
-		super(context , android.R.style.Theme_Translucent_NoTitleBar);		
+		super(context , android.R.style.Theme_Translucent_NoTitleBar);
 	}
 
 	@Override

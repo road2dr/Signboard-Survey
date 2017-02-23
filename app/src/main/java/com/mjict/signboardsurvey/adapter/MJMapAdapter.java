@@ -48,7 +48,7 @@ public class MJMapAdapter implements CalloutBalloonAdapter {
         if(info.image != null)
             buildingImageView.setImageBitmap(info.image);
         else
-            buildingImageView.setImageResource(R.drawable.ic_building);
+            buildingImageView.setImageResource(R.drawable.ic_no_image);
 
         mCalloutBalloon.setOnTouchListener(new View.OnTouchListener() {
             @Override

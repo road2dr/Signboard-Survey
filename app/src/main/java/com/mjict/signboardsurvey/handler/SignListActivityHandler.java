@@ -2,8 +2,10 @@ package com.mjict.signboardsurvey.handler;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -104,6 +106,8 @@ public class SignListActivityHandler extends SABaseActivityHandler {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if(requestCode == MJConstants.REQUEST_SIGN_INPUT_INFORMATION) {
             if(resultCode == Activity.RESULT_OK) {  // 새 간판 정보 받아옴
                 Sign sign = (Sign)data.getSerializableExtra(MJConstants.SIGN);
@@ -252,17 +256,23 @@ public class SignListActivityHandler extends SABaseActivityHandler {
         String result = resultSetting == null ? smgr.getDefaultResultName() : resultSetting.getName();
         String location = s.getPlacedFloor() +" / "+s.getTotalFloor();
 
-        int color = -1;
-//        0xffFFFFA5, 0xffE7FFC0, 0xffFFD2FF
-        if(s.getStatsCode().equals("2")) {
-            color = 0xff0099fd;
-        } else if(s.getStatsCode().equals("3")) {
-            color = 0xff75b3f2;
-        } else {
-            color = -1;
+        boolean permitted = (s.getTblNumber() == 310);
+
+        // 철거, 철거예정, 폐업 레이블 색상 설정
+        int labelColor = -1;
+        boolean labelVisible = true;
+        if(s.getStatsCode().equals("1"))
+            labelColor = ContextCompat.getColor(activity, R.color.postit_color_1);
+        else if(s.getStatsCode().equals("2"))
+            labelColor = ContextCompat.getColor(activity, R.color.postit_color_2);
+        else if(s.getStatsCode().equals("3"))
+            labelColor = ContextCompat.getColor(activity, R.color.postit_color_3);
+        else {
+            labelColor = Color.TRANSPARENT;
+            labelVisible = false;
         }
 
-        SignInfo si = new SignInfo(null, content, "", size, status, light, location, result, color);
+        SignInfo si = new SignInfo(null, content, "", size, status, light, location, result, labelColor, labelVisible, permitted);
         return si;
     }
 

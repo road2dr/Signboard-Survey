@@ -1,94 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:background="@drawable/bg_white_box" >
+    android:layout_height="140dp"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_white_box"
+    android:padding="10dp">
+
+    <!--<ImageView-->
+    <!--android:id="@+id/image_view"-->
+    <!--android:layout_width="140dp"-->
+    <!--android:layout_height="match_parent" />-->
 
     <RelativeLayout
-        android:id="@+id/sign_image_layout"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginLeft="5dp">
+        android:layout_width="140dp"
+        android:layout_height="match_parent">
         <com.mjict.signboardsurvey.widget.LabelImageView
-            android:id="@+id/sign_image_view"
+            android:id="@+id/image_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
             app:label_orientation="RIGHT_TOP"/>
+        <ImageView
+            android:id="@+id/permit_view"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="3dp"
+            android:src="@drawable/ic_permission_w"
+            android:background="@drawable/bg_oval"/>
         <TextView
-            android:id="@+id/content_text_view"
+            android:id="@+id/review_text_view"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:layout_alignParentBottom="true"
-            android:textColor="@color/white"
-            android:background="#34000000"
-            android:gravity="center"/>
+            android:background="@color/light_colorPrimary"
+            android:gravity="center"
+            android:textColor="@color/white"/>
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_toRightOf="@+id/sign_image_layout"
-        android:layout_marginLeft="10dp"
-        android:orientation="vertical" >
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp" >
-            <TextView
-                android:id="@+id/shop_name_text_view"
-                android:layout_width="wrap_content"
+            android:layout_weight="1">
+            <ImageView
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:gravity="center" />
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_text"/>
             <TextView
-                android:id="@+id/address_text_view"
-                android:layout_width="wrap_content"
+                android:id="@+id/content_text_view"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:gravity="center"/>
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp">
-            <TextView
-                android:id="@+id/type_text_view"
-                android:layout_width="wrap_content"
+            android:layout_weight="1">
+            <ImageView
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:gravity="center"/>
-            <TextView
-                android:id="@+id/result_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:gravity="center"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp">
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_size"/>
             <TextView
                 android:id="@+id/size_text_view"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"/>
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_result"/>
             <TextView
-                android:id="@+id/location_text_view"
-                android:layout_width="wrap_content"
+                android:id="@+id/result_text_view"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:gravity="center"/>
+                android:textSize="18sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_address"/>
+            <TextView
+                android:id="@+id/address_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="18sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"/>
         </LinearLayout>
     </LinearLayout>
-</RelativeLayout>
+
+
+</LinearLayout>

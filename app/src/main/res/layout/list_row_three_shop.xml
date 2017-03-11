@@ -7,11 +7,11 @@
     android:paddingBottom="0dp">
 
     <RelativeLayout
+        android:id="@+id/first_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
         <LinearLayout
-            android:id="@+id/first_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -50,14 +50,24 @@
             android:src="@drawable/ic_closed"
             android:background="@null"
             android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/first_permission_view"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_permission_p"
+            android:background="@null"/>
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/second_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
         <LinearLayout
-            android:id="@+id/second_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -96,14 +106,24 @@
             android:src="@drawable/ic_closed"
             android:background="@null"
             android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/second_permission_view"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_permission_p"
+            android:background="@null"/>
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/third_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
         <LinearLayout
-            android:id="@+id/third_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -142,6 +162,16 @@
             android:src="@drawable/ic_closed"
             android:background="@null"
             android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/third_permission_view"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_permission_p"
+            android:background="@null"/>
     </RelativeLayout>
 
 </LinearLayout>

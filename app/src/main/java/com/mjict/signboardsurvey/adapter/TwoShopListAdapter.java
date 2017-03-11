@@ -129,10 +129,12 @@ public class TwoShopListAdapter extends ArrayAdapter<TwoShopInfo> {
         });
 
         int visibility = first.demolished ? View.VISIBLE : View.GONE;
+        int fpvv = first.permitted ? View.VISIBLE : View.GONE;     // first permission view visibility
         holder.getFirstNameTextView().setText(first.name);
         holder.getFirstCategoryTextView().setText(first.category);
         holder.getFirstPhoneTextView().setText(first.phone);
         holder.getFirstClosedView().setVisibility(visibility);
+        holder.getFirstPermissionView().setVisibility(fpvv);
 
         Log.d("junseo", first.name+" 폐업: "+first.demolished);
 
@@ -163,10 +165,13 @@ public class TwoShopListAdapter extends ArrayAdapter<TwoShopInfo> {
             Log.d("junseo", second.name+" 폐업: "+second.demolished);
 
             visibility = second.demolished ? View.VISIBLE : View.GONE;
+            int spvv = first.permitted ? View.VISIBLE : View.GONE;     // second permission view visibility
             holder.getSecondNameTextView().setText(second.name);
             holder.getSecondCategoryTextView().setText(second.category);
             holder.getSecondPhoneTextView().setText(second.phone);
             holder.getSecondClosedView().setVisibility(visibility);
+            holder.getSecondPermissionView().setVisibility(spvv);
+
         }
 
         return view;

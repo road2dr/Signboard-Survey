@@ -20,7 +20,7 @@ public class ShopOptionDialog extends Dialog {
     private TextView titleTextView;
     private View modifyButton;
     private View addSignButton;
-    private View shutDownButton;
+//    private View shutDownButton;
     private View deleteShopButton;
 
     private ShopOptionDialogOnClickListener dialogListener;
@@ -43,7 +43,7 @@ public class ShopOptionDialog extends Dialog {
         titleTextView = (TextView)this.findViewById(R.id.title_text_view);
         modifyButton = (View)this.findViewById(R.id.modify_shop_button);
         addSignButton = (View)this.findViewById(R.id.add_sign_button);
-        shutDownButton = (View)this.findViewById(id.shut_down_shop_button);
+//        shutDownButton = (View)this.findViewById(id.shut_down_shop_button);
         deleteShopButton = this.findViewById(id.delete_shop_button);
 
         modifyButton.setOnClickListener(new View.OnClickListener() {
@@ -62,13 +62,13 @@ public class ShopOptionDialog extends Dialog {
             }
         });
 
-        shutDownButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(dialogListener != null)
-                    dialogListener.onShutDownButtonClicked();
-            }
-        });
+//        shutDownButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(dialogListener != null)
+//                    dialogListener.onShutDownButtonClicked();
+//            }
+//        });
 
         deleteShopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +95,7 @@ public class ShopOptionDialog extends Dialog {
     public interface ShopOptionDialogOnClickListener {
         public void onModifyButtonClicked();
         public void onAddSignButtonClicked();//
-        public void onShutDownButtonClicked();
+//        public void onShutDownButtonClicked();
         public void onDeleteButtonClicked();
     }
 }

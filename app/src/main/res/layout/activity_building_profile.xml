@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+>
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,15 +23,6 @@
             android:id="@+id/image_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-        <TextView
-            android:id="@+id/title_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:textSize="24sp"
-            android:gravity="center"/>
         <com.mjict.signboardsurvey.widget.CircleIndicator
             android:id="@+id/image_indicator"
             android:layout_width="match_parent"
@@ -42,6 +39,23 @@
             android:src="@drawable/ic_camera2_sel"
             android:background="@null"
             android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/no_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:src="@drawable/ic_building"
+            android:visibility="gone"
+            android:duplicateParentState="true"/>
+        <TextView
+            android:id="@+id/building_title_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:background="@color/light_colorPrimary"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -93,7 +107,8 @@
             android:layout_marginRight="15dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_location_sel"
-            android:background="@null"/>
+            android:background="@null"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -160,19 +175,23 @@
             android:layout_marginLeft="15dp" />
         <com.mjict.signboardsurvey.widget.SimpleSpinner
             android:id="@+id/area_type_spinner"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/area_type_icon_view"
             android:layout_toLeftOf="@+id/apply_button"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:dropDownWidth="250dp"/>
         <Button
             android:id="@+id/apply_button"
             android:layout_width="80dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginRight="15dp"
             android:text="@string/apply"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
 </LinearLayout>
+</ScrollView>

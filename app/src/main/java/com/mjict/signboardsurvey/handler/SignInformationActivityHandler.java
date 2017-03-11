@@ -39,6 +39,7 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
     private Sign currentSign;
     private ArrayList<Sign> shopSigns;
 
+    private boolean reviewSignMode = false;
     @Override
     public void onActivityCreate(Bundle savedInstanceState) {
         super.onActivityCreate(savedInstanceState);
@@ -56,6 +57,9 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
         if(shopSigns == null) {
             // TODO 간판 정보를 불러와야 함.
         }
+
+        reviewSignMode = intent.getBooleanExtra(MJConstants.REVIEW_SIGN_MODE, false);   // 재조사 모드
+
 
         // register listener
         activity.setOptionMenuItemClickListener(new SignInformationActivity.OnOptionMenuItemClickListener() {
@@ -81,6 +85,8 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
     private int responseResult = Activity.RESULT_CANCELED;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if(requestCode == MJConstants.REQUEST_SIGN_INPUT_INFORMATION) {
             if(resultCode == Activity.RESULT_OK) {
                 Sign sign = (Sign) data.getSerializableExtra(MJConstants.SIGN);
@@ -284,6 +290,7 @@ public class SignInformationActivityHandler extends SABaseActivityHandler {
         intent.putExtra(HANDLER_CLASS, BasicSignInformationInputActivityHandler.class);
         intent.putExtra(MJConstants.SIGN, currentSign);
         intent.putExtra(MJConstants.AUTO_JUDGEMENT_VALUE, value);
+        intent.putExtra(MJConstants.REVIEW_SIGN_MODE, reviewSignMode);
         activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_INPUT_INFORMATION);
     }
 

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,7 +29,10 @@ import com.mjict.signboardsurvey.task.AsyncTaskListener;
 import com.mjict.signboardsurvey.task.LoadImageTask;
 import com.mjict.signboardsurvey.widget.SimpleSpinner;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Junseo on 2016-07-20.
@@ -133,7 +137,7 @@ public class SignViewPagerAdapter extends PagerAdapter {
         addDemolitionImageButtonOnClickListener = listener;
     }
 
-    public void setContentTextFocusChangedListener(ContentTextFocusChangedListener listener) {
+    public void setLastContentTextFocusChangedListener(ContentTextFocusChangedListener listener) {
         contentTextFocusChangedListener = listener;
     }
 
@@ -306,17 +310,17 @@ public class SignViewPagerAdapter extends PagerAdapter {
         refreshPage(page);
     }
 
-    public void setDateText(int page, String text) {
+    public void setDate(int page, Date time) {
         if(page < 0 || page >= signs.size())
             return;
 
         PageView pageView = pageViews.get(page);
         if(pageView == null) {
             SignInputData data = signs.get(page);
-            data.demolishDate = text;
+            data.demolishDate = time;
         } else {
             SignInputData data = pageView.generateInputData();
-            data.demolishDate = text;
+            data.demolishDate = time;
             signs.set(page, data);
         }
 
@@ -408,6 +412,7 @@ public class SignViewPagerAdapter extends PagerAdapter {
         SignInputData data = pageView.generateInputData();
         data.signImagePath = before.signImagePath;      // 다른것들은 상태로 그대로 저장 되지만 이미지 경로는 저장이 안되서 이렇게 따로 저장 해야함
         data.demolishImagePath = before.demolishImagePath;
+        data.demolishDate = before.demolishDate;
         signs.set(position, data);
 
         ((ViewPager)pager).removeView(view);
@@ -450,6 +455,7 @@ public class SignViewPagerAdapter extends PagerAdapter {
         EditText contentEditText;
         RadioGroup statusRadioGroup;
         RadioButton normalRadioButton;
+        RadioButton shutdownRadioButton;
         RadioButton demolitionRadioButton;
         RadioButton demolitionExpectedRadioButton;
         ViewGroup normalLayout;
@@ -481,6 +487,7 @@ public class SignViewPagerAdapter extends PagerAdapter {
 
         String signImagePath = "";
         String demolishImagePath = "";
+        Date demolishDate = null;
 
         private int pageIndex;
 
@@ -503,6 +510,7 @@ public class SignViewPagerAdapter extends PagerAdapter {
             contentEditText = (EditText)parent.findViewById(R.id.content_edit_text);
             statusRadioGroup = (RadioGroup)parent.findViewById(R.id.status_radio_group);
             normalRadioButton = (RadioButton)parent.findViewById(R.id.normal_radio_button);
+            shutdownRadioButton = (RadioButton)parent.findViewById(R.id.shutdown_radio_button);
             demolitionRadioButton = (RadioButton)parent.findViewById(R.id.demolition_radio_button);
             demolitionExpectedRadioButton = (RadioButton)parent.findViewById(R.id.demolition_expected_radio_button);
             normalLayout = (ViewGroup)parent.findViewById(R.id.layout_for_normal);
@@ -535,11 +543,11 @@ public class SignViewPagerAdapter extends PagerAdapter {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
                     if(checkedId == R.id.demolition_radio_button) {
-                        normalLayout.setVisibility(View.INVISIBLE);
+                        normalLayout.setVisibility(View.GONE);
                         demolitionLayout.setVisibility(View.VISIBLE);
                     } else {
                         normalLayout.setVisibility(View.VISIBLE);
-                        demolitionLayout.setVisibility(View.INVISIBLE);
+                        demolitionLayout.setVisibility(View.GONE);
                     }
                 }
             });
@@ -629,6 +637,18 @@ public class SignViewPagerAdapter extends PagerAdapter {
                 }
             });
 
+            roadCollisionCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(!isChecked) {
+                        collisionLengthEditText.setText("0.00");
+                        collisionWidthEditText.setText("0.00");
+                    }
+                    collisionLengthEditText.setEnabled(isChecked);
+                    collisionWidthEditText.setEnabled(isChecked);
+                }
+            });
+
 //            widthEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 //                @Override
 //                public void onFocusChange(View v, boolean hasFocus) {
@@ -646,13 +666,15 @@ public class SignViewPagerAdapter extends PagerAdapter {
 //                }
 //            });
 
-            contentEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if(contentTextFocusChangedListener != null)
-                        contentTextFocusChangedListener.onFocusChange(pageIndex, hasFocus);
-                }
-            });
+            if(pageIndex == getCount()-1) {
+                contentEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (contentTextFocusChangedListener != null)
+                            contentTextFocusChangedListener.onFocusChange(pageIndex, hasFocus);
+                    }
+                });
+            }
         }
 
 
@@ -673,14 +695,22 @@ public class SignViewPagerAdapter extends PagerAdapter {
 
             for(int i=0; i<statusRadioGroup.getChildCount(); i++) {
                 View child = statusRadioGroup.getChildAt(i);
-                if(child.getId() == R.id.normal_radio_button)
-                    child.setTag("4");
-                else if(child.getId() == R.id.demolition_radio_button)
-                    child.setTag("2");
-                else if(child.getId() == R.id.demolition_expected_radio_button)
-                    child.setTag("3");
-                else
-                    child.setTag("4");
+                String tag = "4";
+                switch (child.getId()) {
+                    case R.id.normal_radio_button:
+                        tag = "4";
+                        break;
+                    case R.id.shutdown_radio_button:
+                        tag = "1";
+                        break;
+                    case R.id.demolition_radio_button:
+                        tag = "2";
+                        break;
+                    case R.id.demolition_expected_radio_button:
+                        tag = "3";
+                        break;
+                }
+                child.setTag(tag);
             }
         }
 
@@ -786,15 +816,21 @@ public class SignViewPagerAdapter extends PagerAdapter {
                 placedFloorEditText.setText(String.valueOf(data.placedFloor));
                 totalFloorEditText.setText(String.valueOf(data.totalFloor));
                 roadCollisionCheckBox.setChecked(data.isCollision);
+                collisionWidthEditText.setEnabled(data.isCollision);    // 도로저촉
+                collisionLengthEditText.setEnabled(data.isCollision);
                 collisionWidthEditText.setText(data.collisionWidth);
                 collisionLengthEditText.setText(data.collisionLength);
                 resultSpinner.setSpinnerSelection(data.inspectionResult);
                 widthEditText.setText(data.width);
                 lengthEditText.setText(data.length);
-                demolitionDateTextView.setText(data.demolishDate);
+
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN);
+                String timeText = (data.demolishDate != null) ? format.format(data.demolishDate) : "";
+                demolitionDateTextView.setText(timeText);
 
                 signImagePath = data.signImagePath;
                 demolishImagePath = data.demolishImagePath;
+                demolishDate = data.demolishDate;
 
                 signImageProgressBar.setVisibility(View.INVISIBLE);
                 if(signImagePath == null || signImagePath.equals("")) {
@@ -873,7 +909,8 @@ public class SignViewPagerAdapter extends PagerAdapter {
             String memo = memoEditText.getText().toString();
 
             String demolishImagePath = this.demolishImagePath;
-            String demolishDate = demolitionDateTextView.getText().toString();
+            Date demolishDate = this.demolishDate;
+
             Object inspectionResult = resultSpinner.getSelectedDataId();
 
             SignInputData inputData = new SignInputData(signImagePath, content, signType, signStats, width,

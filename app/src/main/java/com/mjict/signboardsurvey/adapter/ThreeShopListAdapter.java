@@ -145,10 +145,12 @@ public class ThreeShopListAdapter extends ArrayAdapter<ThreeShopInfo> {
         });
 
         int visibility = first.demolished ? View.VISIBLE : View.GONE;
+        int fpvv = first.permitted ? View.VISIBLE : View.GONE;
         holder.getFirstNameTextView().setText(first.name);
         holder.getFirstCategoryTextView().setText(first.category);
         holder.getFirstPhoneTextView().setText(first.phone);
         holder.getFirstClosedView().setVisibility(visibility);
+        holder.getFirstPermissionView().setVisibility(fpvv);
 
         if(second == null) {
             holder.getSecondLayout().setVisibility(View.INVISIBLE);
@@ -177,11 +179,12 @@ public class ThreeShopListAdapter extends ArrayAdapter<ThreeShopInfo> {
             });
 
             visibility = second.demolished ? View.VISIBLE : View.GONE;
+            int spvv = second.permitted ? View.VISIBLE : View.GONE;
             holder.getSecondNameTextView().setText(second.name);
             holder.getSecondCategoryTextView().setText(second.category);
             holder.getSecondPhoneTextView().setText(second.phone);
             holder.getSecondClosedView().setVisibility(visibility);
-
+            holder.getSecondPermissionView().setVisibility(spvv);
         }
 
         if(third == null) {
@@ -211,10 +214,12 @@ public class ThreeShopListAdapter extends ArrayAdapter<ThreeShopInfo> {
             });
 
             visibility = third.demolished ? View.VISIBLE : View.GONE;
+            int tpvv = third.permitted ? View.VISIBLE : View.GONE;
             holder.getThirdNameTextView().setText(third.name);
             holder.getThirdCategoryTextView().setText(third.category);
             holder.getThirdPhoneTextView().setText(third.phone);
             holder.getThirdClosedView().setVisibility(visibility);
+            holder.getThirdPermissionView().setVisibility(tpvv);
         }
 
         return view;

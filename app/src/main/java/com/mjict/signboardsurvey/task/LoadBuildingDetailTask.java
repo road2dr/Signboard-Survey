@@ -2,7 +2,6 @@ package com.mjict.signboardsurvey.task;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.mjict.signboardsurvey.database.DatabaseManager;
@@ -14,6 +13,7 @@ import com.mjict.signboardsurvey.model.Sign;
 import com.mjict.signboardsurvey.util.GeoPoint;
 import com.mjict.signboardsurvey.util.GeoTrans;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
+import com.mjict.signboardsurvey.util.Utilities;
 
 import java.io.File;
 import java.util.List;
@@ -58,16 +58,17 @@ public class LoadBuildingDetailTask extends DefaultAsyncTask<List<Building>, Det
                     String path = SyncConfiguration.getDirectoryForBuildingPicture(pics.get(j).isSynchronized())+pics.get(j).getPath();
                     File file = new File(path);
                     if(file.exists()) {
-                        try {
-//                            image = BitmapFactory.decodeFile(path);
-                            BitmapFactory.Options opt = new BitmapFactory.Options();
-                            opt.inSampleSize = 4;
-                            image = BitmapFactory.decodeFile(path, opt);
-                            break;
-                        }catch(Exception e) {
-                            e.printStackTrace();
-                            image = null;
-                        }
+                        image = Utilities.loadImage(path, 4);
+//                        try {
+////                            image = BitmapFactory.decodeFile(path);
+//                            BitmapFactory.Options opt = new BitmapFactory.Options();
+//                            opt.inSampleSize = 4;
+//                            image = BitmapFactory.decodeFile(path, opt);
+//                            break;
+//                        }catch(Exception e) {
+//                            e.printStackTrace();
+//                            image = null;
+//                        }
                     }
                 }
             }

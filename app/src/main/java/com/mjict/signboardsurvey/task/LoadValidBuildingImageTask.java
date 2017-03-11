@@ -48,7 +48,7 @@ public class LoadValidBuildingImageTask extends DefaultAsyncTask<Building, Index
                         break;
                 }
             }
-            if(image != null && isCancelled() == false)
+            if(isCancelled() == false)
                 publishProgress(new IndexBitmap(i, image));
 
         }

@@ -17,6 +17,7 @@ import com.mjict.signboardsurvey.widget.SimpleSpinner;
 public class BuildingProfileActivity extends SABaseActivity {
 
     // TODO 건물 사진 갯수에 따라 다른 UI를 쓸 수도 있음. 확인 해볼 것
+    private View noImageView;
     private TextView titleTextView;
     private ViewPager imagePager;
     private View viewPagerLayout;
@@ -39,9 +40,10 @@ public class BuildingProfileActivity extends SABaseActivity {
         super.init();
         this.hideToolBar();
 
-        titleTextView = (TextView)this.findViewById(R.id.title_text_view);
+        titleTextView = (TextView)this.findViewById(R.id.building_title_text_view);
         imagePager = (ViewPager)this.findViewById(R.id.image_pager);
         imageIndicator = (CircleIndicator)this.findViewById(R.id.image_indicator);
+        noImageView = this.findViewById(R.id.no_image_view);
 //        addPicButton = (ImageButton)this.findViewById(R.id.add_pic_button);
         streetAddressTextView = (TextView)this.findViewById(R.id.street_address_text_view);
         houseAddressTextView = (TextView)this.findViewById(R.id.house_address_text_view);
@@ -117,6 +119,11 @@ public class BuildingProfileActivity extends SABaseActivity {
 
     public void showImage(Bitmap image) {
         imageAdapter.showImage(imagePager.getCurrentItem(), image);
+    }
+
+    public void setNoImageViewVisible(boolean visible) {
+        int visibility = visible ? View.VISIBLE : View.GONE;
+        noImageView.setVisibility(visibility);
     }
 
     public void showLoading() {

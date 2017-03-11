@@ -9,7 +9,9 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ScrollView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.R;
@@ -93,19 +95,28 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
             }
         });
 
-        activity.setRefreshStatisticsButtonOnClickListener(new View.OnClickListener() {
+        activity.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
             @Override
-            public void onClick(View v) {
+            public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
                 startToLoadAllSignStatus();
+
+                startToLoadSignResultStatus(true);
             }
         });
 
-        activity.setRefreshPieChartButtonOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startToLoadSignResultStatus();
-            }
-        });
+//        activity.setRefreshStatisticsButtonOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startToLoadAllSignStatus();
+//            }
+//        });
+//
+//        activity.setRefreshPieChartButtonOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startToLoadSignResultStatus();
+//            }
+//        });
 
 //        activity.setAddressSearchSummaryButtonOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -126,7 +137,7 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
         recentSigns = new ArrayList<>();
 
         // do first job
-        startToLoadSignResultStatus();
+        startToLoadSignResultStatus(false);
         startToLoadAllSignStatus();
     }
 
@@ -238,7 +249,7 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
         recentBuildingSearchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, ids);
     }
 
-    private void startToLoadSignResultStatus() {
+    private void startToLoadSignResultStatus(final boolean closeRefresh) {
         signResultStatusTask = new LoadSignResultStatusTask(activity.getApplicationContext());
         signResultStatusTask.setLawfulSignTypes("01", "02", "04", "06", "03");
         signResultStatusTask.setIllegalSignTypes("08", "09", "10", "11");
@@ -272,6 +283,8 @@ public class SummaryActivityHandler extends SABaseActivityHandler {
                 activity.addToSignResultStatusPieChart(illegalSignType, result[1]);
                 activity.addToSignResultStatusPieChart(etcSignType, result[2]);
 
+                if(closeRefresh)
+                    activity.closeRefreshLayout();
             }
         });
         signResultStatusTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

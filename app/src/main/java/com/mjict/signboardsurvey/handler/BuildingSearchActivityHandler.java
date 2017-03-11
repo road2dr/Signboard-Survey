@@ -58,6 +58,9 @@ public class BuildingSearchActivityHandler extends SABaseActivityHandler {
         String street = intent.getStringExtra(MJConstants.STREET);
         address = new Address(province, county, town, street, null, null, null, null);
 
+        String baseAddress = province +" "+county+" "+town+" "+street;
+        activity.setBaseAddressText(baseAddress);
+
         // do first job
     }
 
@@ -99,18 +102,19 @@ public class BuildingSearchActivityHandler extends SABaseActivityHandler {
                     Building b = results.get(i);
                     String baseAddr = b.getProvince() + " " + b.getCounty() + " " + b.getTown();
                     String houseAddress = baseAddr;
-                    if(b.getVillage().equals("") == false)
-                        baseAddr = baseAddr + b.getVillage();
-                    if(b.getHouseNumber().equals("") == false)
-                        baseAddr = baseAddr + b.getHouseNumber();
 
                     String buildingNumber = b.getFirstBuildingNumber();
-                    if (b.getSecondBuildingNumber() != null && b.getSecondBuildingNumber().equals("") == false)
+                    if (!b.getSecondBuildingNumber().equals("") && !b.getSecondBuildingNumber().equals("0"))
                         buildingNumber = buildingNumber + "-" + b.getSecondBuildingNumber();
 
-                    String streetAddress = baseAddr + b.getStreetName() + buildingNumber;
+                    String streetAddress = baseAddr + " "+ b.getStreetName() + " "+buildingNumber;
 
-                    String name = b.getName().equals("") ? buildingNumber : b.getName();
+                    if(b.getVillage().equals("") == false)
+                        houseAddress = baseAddr + " "+b.getVillage();
+                    if(b.getHouseNumber().equals("") == false)
+                        houseAddress = baseAddr + " "+b.getHouseNumber();
+
+                    String name = b.getName().equals("") ? buildingNumber : buildingNumber+" "+b.getName();
 
                     BuildingResult br = new BuildingResult(null, name, streetAddress, houseAddress, "", "");
                     activity.addToList(br);

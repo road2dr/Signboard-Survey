@@ -149,7 +149,7 @@ public class RetangleDrawImageView extends ImageView {
 		vertexes[2] = pos[2];
 		vertexes[3] = pos[3];
 		
-		int k = vertexSize/2+35;	// ��ġ�ϰ� ���� ��¦ ũ�� ����
+		int k = vertexSize/2+65;	// 클릭 하시 쉽도록 영역을 살짝 크게 잡음
 		
 		for(int i=0; i<4; i++)
 			vertexRects[i] = new Rect(pos[i].x-k, pos[i].y-k , pos[i].x+k, pos[i].y+k);

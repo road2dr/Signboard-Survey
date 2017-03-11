@@ -684,6 +684,20 @@ public class DatabaseManager {
 		
 		return result;
 	}
+
+	public long insertBuilding(Building building) {
+		long result = -1;
+
+		try {
+			Building b = helper.getBuildingDao().createIfNotExists(building);
+			if(b != null)
+				result = b.getId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
 	
 	public int insertBuildingPicture(BuildingPicture data) {
 		int result = -1;

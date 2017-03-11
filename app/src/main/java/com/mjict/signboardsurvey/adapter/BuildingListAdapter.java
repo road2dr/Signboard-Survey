@@ -59,7 +59,10 @@ public class BuildingListAdapter extends ArrayAdapter<BuildingResult> {
         BuildingResult br = getItem(position);
 
         holder.getTitleTextView().setText(br.name);
-        holder.getImageView().setImageBitmap(br.image);
+        if(br.image != null)
+            holder.getImageView().setImageBitmap(br.image);
+        else
+            holder.getImageView().setImageResource(R.drawable.ic_building);
         holder.getHouseAddressTextView().setText(br.houseAddress);
         holder.getStreetAddressTextView().setText(br.streetAddress);
 

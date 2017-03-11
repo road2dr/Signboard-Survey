@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary"
+        android:padding="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="3dp"
+                android:orientation="vertical">
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/county"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"/>
+                <com.mjict.signboardsurvey.widget.SimpleSpinner
+                    android:id="@+id/county_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    app:topTextView="@layout/tv_simple_spinner_top_white"
+                    app:dropdownTextView="@layout/tv_simple_spinner_dropdown_white"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="3dp"
+                android:orientation="vertical">
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/town"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"/>
+                <com.mjict.signboardsurvey.widget.SimpleSpinner
+                    android:id="@+id/town_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    app:topTextView="@layout/tv_simple_spinner_top_white"
+                    app:dropdownTextView="@layout/tv_simple_spinner_dropdown_white"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/house_address_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/village"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/white"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/house_number"
+                android:layout_marginLeft="15dp"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/village_edit_text"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="@color/white"/>
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/house_number_edit_text"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:background="@color/white"/>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/search_button"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="30dp"
+                android:text="@string/search"/>
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/building_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_gray"
+        android:padding="5dp"
+        android:dividerHeight="5dp"
+        android:divider="@null"/>
+</LinearLayout>

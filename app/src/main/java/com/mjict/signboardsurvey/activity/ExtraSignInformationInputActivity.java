@@ -14,6 +14,10 @@ import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.widget.SimpleSpinner;
 import com.mjict.signboardsurvey.widget.TimePickerDialog;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Created by Junseo on 2016-11-18.
  */
@@ -143,14 +147,6 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
         return collisionLengthEditText.getText().toString();
     }
 
-    public void setCollisionWidthEnabled(boolean enabled) {
-        collisionWidthEditText.setEnabled(enabled);
-    }
-
-    public void setCollisionLengthEnabled(boolean enabled) {
-        collisionLengthEditText.setEnabled(enabled);
-    }
-
 //    installedSideSpinner = (SimpleSpinner)this.findViewById(R.id.installed_side_spinner);
 //    uniquenessSpinner = (SimpleSpinner)this.findViewById(R.id.uniqueness_spinner);
 //    memoEditText = (EditText)this.findViewById(R.id.memo_edit_text);
@@ -217,12 +213,21 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
         addPicButton.setOnClickListener(listener);
     }
 
-    public String getInputDemolishDate() {
-        return demolishDateTextView.getText().toString();
+    private Date demolishDate = null;
+    public Date getInputDemolishDate() {
+        return demolishDate;
     }
 
-    public void setDemolishDateText(CharSequence text) {
-        demolishDateTextView.setText(text);
+    public void setDemolishDate(Date time) {
+        demolishDate = time;
+        String timeText = null;
+        if(demolishDate != null) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN);
+            timeText = format.format(time);
+        } else {
+            timeText = "";
+        }
+        demolishDateTextView.setText(timeText);
     }
 
     public void setDemolishDateTextOnClickListener(View.OnClickListener listener) {
@@ -272,4 +277,18 @@ public class ExtraSignInformationInputActivity extends SABaseActivity {
     public void setAutoJudgementButtonOnClickListener(View.OnClickListener listener) {
         autoJudgementButton.setOnClickListener(listener);
     }
+
+    public void setCollisionCheckBoxOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
+        collisionCheckBox.setOnCheckedChangeListener(listener);
+    }
+
+    public void setCollisionWidthAndLengthEnabled(boolean enabled) {
+        if(enabled == false) {
+            collisionWidthEditText.setText("");
+            collisionLengthEditText.setText("");
+        }
+        collisionLengthEditText.setEnabled(enabled);
+        collisionWidthEditText.setEnabled(enabled);
+    }
 }
+

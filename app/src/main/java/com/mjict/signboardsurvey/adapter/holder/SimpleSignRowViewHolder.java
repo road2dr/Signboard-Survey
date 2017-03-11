@@ -2,10 +2,10 @@ package com.mjict.signboardsurvey.adapter.holder;
 
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mjict.signboardsurvey.R;
+import com.mjict.signboardsurvey.widget.LabelImageView;
 
 /**
  * Created by Junseo on 2017-02-07.
@@ -13,7 +13,8 @@ import com.mjict.signboardsurvey.R;
 public class SimpleSignRowViewHolder {
     private View parent;
 
-    private ImageView signImageView;
+    private View permitView;
+    private LabelImageView signImageView;
     private TextView typeTextView;
     private TextView sizeTextView;
     private TextView locationTextView;
@@ -25,9 +26,17 @@ public class SimpleSignRowViewHolder {
         parent = v;
     }
 
-    public ImageView getSignImageView() {
+
+    public View getPermitView() {
+        if(permitView == null)
+            permitView = parent.findViewById(R.id.permit_view);
+
+        return permitView;
+    }
+
+    public LabelImageView getSignImageView() {
         if(signImageView == null)
-            signImageView = (ImageView)parent.findViewById(R.id.sign_image_view);
+            signImageView = (LabelImageView)parent.findViewById(R.id.sign_image_view);
 
         return signImageView;
     }

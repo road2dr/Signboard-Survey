@@ -56,15 +56,21 @@ public class SignListAdapter extends ArrayAdapter<SignInfo> {
 
         SignInfo s = getItem(position);
 
-        holder.getImageView().setImageBitmap(s.image);
+        if(s.image != null)
+            holder.getImageView().setImageBitmap(s.image);
+        else
+            holder.getImageView().setImageResource(R.drawable.ic_signboard);
+
         holder.getNameTextView().setText(s.content);
         holder.getResultTextView().setText(s.result);
         holder.getSizeTextView().setText(s.size);
 
-        boolean labelVisible = (s.labelColor != -1);
+        boolean labelVisible = s.labelVisible;
+        int permitVisibility = s.permitted ? View.VISIBLE : View.GONE;
         holder.getImageView().setLabelText(s.status);
         holder.getImageView().setLabelBackgroundColor(s.labelColor);
         holder.getImageView().setLabelVisual(labelVisible);
+        holder.getPermitView().setVisibility(permitVisibility);
 
 //        final int[] colors = {0xffFFFFA5, 0xffE7FFC0, 0xffFFD2FF};
 //        int color = colors[position%3];

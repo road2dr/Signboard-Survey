@@ -187,8 +187,11 @@ public class SignMeasureActivity extends SABaseActivity implements JoystickView.
         int curY = zoomView.getCurrentPositionY();
 
         int[] tickValues = getTickValue(direction);
-        int tx = (power>50) ? tickValues[0]*2 : tickValues[0];
-        int ty = (power>50) ? tickValues[1]*2 : tickValues[1];
+//        int tx = (power>50) ? tickValues[0]*2 : tickValues[0];
+//        int ty = (power>50) ? tickValues[1]*2 : tickValues[1];
+        // 조이스틱 움직임 줄임
+        int tx = tickValues[0];
+        int ty = tickValues[1];
 
         if( tx == 0 && ty == 0)
             return;

@@ -212,9 +212,6 @@ public class BuildingTotalInformationActivity extends SABaseActivity {
                     case R.id.delete_shop:
                         shopOptionMenuOnClickListener.onDeleteShopMenuClicked(position);
                         break;
-                    case R.id.shutdown_shop:
-                        shopOptionMenuOnClickListener.onShutdownShopClicked(position);
-                        break;
                 }
                 return false;
             }
@@ -438,7 +435,7 @@ public class BuildingTotalInformationActivity extends SABaseActivity {
         public void onAddSignMenuClicked(int position);
         public void onModifyShopMenuClicked(int position);
         public void onDeleteShopMenuClicked(int position);
-        public void onShutdownShopClicked(int position);
+//        public void onShutdownShopClicked(int position);
     }
 
 

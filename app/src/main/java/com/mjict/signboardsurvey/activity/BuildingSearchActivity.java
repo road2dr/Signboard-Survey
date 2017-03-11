@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.adapter.BuildingListAdapter;
@@ -18,6 +19,7 @@ import com.mjict.signboardsurvey.model.ui.BuildingResult;
  */
 public class BuildingSearchActivity extends SABaseActivity {
 
+    private TextView baseAddressTextView;
     private EditText firstNumberEditText;
     private EditText secondNumberEditText;
     private Button searchButton;
@@ -38,6 +40,7 @@ public class BuildingSearchActivity extends SABaseActivity {
         super.init();
         this.setTitle(R.string.title_building_search);
 
+        baseAddressTextView = (TextView)this.findViewById(R.id.base_address_text_view);
         firstNumberEditText = (EditText)this.findViewById(R.id.first_number_edit_text);
         secondNumberEditText = (EditText)this.findViewById(R.id.second_number_edit_text);
         searchButton = (Button)this.findViewById(R.id.search_button);
@@ -81,6 +84,10 @@ public class BuildingSearchActivity extends SABaseActivity {
                 }
             }
         });
+    }
+
+    public void setBaseAddressText(String text) {
+        baseAddressTextView.setText(text);
     }
 
     public String getInputFirstNumber() {

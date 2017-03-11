@@ -14,12 +14,14 @@ public class TwoShopRowViewHolder {
     private TextView firstNameTextView;
     private TextView firstCategoryTextView;
     private TextView firstPhoneTextView;
+    private View firstClosedView;
+    private View firstPermissionView;
     private View secondLayout;
     private TextView secondNameTextView;
     private TextView secondCategoryTextView;
     private TextView secondPhoneTextView;
-    private View firstClosedView;
     private View secondClosedView;
+    private View secondPermissionView;
 
     public TwoShopRowViewHolder(View v) {
         parent = v;
@@ -93,5 +95,19 @@ public class TwoShopRowViewHolder {
             secondClosedView = parent.findViewById(R.id.second_closed_view);
 
         return secondClosedView;
+    }
+
+    public View getFirstPermissionView() {
+        if(firstPermissionView == null)
+            firstPermissionView = parent.findViewById(R.id.first_permission_view);
+
+        return firstPermissionView;
+    }
+
+    public View getSecondPermissionView() {
+        if(secondPermissionView == null)
+            secondPermissionView = parent.findViewById(R.id.second_permission_view);
+
+        return secondPermissionView;
     }
 }

@@ -8,6 +8,7 @@ import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.BuildingPicture;
 import com.mjict.signboardsurvey.model.DetailBuildingBitmap;
 import com.mjict.signboardsurvey.model.Shop;
+import com.mjict.signboardsurvey.model.ShopWithBuilding;
 import com.mjict.signboardsurvey.model.Sign;
 import com.mjict.signboardsurvey.model.StreetAddress;
 import com.mjict.signboardsurvey.model.UnifiedSearchResult;
@@ -56,6 +57,7 @@ public class UnifiedSearchTask extends DefaultAsyncTask<String, Integer, Unified
         List<Building> buildings = dmgr.findBuildingsContain(params[0], maxBuildingsCount);
         List<Shop> shops = dmgr.findShopsContain(params[0], maxShopCount);
 
+        // 빌딩 상세 정보
         List<DetailBuildingBitmap> buildingResults = new ArrayList<>();
         if(buildings != null) {
             int n = buildings.size();
@@ -72,19 +74,7 @@ public class UnifiedSearchTask extends DefaultAsyncTask<String, Integer, Unified
                     image = Utilities.loadImage(path, 8);
                 }
 
-                // 사진중에 null 이 아닌걸로 로드
-//                if(pics != null) {
-//                    for(int j=0; j<pics.size(); j++) {
-//                        String path = SyncConfiguration.getDirectoryForBuildingPicture()+pics.get(j).getPath();
-//                        // TODO 건물마다 무슨 사진이 이렇게 많나.. 이것만 아니면 빠르겠는데.. 데이터 맞는지 확인 해봐
-//                        // 첫 번째 사진으로 하던지
-//                        image = Utilities.loadImage(path, 8);
-//                        if(image != null)
-//                            break;
-//                    }
-//                }
-
-                // 총 정보 로드
+                // 업소 및 간판 정보 로드
                 List<Shop> shopsInBuilding = dmgr.findShopByBuildingId(b.getId());
 
                 List<Sign> signsInBuilding = new ArrayList<>();
@@ -106,7 +96,17 @@ public class UnifiedSearchTask extends DefaultAsyncTask<String, Integer, Unified
             }
         }
 
-        UnifiedSearchResult result = new UnifiedSearchResult(streetAddresses, buildingResults, shops);
+        // 업소 상세 정보
+        List<ShopWithBuilding> shopWithBuildings = new ArrayList<>();
+        if(shops != null) {
+            for(int i=0; i<shops.size(); i++) {
+                Shop shop = shops.get(i);
+                Building building = dmgr.getBuilding(shop.getBuildingId());
+                shopWithBuildings.add(new ShopWithBuilding(building, shop));
+            }
+        }
+
+        UnifiedSearchResult result = new UnifiedSearchResult(streetAddresses, buildingResults, shopWithBuildings);
 
         return result;
     }

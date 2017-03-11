@@ -220,6 +220,11 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".activity.AddAddressActivity"
+            android:theme="@style/AppTheme.Base"
+            android:screenOrientation="portrait">
+        </activity>
+
         <receiver
             android:name=".receiver.WiFiMonitor"
             android:enabled="true"

@@ -5,9 +5,13 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -21,6 +25,8 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.adapter.RecentBuildingListAdapter;
 import com.mjict.signboardsurvey.adapter.RecentSignListAdapter;
@@ -41,20 +47,23 @@ public class SummaryActivity extends SABaseActivity {
     private View searchEditText;
     private ImageButton searchButton;
 
+    private PullToRefreshScrollView scrollView;
+
     private ImageButton summaryMenuButton;
     private DrawerArrowDrawable drawerArrowDrawable;
     private ViewPager statisticsViewPager;
     private SummaryStatisticsViewPagerAdapter statisticsViewPagerAdapter;
     private CircleIndicator circleIndicator;
 
-    private ImageButton refreshStatisticsButton;
-    private ImageButton refreshPieChartButton;
+//    private ImageButton refreshStatisticsButton;
+//    private ImageButton refreshPieChartButton;
 
 //    sign_status_pie_chart
 //    sign_status_loading_view
     private PieChart signStatusPieChart;
     private PieDataSet signStatusDataSet = null;
     private ArrayList<PieEntry> signStatusEntries;
+    private LinearLayout legendView;
 
     private TextView signStatusLoadingView;
 
@@ -67,7 +76,11 @@ public class SummaryActivity extends SABaseActivity {
     protected void init() {
         super.init();
         this.hideToolBar();
-//        this.disableNavigation();
+
+        scrollView = (PullToRefreshScrollView)this.findViewById(R.id.scroll_view);
+        String label = getString(R.string.refreshing_statistics_data);
+        scrollView.getLoadingLayoutProxy().setPullLabel("");
+        scrollView.getLoadingLayoutProxy().setRefreshingLabel(label);
 
         statisticsViewPager = (ViewPager)this.findViewById(R.id.statistics_view_pager);
         statisticsViewPagerAdapter = new SummaryStatisticsViewPagerAdapter(this);
@@ -79,6 +92,7 @@ public class SummaryActivity extends SABaseActivity {
 
         signStatusPieChart = (PieChart)this.findViewById(R.id.sign_status_pie_chart);
         signStatusLoadingView = (TextView)this.findViewById(R.id.sign_status_loading_view);
+        legendView = (LinearLayout)this.findViewById(R.id.legend_view);
 
         recentBuildingListView = (HorizontalListView)this.findViewById(R.id.recent_building_list_view);
         recentBuildingAdapter = new RecentBuildingListAdapter(this);
@@ -91,8 +105,8 @@ public class SummaryActivity extends SABaseActivity {
         searchEditText = (View)this.findViewById(R.id.search_edit_text);
         searchButton = (ImageButton)this.findViewById(R.id.search_button);
 
-        refreshStatisticsButton = (ImageButton)this.findViewById(R.id.refresh_statistics_button);
-        refreshPieChartButton = (ImageButton)this.findViewById(R.id.refresh_pie_chart_button);
+//        refreshStatisticsButton = (ImageButton)this.findViewById(R.id.refresh_statistics_button);
+//        refreshPieChartButton = (ImageButton)this.findViewById(R.id.refresh_pie_chart_button);
 
         summaryMenuButton = (ImageButton)this.findViewById(R.id.summary_menu_button);
         drawerArrowDrawable = new DrawerArrowDrawable(this);
@@ -126,6 +140,15 @@ public class SummaryActivity extends SABaseActivity {
             public void onDrawerStateChanged(int newState) {
             }
         });
+
+//        scrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
+//            @Override
+//            public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
+//                // Do work to refresh the list here.
+//
+//            }
+//        });
+
 
 
         initPieChart();
@@ -183,10 +206,28 @@ public class SummaryActivity extends SABaseActivity {
         int i = signStatusEntries.size();
         signStatusEntries.add(new PieEntry(itemCount, itemName, i));
         signStatusPieChart.invalidate();
+
+        // add to legend
+        View legend = View.inflate(this, R.layout.legend_for_sign, null);
+        int[] colors = signStatusPieChart.getData().getColors();
+        int color = (colors == null) ? Color.BLACK : colors[i];
+
+        View colorView = legend.findViewById(R.id.color_view);
+        TextView labelTextView = (TextView) legend.findViewById(R.id.label_text_view);
+        TextView countTextView = (TextView)legend.findViewById(R.id.count_text_view);
+        colorView.setBackgroundColor(color);
+        labelTextView.setText(itemName);
+        countTextView.setText(itemCount+"건");
+
+        final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+        legendView.addView(legend, params);
+
     }
 
     public void clearSignResultStatusPieChart() {
         signStatusEntries.clear();
+        legendView.removeAllViews();
         signStatusPieChart.invalidate();
     }
 
@@ -198,12 +239,20 @@ public class SummaryActivity extends SABaseActivity {
         statisticsViewPagerAdapter.setSecondPageText(text);
     }
 
-    public void setRefreshStatisticsButtonOnClickListener(View.OnClickListener listener) {
-        refreshStatisticsButton.setOnClickListener(listener);
+//    public void setRefreshStatisticsButtonOnClickListener(View.OnClickListener listener) {
+//        refreshStatisticsButton.setOnClickListener(listener);
+//    }
+//
+//    public void setRefreshPieChartButtonOnClickListener(View.OnClickListener listener) {
+//        refreshPieChartButton.setOnClickListener(listener);
+//    }
+
+    public void setOnRefreshListener(PullToRefreshBase.OnRefreshListener<ScrollView> listener) {
+        scrollView.setOnRefreshListener(listener);
     }
 
-    public void setRefreshPieChartButtonOnClickListener(View.OnClickListener listener) {
-        refreshPieChartButton.setOnClickListener(listener);
+    public void closeRefreshLayout() {
+        scrollView.onRefreshComplete();
     }
 
     private void initPieChart() {
@@ -231,10 +280,14 @@ public class SummaryActivity extends SABaseActivity {
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.BLACK);
 
-        signStatusPieChart.setHoleRadius(5);   // 가운데 구멍 크기 인듯
+        signStatusPieChart.setHoleRadius(10);   // 가운데 구멍 크기 인듯
         signStatusPieChart.setTransparentCircleRadius(10);
         signStatusPieChart.setCenterTextColor(Color.BLACK);    // 가운데 구멍에 들어가는 글자색
         signStatusPieChart.setEntryLabelColor(Color.BLACK);    // 각 항목 글자색 숫자 밑에 위치함
+        signStatusPieChart.setUsePercentValues(true);
+
+        signStatusPieChart.setDrawEntryLabels(false);   // 원안의 레이블 안보여 줌
+
         // enable rotation of the chart by touch
         signStatusPieChart.setRotationAngle(0);
         signStatusPieChart.setRotationEnabled(true);
@@ -244,9 +297,12 @@ public class SummaryActivity extends SABaseActivity {
         signStatusPieChart.highlightValues(null);        // undo all highlights
 
         Legend l = signStatusPieChart.getLegend();     //
-        l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-        l.setXEntrySpace(20);
-        l.setYEntrySpace(5);
+        l.setEnabled(false);    // legend 는 안그리고 직접 그린 거임
+//        l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+//        l.setFormSize(15f);
+//        l.setTextSize(15f);
+//        l.setXEntrySpace(20);
+//        l.setYEntrySpace(5);
     }
 
     private class CountFormatter implements IValueFormatter, IAxisValueFormatter {
@@ -269,13 +325,13 @@ public class SummaryActivity extends SABaseActivity {
         // IValueFormatter
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            return mFormat.format(value) + " 건";
+            return mFormat.format(value) + "%";
         }
 
         // IAxisValueFormatter
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
-            return mFormat.format(value) + " 건";
+            return mFormat.format(value) + "%";
         }
 
         public int getDecimalDigits() {

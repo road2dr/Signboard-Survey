@@ -19,11 +19,13 @@ public class DemolishedSign {
     public String size;
     public Bitmap signImage;
     public Bitmap demolishedImage;
+    public boolean permitted;
+    public String address;
 
     public DemolishedSign(boolean labelVisible, int labelColor, String labelText, SignStatus status,
                           String content, String light, String type, String date,
                           String location, String result, String size, Bitmap signImage,
-                          Bitmap demolishedImage) {
+                          Bitmap demolishedImage, boolean permitted, String address) {
         this.labelVisible = labelVisible;
         this.labelColor = labelColor;
         this.labelText = labelText;
@@ -37,5 +39,7 @@ public class DemolishedSign {
         this.size = size;
         this.signImage = signImage;
         this.demolishedImage = demolishedImage;
+        this.permitted = permitted;
+        this.address = address;
     }
 }

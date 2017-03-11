@@ -391,11 +391,11 @@ public class AddressSearchActivityHandler extends SABaseActivityHandler {
     private BuildingResult buildingToBuildingResult(Building b, List<Shop> shopList, List<Sign> signList) {
 //        Bitmap image, String name, String streetAddress, String houseAddress, int shopCount, int signCount
         String buildingNumber = b.getFirstBuildingNumber();
-        if(b.getSecondBuildingNumber().equals("") == false)
-            buildingNumber = buildingNumber +" "+ b.getSecondBuildingNumber();
+        if(!b.getSecondBuildingNumber().equals("") && !b.getSecondBuildingNumber().equals("0"))
+            buildingNumber = buildingNumber +"-"+ b.getSecondBuildingNumber();
         String baseAddress = b.getProvince() +" "+b.getCounty()+" "+b.getTown();
         String houseAddress = "";
-        String name = b.getName().equals("") ? buildingNumber : b.getName();
+        String name = b.getName().equals("") ? buildingNumber : buildingNumber+" "+b.getName();
 
         if(b.getVillage().equals(""))
             houseAddress = baseAddress + " " + b.getHouseNumber();

@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#094484</color>
     <color name="colorAccent">#ff3300</color>
 
+    <color name="light_colorPrimary">#880099fd</color>
+
     <color name="button_normal">#317dc9</color>
     <color name="button_pressed">#094484</color>
 
@@ -19,8 +21,9 @@
 
 
     <color name="label_text_color">#000000</color>
-    <color name="postit_color_1">#FFFFA5</color>
-    <color name="postit_color_2">#E7FFC0</color>
-    <color name="postit_color_3">#FFD2FF</color>
+    <color name="postit_color_1">#aaFFFFA5</color>
+    <color name="postit_color_2">#aaE7FFC0</color>
+    <color name="postit_color_3">#aaFFD2FF</color>
+
 
 </resources>

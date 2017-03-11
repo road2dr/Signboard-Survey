@@ -2,6 +2,7 @@ package com.mjict.signboardsurvey.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,8 @@ public class ReviewSignListAdapter extends ArrayAdapter<ReviewSign> {
         View view = convertView;
         ReviewSignListRowHolder holder;
 
+        Log.d("junseo", "getView: "+position);
+
         if(view == null) {
             view =  inflater.inflate(R.layout.list_row_review_sign, parent, false);
             holder = new ReviewSignListRowHolder(view);
@@ -43,12 +46,13 @@ public class ReviewSignListAdapter extends ArrayAdapter<ReviewSign> {
 
         ReviewSign data = getItem(position);
 
-        holder.getSignImageView().setLabelVisual(true);
-        holder.getSignImageView().setLabelText(data.status);
+        int visibility = data.permitted ? View.VISIBLE : View.GONE;
+
+        holder.getSignImageView().setLabelVisual(false);    // 이미지 하단부로 옮김
+        holder.getReviewTextView().setText(data.status);
         holder.getContentTextView().setText(data.content);
-        holder.getTypeTextView().setText(data.type);
-        holder.getAddressTextView().setText(data.lightType);    // TODO
-        holder.getLocationTextView().setText(data.location);
+        holder.getPermitView().setVisibility(visibility);
+        holder.getAddressTextView().setText(data.address);
         holder.getResultTextView().setText(data.result);
         holder.getSizeTextView().setText(data.size);
         holder.getSignImageView().setImageBitmap(data.signImage);

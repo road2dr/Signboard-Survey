@@ -9,7 +9,7 @@
     <string name="color_picker_default_title">Select a Color</string>
     <!-- Content description for a color square. -->
 
-    <string name="basic_information">기본 정보</string>
+    <string name="basic_information">기본 정보 (1/2)</string>
     <string name="size_and_location_information">크기 및 위치 정보</string>
     <string name="design_information">디자인 정보</string>
     <string name="install_information">설치 정보</string>
@@ -274,7 +274,7 @@
     <string name="building_location">건물 위치</string>
     <string name="signboard_detail_information">간판 상세정보</string>
     <string name="next">다음</string>
-    <string name="extra_information">추가 정보</string>
+    <string name="extra_information">추가 정보 (2/2)</string>
     <string name="light">조명</string>
     <string name="done">완료</string>
     <string name="front">정면</string>
@@ -313,7 +313,19 @@
     <string name="cannot_measure_because_wrong_picture_info">사진 정보가 올바르지 않아 측정을 할 수 없습니다. 시스템 관리자에게 문의 하세요.</string>
     <string name="major_setting_is_changed_move_to_first_page">주요 설정이 바뀌어 첫 화면으로 이동 합니다.</string>
     <string name="sign_not_measured_yet">측정이 되어 있지 않습니다.</string>
+    <string name="refreshing_statistics_data">통계 데이터 새로고침...</string>
+    <string name="hint_for_keyword_search">건물명, 업소명, 읍/면/동, 도로명</string>
+    <string name="there_are_no_result">검색 결과가 없습니다.</string>
+    <string name="cannot_register_same_name_shop">이미 같은 이름의 업소가 있습니다.</string>
+    <string name="sort_name">이름순</string>
+    <string name="sort_register_time">등록순</string>
+    <string name="projected_sign_must_have_height">돌출형 간판은 (표시위치-높이)값을 입력해야 합니다.</string>
+    <string name="add_address">주소 추가</string>
+    <string name="input_house_number">지번 주소를 입력하세요.</string>
+    <string name="there_are_no_such_address_do_you_want_register">해당 주소는 없습니다. 새로 등록 하시겠습니까?</string>
 
+    <string name="address_format_without_village">%1$s %2$s %3$s (%4$s)</string>
+    <string name="address_format_with_village">%1$s %2$s %3$s %4$s (%5$s)</string>
 
 </resources>
 

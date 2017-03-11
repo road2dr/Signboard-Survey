@@ -330,7 +330,10 @@ public class UserDataSearchActivityHandler extends SABaseActivityHandler {
         location = s.getPlacedFloor()+" / "+s.getTotalFloor();
         date = Utilities.getCurrentTimeAsString();
 
-        ReviewSign reviewSign = new ReviewSign(signImage, status, type, content, lightType, result, size, location, date);
+        String address = "";
+        boolean permitted = false;
+
+        ReviewSign reviewSign = new ReviewSign(signImage, status, type, content, lightType, result, size, location, date, address, permitted);
         return reviewSign;
     }
 

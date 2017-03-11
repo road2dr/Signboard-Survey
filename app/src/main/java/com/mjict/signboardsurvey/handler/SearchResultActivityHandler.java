@@ -16,6 +16,7 @@ import com.mjict.signboardsurvey.activity.TextListActivity;
 import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.DetailBuildingBitmap;
 import com.mjict.signboardsurvey.model.Shop;
+import com.mjict.signboardsurvey.model.ShopWithBuilding;
 import com.mjict.signboardsurvey.model.StreetAddress;
 import com.mjict.signboardsurvey.model.UnifiedSearchResult;
 import com.mjict.signboardsurvey.model.ui.BuildingResult;
@@ -35,7 +36,7 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
 
     private List<StreetAddress> addressResults;
     private List<DetailBuildingBitmap> buildingResults;
-    private List<Shop> shopResults;
+    private List<ShopWithBuilding> shopResults;
 
     private String keyword;
 
@@ -126,7 +127,7 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
                 buildingResults = unifiedSearchResult.buildings;
                 shopResults = unifiedSearchResult.shops;
 
-                if(unifiedSearchResult.addresses != null) {
+                if(addressResults != null) {
                     int size = unifiedSearchResult.addresses.size();
                     boolean visible = (size > 0);
                     activity.setAddressResultVisible(visible);
@@ -154,13 +155,25 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
                     boolean visible = (size > 0);
                     activity.setShopResultVisible(visible);
                     for(int i=0; i<size; i++) {
-                        Shop shop = shopResults.get(i);
+                        Shop shop = shopResults.get(i).shop;
+                        Building b = shopResults.get(i).building;
+                        String streetAddress = getStreetAddressFromBuilding(b);
                         String text = shop.getName()+" "+shop.getPhoneNumber();
                         int index = text.indexOf(keyword);
-                        activity.addShopResult(text, index, keyword.length());
+                        activity.addShopResult(text, index, keyword.length(), streetAddress);
                     }
                 }
+
+                // 결과 없음 텍스트 보여줌
+                boolean visible = false;
+                if(addressResults.size() <= 0 && buildingResults.size() <= 0 && shopResults.size() <= 0)
+                    visible = true;
+                else
+                    visible = false;
+
+                activity.setNoResultTextViewVisible(visible);
             }
+
         });
         task.setMaxAddressResultCount(MAX_ADDRESS_RESULT);
         task.setMaxBuildingsResultCount(MAX_BUILDING_RESULT);
@@ -173,6 +186,7 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
 
         Intent intent = new Intent(activity, BuildingSearchActivity.class);
         intent.putExtra(HANDLER_CLASS, BuildingSearchActivityHandler.class);
+        intent.putExtra(MJConstants.PROVINCE, SyncConfiguration.getProvinceForSync());  // TODO StreetAddress 에서 가져 오는게 바람직 하겠지
         intent.putExtra(MJConstants.COUNTY, SyncConfiguration.getCountyForSync());  // TODO StreetAddress 에서 가져 오는게 바람직 하겠지
         intent.putExtra(MJConstants.TOWN, address.getTown());
         intent.putExtra(MJConstants.STREET, address.getStreet());
@@ -187,7 +201,7 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
     }
 
     private void shopItemClicked(int index) {
-        Shop shop = shopResults.get(index);
+        Shop shop = shopResults.get(index).shop;
 
         goToSignList(shop);
     }
@@ -228,15 +242,13 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
     }
 
     private BuildingResult detailBuildingToBuildingResult(DetailBuildingBitmap detailBuilding) {
-        Building building = detailBuilding.building;
+        Building b = detailBuilding.building;
 
-        String buildingNumber = building.getFirstBuildingNumber();
-        if(building.getSecondBuildingNumber().equals("") == false)
-            buildingNumber = buildingNumber + "_" +building.getSecondBuildingNumber();
-        String baseAddress = building.getProvince()+" "+building.getCounty()+" "+building.getTown();
-        String streetAddress = baseAddress + building.getStreetName() + " "+buildingNumber;
-        String houseAddress = baseAddress + " "+building.getVillage() + building.getHouseNumber();
-        String title = building.getName().equals("") ? buildingNumber : building.getName();
+        String buildingNumber = getBuildingNumberFromBuilding(b);
+        String streetAddress = getStreetAddressFromBuilding(b);
+
+        String houseAddress = "";   // 안씀
+        String title = b.getName().equals("") ? buildingNumber : buildingNumber+" "+b.getName();
 
         Bitmap image = detailBuilding.image;
         String name = title;
@@ -249,5 +261,28 @@ public class SearchResultActivityHandler extends SABaseActivityHandler {
 
         BuildingResult br = new BuildingResult(image, name, streetAddress, houseAddress, shopCountText, signCountText);
         return br;
+    }
+
+    private String getStreetAddressFromBuilding(Building b) {
+        String buildingNumber = b.getFirstBuildingNumber();
+        if(!b.getSecondBuildingNumber().equals("") && !b.getSecondBuildingNumber().equals("0"))
+            buildingNumber = buildingNumber + "-" +b.getSecondBuildingNumber();
+
+        String baseAddress = b.getProvince()+" "+b.getCounty();
+        String streetAddress = "";
+        if(b.getVillage().equals(""))
+            streetAddress = activity.getString(R.string.address_format_without_village, baseAddress, b.getStreetName(), buildingNumber, b.getTown());
+        else
+            streetAddress = activity.getString(R.string.address_format_with_village, baseAddress, b.getTown(), b.getStreetName(), buildingNumber, b.getVillage());
+
+        return streetAddress;
+    }
+
+    private String getBuildingNumberFromBuilding(Building b) {
+        String buildingNumber = b.getFirstBuildingNumber();
+        if(!b.getSecondBuildingNumber().equals("") && !b.getSecondBuildingNumber().equals("0"))
+            buildingNumber = buildingNumber + "-" +b.getSecondBuildingNumber();
+
+        return buildingNumber;
     }
 }

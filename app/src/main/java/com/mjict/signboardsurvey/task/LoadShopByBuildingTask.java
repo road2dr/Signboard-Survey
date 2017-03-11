@@ -1,5 +1,9 @@
 package com.mjict.signboardsurvey.task;
 
+/**
+ * Created by Junseo on 2017-02-27.
+ */
+
 import android.content.Context;
 import android.util.Log;
 

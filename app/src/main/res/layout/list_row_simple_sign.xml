@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="90dp"
     android:background="@drawable/bg_white_box"
     android:descendantFocusability="blocksDescendants" >
 
-    <ImageView
+    <com.mjict.signboardsurvey.widget.LabelImageView
         android:id="@+id/sign_image_view"
-        android:layout_width="80dp"
+        android:layout_width="90dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:transitionName="image_transition"/>
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="3.5dp"
+        app:label_orientation="RIGHT_TOP"/>
+
+    <ImageView
+        android:id="@+id/permit_view"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="3dp"
+        android:src="@drawable/ic_permission_w"
+        android:background="@drawable/bg_oval"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,12 +46,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:textSize="16sp"
                 android:background="@drawable/bg_sign_property"/>
             <TextView
                 android:id="@+id/size_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:textSize="16sp"
                 android:layout_marginLeft="5dp"
                 android:background="@drawable/bg_sign_property"/>
         </LinearLayout>
@@ -48,19 +62,21 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_weight="1"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp">
+            android:paddingTop="3.5dp"
+            android:paddingBottom="7dp">
             <TextView
                 android:id="@+id/location_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:textSize="16sp"
                 android:background="@drawable/bg_sign_property"/>
             <TextView
                 android:id="@+id/light_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:textSize="16sp"
                 android:layout_marginLeft="5dp"
                 android:background="@drawable/bg_sign_property"/>
             <TextView
@@ -68,6 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:textSize="16sp"
                 android:layout_marginLeft="5dp"
                 android:background="@drawable/bg_sign_property"/>
         </LinearLayout>

@@ -1,15 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="view_pager_indicator_height">30dp</dimen>
-    <dimen name="view_pager_indicator_size">11dp</dimen>
-
-    <!-- -->
-    <dimen name="logo_layout_margin_top">130dp</dimen>
-    <dimen name="login_layout_margin_top">45dp</dimen>
-    <dimen name="login_input_height">45dp</dimen>
-
-    <dimen name="sign_label_width">100dp</dimen>
-    <dimen name="sign_label_dot_padding">15dp</dimen>
-    <dimen name="sign_floor_text_width">60dp</dimen>
+    <dimen name="indicator_right_padding">10dp</dimen>
+    <dimen name="indicator_corner_radius">12dp</dimen>
+    <dimen name="indicator_internal_padding">4dp</dimen>
+    <dimen name="header_footer_left_right_padding">24dp</dimen>
+    <dimen name="header_footer_top_bottom_padding">12dp</dimen>
 
 </resources>

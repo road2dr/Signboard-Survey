@@ -75,7 +75,7 @@ public class ImageViewPagerAdapter extends PagerAdapter {
         if(image != null && image.isRecycled() == false) {
             pageView.setImage(image);
         } else {
-            pageView.setImage(R.drawable.ic_no_image);   // TODO
+            pageView.setImage(R.drawable.ic_building);   // TODO
         }
     }
 

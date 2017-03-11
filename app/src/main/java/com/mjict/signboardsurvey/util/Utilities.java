@@ -5,8 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import com.mjict.signboardsurvey.autojudgement.AutoJudgementRule;
@@ -343,6 +345,31 @@ public class Utilities {
 		return date;
 	}
 
+	public static Date stringToDay(String time) {
+		DateFormat sdFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREAN);
+		Date date = null;
+		try {
+			date = sdFormat.parse(time);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			date = null;
+		}
+
+		return date;
+	}
+
+	public static String dayToString(Date time) {
+		String date = null;
+		if(time != null) {
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.KOREAN);
+			date = format.format(time);
+		} else {
+			date = "";
+		}
+
+		return date;
+	}
+
 	public static long hash(String str) {
 		long hash = 53;
 
@@ -467,6 +494,17 @@ public class Utilities {
 				e.printStackTrace();
 				image = null;
 			}
+		}
+
+		return image;
+	}
+
+	public static Bitmap loadImageFromUri(Context context, Uri uri) {
+		Bitmap image = null;
+		try {
+			image = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 		return image;

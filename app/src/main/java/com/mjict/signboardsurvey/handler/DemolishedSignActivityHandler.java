@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.mjict.signboardsurvey.MJConstants;
@@ -12,9 +13,12 @@ import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.DemolishedSignActivity;
 import com.mjict.signboardsurvey.activity.SignInformationActivity;
 import com.mjict.signboardsurvey.model.Address;
+import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.model.Setting;
+import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
+import com.mjict.signboardsurvey.model.SignInformation;
 import com.mjict.signboardsurvey.model.StreetAddress;
 import com.mjict.signboardsurvey.model.ui.DemolishedSign;
 import com.mjict.signboardsurvey.model.ui.SignStatus;
@@ -27,9 +31,13 @@ import com.mjict.signboardsurvey.task.SearchDemolitionSignTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 import com.mjict.signboardsurvey.util.SettingDataManager;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
+import com.mjict.signboardsurvey.util.Utilities;
 import com.mjict.signboardsurvey.widget.SimpleSpinner;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Junseo on 2016-07-25.
@@ -38,7 +46,7 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
     private static final int REQUEST_MODIFY_DATA = 5822;
 
     private DemolishedSignActivity activity;
-    private List<Sign> searchList;
+    private List<SignInformation> searchList;
 
     @Override
     public void onActivityCreate(Bundle savedInstanceState) {
@@ -160,22 +168,22 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
         String secondNumber = activity.getInputSecondBuildingNumber();
 
         SearchDemolitionSignTask task = new SearchDemolitionSignTask(activity.getApplicationContext());
-        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<List<Sign>>() {
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<List<SignInformation>>() {
             @Override
             public void onTaskStart() {
                 activity.showWaitingDialog(R.string.searching);
                 activity.clearList();
             }
             @Override
-            public void onTaskFinished(List<Sign> result) {
+            public void onTaskFinished(List<SignInformation> result) {
                 activity.hideWaitingDialog();
 
                 searchList = result;
                 int n = result.size();
 
                 for(int i=0; i<n; i++) {
-                    Sign s = searchList.get(i);
-                    DemolishedSign ds = signToDemolishedSign(s);
+                    SignInformation si = searchList.get(i);
+                    DemolishedSign ds = signToDemolishedSign(si);
 
                     activity.addToList(ds);
                 }
@@ -192,7 +200,7 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
     }
 
     private void listRowClicked(int position, DemolishedSign data) {
-        Sign sign = searchList.get(position);
+        Sign sign = searchList.get(position).sign;
 
         Intent intent = new Intent(activity.getBaseContext(), SignInformationActivity.class);
         intent.putExtra(HANDLER_CLASS, SignInformationActivityHandler.class);
@@ -278,14 +286,16 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
     private void findSignAndReplace(Sign sign) {
         int position = -1;
         for(int i=0; i<searchList.size(); i++) {
-            Sign s = searchList.get(i);
+            Sign s = searchList.get(i).sign;
             if(s.getId() == sign.getId()) {
                 position = i;
             }
         }
         if(position != -1) {
-            searchList.set(position, sign);
-            DemolishedSign demolishedSign = signToDemolishedSign(sign);
+//            searchList.set(position, sign);
+            SignInformation si = searchList.get(position);
+            si.sign = sign;
+            DemolishedSign demolishedSign = signToDemolishedSign(si);
             activity.replaceListItem(position, demolishedSign);
 
             startToLoadImage(position);
@@ -296,7 +306,7 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
         if(searchList == null)
             return;
 
-        Sign sign = searchList.get(position);
+        Sign sign = searchList.get(position).sign;
         String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isSignPicModified());
         String demolPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isDemolishPicModified());
 
@@ -317,7 +327,7 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
         String[] signImagePaths = new String[n];
         String[] demolitionImagePaths = new String[n];
         for(int i=0; i<n; i++) {
-            Sign sign = searchList.get(i);
+            Sign sign = searchList.get(i).sign;
             String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isDemolishPicModified());
             String demolPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isDemolishPicModified());
             String signImagePath = signPicDir+sign.getPicNumber();
@@ -399,7 +409,11 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
 //        task.execute(sign);
 //    }
 
-    private DemolishedSign signToDemolishedSign(Sign sign) {
+    private DemolishedSign signToDemolishedSign(SignInformation info) {
+        Sign sign = info.sign;
+        Building building = info.building;
+        Shop shop = info.shop;
+
         SignStatus status = SignStatus.NORMAL;
         int labelColor = -1;
         String labelText = "";
@@ -414,19 +428,23 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
 
         SettingDataManager sdmgr = SettingDataManager.getInstance();
 
-        if(sign.getStatsCode().equals("1"))        // TODO 상수를 파일이나 다른 어딘가에 지정
+        if(sign.getStatsCode().equals("1"))// 폐업        // TODO 상수를 파일이나 다른 어딘가에 지정
+            status = SignStatus.SHUT_DOWN;
+        else if(sign.getStatsCode().equals("2")) // 철거
             status = SignStatus.DEMOLISHED;
-        else if(sign.getStatsCode().equals("2"))
+        else if(sign.getStatsCode().equals("3")) // 철거 예정
             status = SignStatus.TO_BE_DEMOLISH;
         else
             status = SignStatus.NORMAL;
 
-        boolean labelVisible = (status == SignStatus.DEMOLISHED || status == SignStatus.TO_BE_DEMOLISH) ? true : false;
+        boolean labelVisible = (status == SignStatus.NORMAL) ? false :true;
 
-        if(status == SignStatus.DEMOLISHED)
-            labelColor = Color.GRAY;
+        if(status == SignStatus.SHUT_DOWN)
+            labelColor = ContextCompat.getColor(activity, R.color.postit_color_1);
+        else if(status == SignStatus.DEMOLISHED)
+            labelColor = ContextCompat.getColor(activity, R.color.postit_color_2);
         else if(status == SignStatus.TO_BE_DEMOLISH)
-            labelColor = Color.GREEN;
+            labelColor = ContextCompat.getColor(activity, R.color.postit_color_3);
         else
             labelColor = Color.BLACK;
 
@@ -443,10 +461,21 @@ public class DemolishedSignActivityHandler extends SABaseActivityHandler {
         if(sign.getHeight() > 0)
             size = size +"X"+sign.getHeight();
         location = sign.getPlacedFloor()+"/"+sign.getTotalFloor();
-        date = sign.getInputDate();
+
+        Date time = Utilities.stringToDay(sign.getDemolishedDate());
+        if(time != null) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN);
+            date = format.format(time);
+        }
+
+        String address = building.getFirstBuildingNumber();
+        if(!building.getSecondBuildingNumber().equals("") && !building.getSecondBuildingNumber().equals("0"))
+            address = address + "-" +building.getSecondBuildingNumber();
+        address = address +" "+shop.getName();
+        boolean permitted = (sign.getTblNumber() == 310);
 
         DemolishedSign demolitionSign = new DemolishedSign(labelVisible, labelColor, labelText, status,
-                content, lightType, type, date,location, result, size, null, null);
+                content, lightType, type, date,location, result, size, null, null, permitted, address);
 
         return demolitionSign;
     }

@@ -1,6 +1,7 @@
 package com.mjict.signboardsurvey.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,6 +21,8 @@ public class AppDataConfiguration {
     public static final int MAX_RECENT_SIGN_COUNT = 10;
     public static final int MAX_RECENT_BUILDING_COUNT = 10;
     public static final int MAX_RECENT_KEYWORD_COUNT = 10;
+
+    public static final String USER_PROFILE_IMAGE = "user_profile_image";
 
     private static Properties properties = new Properties();
 
@@ -51,7 +54,7 @@ public class AppDataConfiguration {
         return sign;
     }
 
-    public static void clearRecent() {
+    public static void clearAll() {
         properties.clear();
     }
 
@@ -102,6 +105,18 @@ public class AppDataConfiguration {
         properties.setProperty(name, value);
     }
 
+    public static void setUserProfileImage(String uri) {
+        properties.setProperty(USER_PROFILE_IMAGE, uri);
+        Log.d("junseo", "setUserProfileImage "+uri);
+        Log.d("junseo", "setUserProfileImage - properties size: "+properties.size());
+    }
+
+    public static String getUserProfileImage() {
+        String value = properties.getProperty(USER_PROFILE_IMAGE);
+        return value;
+    }
+
+
     public static boolean load(Context context) {
 //        File propertyFile = context.getFileStreamPath(PROPERTY_FILE_NAME);
         // TODO 나중에 파일 경로 내부로 변경 =>
@@ -112,6 +127,8 @@ public class AppDataConfiguration {
         if(propertyFile.exists() == false)
             return false;
 
+        properties.clear();
+
         try {
             FileInputStream fis = new FileInputStream(propertyFile);
             properties.load(fis);
@@ -120,6 +137,8 @@ public class AppDataConfiguration {
             e.printStackTrace();
             return false;
         }
+
+        Log.d("junseo", "load - properties size: "+properties.size());
 
         return true;
     }
@@ -131,6 +150,8 @@ public class AppDataConfiguration {
         String propertyFilePath = dir+PROPERTY_FILE_NAME;
         File propertyFile = new File(propertyFilePath);
         FileOutputStream fos = new FileOutputStream(propertyFile);
+
+        Log.d("junseo", "save - properties size: "+properties.size());
 
         properties.store(fos, null);
     }

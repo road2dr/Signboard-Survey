@@ -40,12 +40,23 @@
             android:layout_alignParentTop="true"
             android:background="@color/colorPrimary">
             <com.mjict.signboardsurvey.widget.CircularImageView
+                android:id="@+id/user_profile_image_view"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="40dp"
                 android:src="@drawable/ic_user"/>
             <TextView
+                android:id="@+id/user_id_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_gravity="center_horizontal"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="USER"/>
+            <TextView
+                android:id="@+id/user_name_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:layout_gravity="center_horizontal"
@@ -53,14 +64,6 @@
                 android:textColor="@color/white"
                 android:gravity="center"
                 android:text="홍길동"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_gravity="center_horizontal"
-                android:textSize="15sp"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:text="서울시 동작구"/>
         </LinearLayout>
 
         <Button
@@ -146,6 +149,21 @@
             android:textSize="16sp"
             android:textColor="@color/navi_text_color"
             android:text="지도 검색"/>
+        <Button
+            android:id="@+id/add_address_button"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/map_search_button"
+            android:drawableRight="@drawable/ic_right_arrow"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:background="@drawable/btn_navigation_button"
+            android:textAlignment="textStart"
+            android:drawablePadding="30dp"
+            android:textSize="16sp"
+            android:textColor="@color/navi_text_color"
+            android:text="@string/add_address"/>
+
 
         <View
             android:layout_width="match_parent"

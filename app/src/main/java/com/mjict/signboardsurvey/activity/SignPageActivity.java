@@ -26,6 +26,8 @@ import com.mjict.signboardsurvey.widget.SignImageOptionDialog;
 import com.mjict.signboardsurvey.widget.SimpleSpinner;
 import com.mjict.signboardsurvey.widget.TimePickerDialog;
 
+import java.util.Date;
+
 /**
  * Created by Junseo on 2017-02-10.
  */
@@ -76,6 +78,7 @@ public class SignPageActivity extends SABaseActivity {
         super.init();
 
         this.setTitle(R.string.detail_sign_information);
+        this.disableNavigation();
 
         shopInfoExpandButton = (ImageButton)this.findViewById(R.id.shop_info_expand_button);
         shopInfoLayout = (JExpandableLinearLayout)this.findViewById(R.id.shop_info_Layout);
@@ -348,8 +351,8 @@ public class SignPageActivity extends SABaseActivity {
 //        adapter.setSizeEditTextOnClickListener(listener);
 //    }
 
-    public void setContentEditTextFocusChangeListener(SignViewPagerAdapter.ContentTextFocusChangedListener listener) {
-        adapter.setContentTextFocusChangedListener(listener);
+    public void setLastContentEditTextFocusChangeListener(SignViewPagerAdapter.ContentTextFocusChangedListener listener) {
+        adapter.setLastContentTextFocusChangedListener(listener);
     }
 
     public void setSignLengthText(int page, String text) {
@@ -392,8 +395,8 @@ public class SignPageActivity extends SABaseActivity {
         timePickerDialog.show();
     }
 
-    public void setTimeText(int page, String text) {
-        adapter.setDateText(page, text);
+    public void setTime(int page, Date time) {
+        adapter.setDate(page, time);
     }
 
     public void setContentText(int page, String text) {

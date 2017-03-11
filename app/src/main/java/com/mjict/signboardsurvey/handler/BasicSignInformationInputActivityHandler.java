@@ -21,6 +21,7 @@ import com.mjict.signboardsurvey.model.Setting;
 import com.mjict.signboardsurvey.model.Sign;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
 import com.mjict.signboardsurvey.task.LoadImageTask;
+import com.mjict.signboardsurvey.util.MJUtilities;
 import com.mjict.signboardsurvey.util.SettingDataManager;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
 import com.mjict.signboardsurvey.util.Utilities;
@@ -61,6 +62,9 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         if(autoJudgementValue == null)
             autoJudgementValue = new AutoJudgementValue();
 
+        boolean reviewSignMode = intent.getBooleanExtra(MJConstants.REVIEW_SIGN_MODE, false);
+        if(reviewSignMode)
+            showReviewMark();
 
         if(currentSign.getPicNumber() != null && currentSign.getPicNumber().equals("") == false)
             imagePath = SyncConfiguration.getDirectoryForSingPicture(currentSign.isSignPicModified())+currentSign.getPicNumber();
@@ -68,7 +72,7 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         SettingDataManager smgr = SettingDataManager.getInstance();
         statusSettings = smgr.getSignStatus();
         lightSettings = smgr.getLightTypes();
-        signTypeSettings = smgr.getSignTypes();
+        signTypeSettings = MJUtilities.filterFixedSignTypes(smgr.getSignTypes());   // 고정 광고물만 보여줌
 
         initSpinnerData();
 
@@ -113,6 +117,8 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
     boolean imageChanged = false;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if(requestCode == MJConstants.REQUEST_TAKE_AND_SAVE) {
             if(resultCode == Activity.RESULT_OK) {
                 Boolean result = data.getBooleanExtra(MJConstants.RESPONSE, false);
@@ -243,6 +249,18 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         activity.setFrontBackChecked(frontBackChecked);
     }
 
+    private void showReviewMark() { // 재조사 표시
+        if(currentSign == null)
+            return;
+
+        if(currentSign.getReviewCode().equals("4")) // 사진 필요
+            activity.showSignImageReviewMark();
+        if(currentSign.getReviewCode().equals("5")) // 위치 조사
+            activity.showLocationReviewMark();
+        if(currentSign.getReviewCode().equals("2")) // 규격 조사
+            activity.showSizeReviewMark();
+    }
+
     private void nextButtonClicked() {
         String content = activity.getInputContent();
         Setting statusSetting = (Setting)activity.getSelectedStatus();
@@ -277,6 +295,14 @@ public class BasicSignInformationInputActivityHandler extends SABaseActivityHand
         } catch (WrongNumberScopeException e) {
             Toast.makeText(activity, R.string.wrong_number_scope_input, Toast.LENGTH_SHORT).show();
             return;
+        }
+
+        // 돌출형 - 높이 유효성 체크
+        if(signTypeSetting.getCode().equals("03")) {
+            if(heightText.equals("")) {
+                Toast.makeText(activity, R.string.projected_sign_must_have_height, Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
         //

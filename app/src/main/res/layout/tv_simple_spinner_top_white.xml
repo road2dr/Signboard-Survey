@@ -5,8 +5,10 @@
     style="?android:attr/spinnerItemStyle"
     android:singleLine="true"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
     android:ellipsize="marquee"
     android:textAlignment="inherit"
-    android:textColor="@color/white"
-    android:background="@color/white"/>
+    android:textColor="@color/black"
+    android:background="@color/white"
+    android:drawableRight="@drawable/ic_spinner_sel"/>

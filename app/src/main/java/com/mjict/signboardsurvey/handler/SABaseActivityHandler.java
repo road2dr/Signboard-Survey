@@ -1,14 +1,20 @@
 package com.mjict.signboardsurvey.handler;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
+import com.mjict.signboardsurvey.MJConstants;
+import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.R;
+import com.mjict.signboardsurvey.activity.AddAddressActivity;
 import com.mjict.signboardsurvey.activity.AddressSearchActivity;
 import com.mjict.signboardsurvey.activity.DemolishedSignActivity;
 import com.mjict.signboardsurvey.activity.MapSearchActivity;
@@ -17,8 +23,11 @@ import com.mjict.signboardsurvey.activity.SABaseActivity;
 import com.mjict.signboardsurvey.activity.SettingActivity;
 import com.mjict.signboardsurvey.activity.SummaryActivity;
 import com.mjict.signboardsurvey.activity.UserDataSearchActivity;
+import com.mjict.signboardsurvey.model.User;
 import com.mjict.signboardsurvey.receiver.WiFiMonitor;
 import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
+import com.mjict.signboardsurvey.task.AsyncTaskListener;
+import com.mjict.signboardsurvey.task.LoadImageFromUriTask;
 import com.mjict.signboardsurvey.task.QuitTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
 
@@ -91,13 +100,48 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
             }
         });
 
+        activity.setUserProfileImageViewOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToGallery();
+            }
+        });
+
+        activity.setAddAddressButtonOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToAddAddress();
+            }
+        });
+
         if(wiFiMonitor == null) {
             wiFiMonitor = new WiFiMonitor(activity);
 //            activity.registerReceiver(wiFiMonitor, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         }
 
+        User user = MJContext.getCurrentUser();
+        if(user != null) {
+            activity.setUserIdText(user.getUserId());
+            activity.setUserNameText(user.getName());
+        }
+
+        String userProfileImage = MJContext.getProfileImage();
+        if(userProfileImage != null) {
+            startToLoadProfileImage(Uri.parse(userProfileImage));
+        }
+
         activity.registerReceiver(wiFiMonitor, new IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == MJConstants.REQUEST_IMAGE_FROM_GALLERY) {
+            if(resultCode== Activity.RESULT_OK) {
+                MJContext.setProfileImage(data.getData().toString());
+                startToLoadProfileImage(data.getData());
+            }
+        }
     }
 
     @Override
@@ -111,6 +155,25 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
             activity.unregisterReceiver(wiFiMonitor);
 
         super.onActivityDestroy();
+    }
+
+
+    private void startToLoadProfileImage(Uri uri) {
+        LoadImageFromUriTask task = new LoadImageFromUriTask(activity.getApplicationContext());
+        task.setDefaultAsyncTaskListener(new AsyncTaskListener<Bitmap, Boolean>() {
+            @Override
+            public void onTaskStart() {
+            }
+            @Override
+            public void onTaskProgressUpdate(Bitmap... values) {
+                if(values != null && values.length > 0)
+                activity.setUserProfileImage(values[0]);
+            }
+            @Override
+            public void onTaskFinished(Boolean result) {
+            }
+        });
+        task.execute(uri);
     }
 
     private void goToAddressSearch() {
@@ -161,6 +224,13 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
         activity.startActivity(intent);
     }
 
+    private void goToGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+        intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        activity.startActivityForResult(intent, MJConstants.REQUEST_IMAGE_FROM_GALLERY);
+    }
+
     private void askAndQuit() {
         activity.closeDrawer();
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -207,7 +277,14 @@ public class SABaseActivityHandler extends DefaultSActivityHandler {
         activity.startActivity(intent);
     }
 
+    protected void goToAddAddress() {
+        activity.closeDrawer();
 
+        Intent intent = new Intent(activity, AddAddressActivity.class);
+        intent.putExtra(HANDLER_CLASS, AddAddressActivityHandler.class);
+
+        activity.startActivity(intent);
+    }
 
 
 

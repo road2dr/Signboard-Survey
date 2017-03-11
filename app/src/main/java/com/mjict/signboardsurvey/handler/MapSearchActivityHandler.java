@@ -48,7 +48,7 @@ public class MapSearchActivityHandler extends SABaseActivityHandler {
     private static GpsStatus gpsStatus;
 
     private List<Building> searchResult;
-
+//    private Building currentBuilding;
 
     @Override
     public void onActivityCreate(Bundle savedInstanceState) {
@@ -69,6 +69,9 @@ public class MapSearchActivityHandler extends SABaseActivityHandler {
                 myLocationButtonClicked();
             }
         });
+
+//        Intent intent = activity.getIntent();
+//        currentBuilding = (Building) intent.getSerializableExtra(MJConstants.BUILDING);
 
         //
         if(lastLocation != null) {
@@ -105,16 +108,10 @@ public class MapSearchActivityHandler extends SABaseActivityHandler {
         boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if(gpsEnabled == false) {
             // TODO GPS 꺼져 있음.
-
-//            String text = activity.getString(R.string.gps_has_turned_off);
-//            activity.setCurrentLocationText(text);
             activity.setStatusText(R.string.gps_is_off_cannot_use_map_search);
             gpsStatus = GpsStatus.OFF;
         } else {
             if(lastLocation == null) {
-//                String statusText = activity.getString(R.string.searching);
-//                String text = activity.getString(R.string.current_location_colon, statusText);
-//                activity.setCurrentLocationText(text);
                 gpsStatus = GpsStatus.SEARCHING;
                 activity.setStatusText(R.string.searching_around_buildings);
             } else {
@@ -122,56 +119,9 @@ public class MapSearchActivityHandler extends SABaseActivityHandler {
                 gpsStatus = GpsStatus.FOUND_LOCATION;
             }
         }
-
-
-//        this.setSubLocationListener(new LocationListener() {
-//            @Override
-//            public void onLocationChanged(Location location) {
-//                activity.setCurrentMarkerLocation(location);    // TODO 위치 바뀔때 마다 변화는지 확인 해야 하는데 알아낼 방법이 없네
-//            }
-//            @Override
-//            public void onStatusChanged(String provider, int status, Bundle extras) {
-//            }
-//            @Override
-//            public void onProviderEnabled(String provider) {
-//            }
-//            @Override
-//            public void onProviderDisabled(String provider) {
-//                // TODO 내 위치 마커를 지워
-//            }
-//        });
-
     }
 
     private void startToFindAroundBuildings(final Location location, Address address) {
-//        SearchBuildingBySimpleAddressTask task = new SearchBuildingBySimpleAddressTask(activity.getApplicationContext());
-//        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<List<Building>>() {
-//            @Override
-//            public void onTaskStart() {
-//                Log.d("junseo", "search start");
-//                activity.showWaitingDialog(R.string.searching_around_buildings);
-////                activity
-//            }
-//            @Override
-//            public void onTaskFinished(List<Building> buildings) {
-//                activity.hideWaitingDialog();
-//                Log.d("junseo", "search finished");
-//
-//                if(buildings == null) {
-//                    Toast.makeText(activity, R.string.error_occurred_while_search_buildings, Toast.LENGTH_SHORT);
-//                    return;
-//                }
-//
-//                if(buildings.size() <= 0) {
-//                    Toast.makeText(activity, R.string.there_are_no_buildings_be_searched, Toast.LENGTH_SHORT);
-//                    return;
-//                }
-//
-//                startToFindBuildingImageAndInfo(buildings);
-//            }
-//        });
-//        task.execute(address);
-
 
         SearchAroundBuildingByLocation task = new SearchAroundBuildingByLocation(activity.getApplicationContext());
         task.setTargetAddress(address);
@@ -198,6 +148,9 @@ public class MapSearchActivityHandler extends SABaseActivityHandler {
                 }
 
                 searchResult = buildings;
+//                if(currentBuilding != null)
+//                    searchResult.add(0, currentBuilding);
+
                 startToFindBuildingImageAndInfo();
             }
         });
@@ -235,7 +188,7 @@ public class MapSearchActivityHandler extends SABaseActivityHandler {
                 String address = b.getProvince()+" "+b.getCounty()+" "+b.getTown()
                         +" "+b.getStreetName()+" "+b.getFirstBuildingNumber();
 
-                if(b.getSecondBuildingNumber() != null && b.getSecondBuildingNumber().equals("") == false)
+                if(!b.getSecondBuildingNumber().equals("") && !b.getSecondBuildingNumber().equals("0"))
                     address = address+"-"+b.getSecondBuildingNumber();
 
                 String infoText = "간판: "+info.signs.size()+"개";

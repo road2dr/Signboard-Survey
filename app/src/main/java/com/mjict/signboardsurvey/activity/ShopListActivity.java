@@ -1,11 +1,11 @@
 package com.mjict.signboardsurvey.activity;
 
 import android.graphics.Bitmap;
-import android.support.v7.widget.PopupMenu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -21,6 +21,7 @@ import com.mjict.signboardsurvey.widget.ShopOptionDialog;
 public class ShopListActivity extends SABaseActivity {
 
     private View buildingInfoView;
+    private ImageButton addShopButton;
     private ImageView buildingImageView;
     private TextView buildingNameTextView;
     private TextView streetAddressTextView;
@@ -31,10 +32,15 @@ public class ShopListActivity extends SABaseActivity {
     private RadioGroup listOptionRadioGroup;
     private ShopOptionDialog shopOptionDialog;
 
-//    private ImageButton addButton;
+    private RadioGroup sortRadioGroup;
+    private RadioButton nameSortRadio;
+//    private RadioButton timeSortRadio;
 
-    private OnOptionMenuItemClickListener optionMenuItemClickListener;
     private OnShopListItemClickListener listItemClickListener;
+    private OnSortButtonClickListener sortButtonClickListener;
+//    private boolean checkChanged = false;
+    private boolean nameSortReversed = false;
+//    private boolean timeSortReversed = false;
 
     @Override
     protected int getContentLayout() {
@@ -45,21 +51,22 @@ public class ShopListActivity extends SABaseActivity {
     protected void init() {
         super.init();
         this.setTitle(R.string.shop_list);
-        this.showOptionButton();
-        this.inflateOptionMenu(R.menu.option_menu_building_information);
-        this.setOnOptionMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.add_shop:
-                        if(optionMenuItemClickListener != null)
-                            optionMenuItemClickListener.addShopClicked();
-                        break;
-                }
-                return true;
-            }
-        });
+//        this.showOptionButton();
+//        this.inflateOptionMenu(R.menu.option_menu_building_information);
+//        this.setOnOptionMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.add_shop:
+//                        if(optionMenuItemClickListener != null)
+//                            optionMenuItemClickListener.addShopClicked();
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
 
+        addShopButton = (ImageButton)this.findViewById(R.id.add_shop_button);
         buildingImageView = (ImageView)this.findViewById(R.id.building_image_view);
         buildingNameTextView = (TextView)this.findViewById(R.id.building_name_text_view);
         streetAddressTextView = (TextView)this.findViewById(R.id.street_address_text_view);
@@ -69,6 +76,10 @@ public class ShopListActivity extends SABaseActivity {
         twoShopAdapter = new TwoShopListAdapter(this);
         threeShopListAdapter = new ThreeShopListAdapter(this);
         shopListView.setAdapter(twoShopAdapter);
+
+        sortRadioGroup = (RadioGroup)this.findViewById(R.id.sort_radio_group);
+        nameSortRadio = (RadioButton)this.findViewById(R.id.name_sort_radio);
+//        timeSortRadio = (RadioButton)this.findViewById(R.id.time_sort_radio);
 
         shopOptionDialog = new ShopOptionDialog(this);
         shopOptionDialog.show();
@@ -119,55 +130,39 @@ public class ShopListActivity extends SABaseActivity {
             }
         });
 
-//        addButton = new ImageButton(this);
-//        addButton.setImageResource(R.drawable.btn_plus_sel);
-//        addButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
-//        addButton.setBackground(null);
-//        addButton.setOnClickListener(new View.OnClickListener() {
+
+//        sortRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 //            @Override
-//            public void onClick(View v) {
-//                Log.d("junseo", "plus clicked");
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                checkChanged = true;
 //            }
 //        });
 
-//        buildingInfoView.setOnClickListener(new View.OnClickListener() {
+        nameSortRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nameSortReversed = !nameSortReversed;
+                int resId = nameSortReversed ? R.drawable.ic_sort_arrow_down : R.drawable.ic_sort_arrow_up;
+                nameSortRadio.setCompoundDrawablesWithIntrinsicBounds(0, 0, resId, 0);
+                if(sortButtonClickListener != null)
+                    sortButtonClickListener.onNameSortClicked(nameSortReversed);
+            }
+        });
+
+//        timeSortRadio.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                Intent intent = new Intent(ShopListActivity.this, BuildingProfileActivity.class);
-//                intent.putExtra(SActivityHandler.HANDLER_CLASS, BuildingProfileActivityHandler.class);
-//                startActivity(intent);
+//                if(checkChanged) {
+//                    checkChanged = false;
+//                    return;
+//                }
+//                timeSortReversed = !timeSortReversed;
+//                int resId = timeSortReversed ? R.drawable.ic_sort_arrow_down : R.drawable.ic_sort_arrow_up;
+//                timeSortRadio.setCompoundDrawablesWithIntrinsicBounds(0, 0, resId, 0);
+//                if(sortButtonClickListener != null)
+//                    sortButtonClickListener.onTimeSortClicked(timeSortReversed);
 //            }
 //        });
-//
-//        shopListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if(position == 0) {
-//                    Intent intent = new Intent(ShopListActivity.this, SignListRecentStyleActivity.class);
-//                    intent.putExtra(SActivityHandler.HANDLER_CLASS, SignListRecentActivityHandler.class);
-//                    startActivity(intent);
-//                }
-//
-//                if(position == 1) {
-//                    Intent intent = new Intent(ShopListActivity.this, SignListCoverFlowActivity.class);
-//                    intent.putExtra(SActivityHandler.HANDLER_CLASS, SignListCoverFlowActivityHandler.class);
-//                    startActivity(intent);
-//                }
-//
-//                if(position == 2) {
-//                    Intent intent = new Intent(ShopListActivity.this, SignListActivity.class);
-//                    intent.putExtra(SActivityHandler.HANDLER_CLASS, SignListActivityHandler.class);
-//                    startActivity(intent);
-//                }
-//
-//                if(position == 3) {
-//                    Intent intent = new Intent(ShopListActivity.this, SignListPagerActivity.class);
-//                    intent.putExtra(SActivityHandler.HANDLER_CLASS, SignListPagerActivityHandler.class);
-//                    startActivity(intent);
-//                }
-//            }
-//        });
-
 
     }
 
@@ -191,11 +186,22 @@ public class ShopListActivity extends SABaseActivity {
         super.onDestroy();
     }
 
+    public void setAddShopButtonOnClickListener(View.OnClickListener listener) {
+        addShopButton.setOnClickListener(listener);
+    }
+
+    public void setOnSortButtonClickListener(OnSortButtonClickListener listener) {
+        sortButtonClickListener = listener;
+    }
+
     public void setBuildingInfoViewOnClickListener(View.OnClickListener listener) {
         buildingInfoView.setOnClickListener(listener);
     }
     public void setBuildingImage(Bitmap image) {
-        buildingImageView.setImageBitmap(image);
+        if(image != null)
+            buildingImageView.setImageBitmap(image);
+        else
+            buildingImageView.setImageResource(R.drawable.ic_building);
     }
 
     public void setBuildingName(String name) {
@@ -210,9 +216,9 @@ public class ShopListActivity extends SABaseActivity {
         houseAddressTextView.setText(address);
     }
 
-    public void setOptionMenuItemClickListener(OnOptionMenuItemClickListener listener) {
-        optionMenuItemClickListener = listener;
-    }
+//    public void setOptionMenuItemClickListener(OnOptionMenuItemClickListener listener) {
+//        optionMenuItemClickListener = listener;
+//    }
 
     public void addToList(ShopInfo info) {
         twoShopAdapter.add(info);
@@ -276,5 +282,9 @@ public class ShopListActivity extends SABaseActivity {
     public static interface OnShopListItemClickListener {
         public void onShopItemClicked(int index);
         public void onShopItemLongClicked(int index);
+    }
+
+    public interface OnSortButtonClickListener {
+        public void onNameSortClicked(boolean reversed);
     }
 }

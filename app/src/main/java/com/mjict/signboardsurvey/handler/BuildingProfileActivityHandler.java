@@ -110,6 +110,8 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if(requestCode == MJConstants.REQUEST_BUILDING_PICTURE) {
             if(resultCode == Activity.RESULT_OK) {
                 pictures = (ArrayList<BuildingPicture>)data.getSerializableExtra(MJConstants.BUILDING_PICTURE_LIST);
@@ -266,10 +268,12 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
 
 
                 activity.setImageCount(pictures.size());
-                Log.d("junseo", "??1");
+
                 if(pictures.size() > 0) {
                     activity.setCurrentPage(0);
                     startToLoadImage(0);    // 버그 - viewpager 버그 같음. 첫번째 에는 setCurrentPage 에 의해 OnPageChangeListener 가 호출 안된다
+                } else {
+                    activity.setNoImageViewVisible(true);
                 }
             }
         });
@@ -285,6 +289,7 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
         task.setDefaultAsyncTaskListener(new AsyncTaskListener<IndexBitmap, Boolean>() {
             @Override
             public void onTaskStart() {
+                activity.setNoImageViewVisible(false);
             }
             @Override
             public void onTaskProgressUpdate(IndexBitmap... image) {
@@ -316,13 +321,13 @@ public class BuildingProfileActivityHandler extends SABaseActivityHandler {
 
     private void updateUI() {
         String buildingNumber = currentBuilding.getFirstBuildingNumber();
-        if(currentBuilding.getSecondBuildingNumber().equals("") == false)
-            buildingNumber = buildingNumber + "_" +currentBuilding.getSecondBuildingNumber();
+        if(!currentBuilding.getSecondBuildingNumber().equals("") && !currentBuilding.getSecondBuildingNumber().equals("0"))
+            buildingNumber = buildingNumber + "-" +currentBuilding.getSecondBuildingNumber();
 
         String baseAddress = currentBuilding.getProvince()+" "+currentBuilding.getCounty()+" "+currentBuilding.getTown();
         String streetAddress = baseAddress + currentBuilding.getStreetName() + " "+buildingNumber;
         String houseAddress = baseAddress + " "+currentBuilding.getVillage() + currentBuilding.getHouseNumber();
-        String title = currentBuilding.getName().equals("") ? buildingNumber : currentBuilding.getName();
+        String title = currentBuilding.getName().equals("") ? buildingNumber : buildingNumber+" "+currentBuilding.getName();
         String signInfoText = activity.getString(R.string.number_of_case, signs.size());
         String shopInfoText = activity.getString(R.string.number_of_case, shops.size());
 

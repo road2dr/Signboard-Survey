@@ -7,14 +7,13 @@
     android:paddingBottom="0dp">
 
     <RelativeLayout
+        android:id="@+id/first_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
         <LinearLayout
-            android:id="@+id/first_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical"
             android:background="@drawable/bg_white_box"
             android:padding="10dp"
@@ -73,17 +72,26 @@
             android:src="@drawable/ic_closed"
             android:background="@null"
             android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/first_permission_view"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_permission_p"
+            android:background="@null"/>
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/second_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
         <LinearLayout
-            android:id="@+id/second_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical"
             android:background="@drawable/bg_white_box"
             android:padding="10dp"
@@ -142,6 +150,16 @@
             android:src="@drawable/ic_closed"
             android:background="@null"
             android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/second_permission_view"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_permission_p"
+            android:background="@null"/>
     </RelativeLayout>
 
 </LinearLayout>

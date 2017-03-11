@@ -16,16 +16,19 @@ public class ThreeShopRowViewHolder {
     private TextView firstCategoryTextView;
     private TextView firstPhoneTextView;
     private View firstClosedView;
+    private View firstPermissionView;
     private View secondLayout;
     private TextView secondNameTextView;
     private TextView secondCategoryTextView;
     private TextView secondPhoneTextView;
     private View secondClosedView;
+    private View secondPermissionView;
     private View thirdLayout;
     private TextView thirdNameTextView;
     private TextView thirdCategoryTextView;
     private TextView thirdPhoneTextView;
     private View thirdClosedView;
+    private View thirdPermissionView;
 
     public ThreeShopRowViewHolder(View v) {
         parent = v;
@@ -134,5 +137,26 @@ public class ThreeShopRowViewHolder {
             thirdClosedView = parent.findViewById(R.id.third_closed_view);
 
         return thirdClosedView;
+    }
+
+    public View getFirstPermissionView() {
+        if(firstPermissionView == null)
+            firstPermissionView = parent.findViewById(R.id.first_permission_view);
+
+        return firstPermissionView;
+    }
+
+    public View getSecondPermissionView() {
+        if(secondPermissionView == null)
+            secondPermissionView = parent.findViewById(R.id.second_permission_view);
+
+        return secondPermissionView;
+    }
+
+    public View getThirdPermissionView() {
+        if(thirdPermissionView == null)
+            thirdPermissionView = parent.findViewById(R.id.third_permission_view);
+
+        return thirdPermissionView;
     }
 }

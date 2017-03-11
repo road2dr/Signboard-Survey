@@ -68,7 +68,6 @@ public class ShopInputActivityHandler extends SABaseActivityHandler {
 
         String shopName = activity.getInputShopName();
         String phone = activity.getInputPhone();
-        Setting conditionSetting = (Setting) activity.getSelectedCondition();
         Setting categorySetting = (Setting)activity.getSelectedCategory();
 
         if(shopName.equals("")) {
@@ -78,7 +77,6 @@ public class ShopInputActivityHandler extends SABaseActivityHandler {
 
         currentShop.setName(shopName);
         currentShop.setPhoneNumber(phone);
-        currentShop.setBusinessCondition(conditionSetting.getCode());
         currentShop.setCategory(categorySetting.getCode());
 
         Intent responseIntent = new Intent();
@@ -90,12 +88,9 @@ public class ShopInputActivityHandler extends SABaseActivityHandler {
     private void initSpinner() {
         SettingDataManager smgr = SettingDataManager.getInstance();
         Setting[] categories = smgr.getShopCategories();
-        Setting[] conditions = smgr.getShopConditions();
 
         for(int i=0; i<categories.length; i++)
             activity.addToCategorySpinner(categories[i].getCode(), categories[i]);
-        for(int i=0; i<conditions.length; i++)
-            activity.addToConditionSpinner(conditions[i].getCode(), conditions[i]);
     }
 
     private void updateUI() {
@@ -104,7 +99,6 @@ public class ShopInputActivityHandler extends SABaseActivityHandler {
 
         activity.setShopNameText(currentShop.getName());
         activity.setPhoneText(currentShop.getPhoneNumber());
-        activity.setConditionSelection(currentShop.getBusinessCondition());
         activity.setCategorySelection(currentShop.getCategory());
     }
 

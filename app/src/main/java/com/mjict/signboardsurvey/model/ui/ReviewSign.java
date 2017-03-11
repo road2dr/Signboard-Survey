@@ -16,12 +16,15 @@ public class ReviewSign {
     public String size;
     public String location;
     public String date;
+    public String address;
+    public boolean permitted;
 
 //    public Sign sign;
 //    public Shop shop;
 
     public ReviewSign(Bitmap signImage, String status, String type, String content,
-                      String lightType, String result, String size, String location, String date) {
+                      String lightType, String result, String size, String location, String date,
+                      String address, boolean permitted) {
         this.signImage = signImage;
         this.status = status;
         this.type = type;
@@ -31,5 +34,7 @@ public class ReviewSign {
         this.size = size;
         this.location = location;
         this.date = date;
+        this.address = address;
+        this.permitted = permitted;
     }
 }

@@ -19,17 +19,19 @@ import com.mjict.signboardsurvey.model.ui.BuildingResult;
  */
 public class SearchResultActivity extends SABaseActivity {
 
+    private View addressResultView;
     private LinearLayout addressResultLayout;
-    private TextView addressResultLabel;
     private TextView addressResultMoreButton;
 
+    private View buildingResultView;
     private LinearLayout buildingResultLayout;
-    private TextView buildingResultLabel;
     private TextView buildingResultMoreButton;
 
+    private View shopResultView;
     private LinearLayout shopResultLayout;
-    private TextView shopResultLabel;
     private TextView shopResultMoreButton;
+
+    private TextView noResultTextView;
 
     private SearchResultItemOnClickListener searchResultItemOnClickListener;
 
@@ -44,15 +46,18 @@ public class SearchResultActivity extends SABaseActivity {
         inflater = LayoutInflater.from(this);
 
         //
+        addressResultView = this.findViewById(R.id.address_result_view);
         addressResultLayout = (LinearLayout)this.findViewById(R.id.address_result_layout);
-        addressResultLabel = (TextView)this.findViewById(R.id.address_result_label);
         addressResultMoreButton = (TextView)this.findViewById(R.id.address_result_more_button);
+
+        buildingResultView = this.findViewById(R.id.building_result_view);
         buildingResultLayout = (LinearLayout)this.findViewById(R.id.building_result_layout);
-        buildingResultLabel = (TextView)this.findViewById(R.id.building_result_label);
         buildingResultMoreButton = (TextView)this.findViewById(R.id.building_result_more_button);
+
+        shopResultView = this.findViewById(R.id.shop_result_view);
         shopResultLayout = (LinearLayout)this.findViewById(R.id.shop_result_layout);
-        shopResultLabel = (TextView)this.findViewById(R.id.shop_result_label);
         shopResultMoreButton = (TextView)this.findViewById(R.id.shop_result_more_button);
+        noResultTextView = (TextView)this.findViewById(R.id.no_result_text_view);
     }
 
     public void addAddressResult(String result, int index, int length) {
@@ -119,14 +124,14 @@ public class SearchResultActivity extends SABaseActivity {
         buildingResultLayout.addView(view, params);
     }
 
-    public void addShopResult(String result, int index, int length) {
+    public void addShopResult(String result, int index, int length, String streetAddress) {
         TextView tv = (TextView)inflater.inflate(R.layout.tv_search_result_address, null);
         SpannableStringBuilder ssb = new SpannableStringBuilder(result);
         ssb.setSpan(new AbsoluteSizeSpan(70), index, index+length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.append("\n"+streetAddress);
         tv.setText(ssb);
         tv.setTag(shopResultLayout.getChildCount());
-        final int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics());
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         if(shopResultLayout.getChildCount() > 0) {
             params.setMargins(0, 5, 0, 0);
         }
@@ -173,23 +178,32 @@ public class SearchResultActivity extends SABaseActivity {
 
     public void setAddressResultVisible(boolean visible) {
         int visibility = visible ? View.VISIBLE : View.GONE;
-        addressResultLabel.setVisibility(visibility);
-        addressResultLayout.setVisibility(visibility);
-        addressResultMoreButton.setVisibility(visibility);
+        addressResultView.setVisibility(visibility);
+
+//        addressResultLabel.setVisibility(visibility);
+//        addressResultLayout.setVisibility(visibility);
+//        addressResultMoreButton.setVisibility(visibility);
     }
 
     public void setBuildingResultVisible(boolean visible) {
         int visibility = visible ? View.VISIBLE : View.GONE;
-        buildingResultLabel.setVisibility(visibility);
-        buildingResultLayout.setVisibility(visibility);
-        buildingResultMoreButton.setVisibility(visibility);
+        buildingResultView.setVisibility(visibility);
+//        buildingResultLabel.setVisibility(visibility);
+//        buildingResultLayout.setVisibility(visibility);
+//        buildingResultMoreButton.setVisibility(visibility);
     }
 
     public void setShopResultVisible(boolean visible) {
         int visibility = visible ? View.VISIBLE : View.GONE;
-        shopResultLabel.setVisibility(visibility);
-        shopResultLayout.setVisibility(visibility);
-        shopResultMoreButton.setVisibility(visibility);
+        shopResultView.setVisibility(visibility);
+//        shopResultLabel.setVisibility(visibility);
+//        shopResultLayout.setVisibility(visibility);
+//        shopResultMoreButton.setVisibility(visibility);
+    }
+
+    public void setNoResultTextViewVisible(boolean visible) {
+        int visibility = visible ? View.VISIBLE : View.GONE;
+        noResultTextView.setVisibility(visibility);
     }
 
     public void setSearchResultItemOnClickListener(SearchResultItemOnClickListener listener) {

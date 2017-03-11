@@ -12,6 +12,7 @@ import com.mjict.signboardsurvey.MJConstants;
 import com.mjict.signboardsurvey.MJContext;
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.CameraActivity;
+import com.mjict.signboardsurvey.activity.PictureActivity;
 import com.mjict.signboardsurvey.activity.SignMeasureActivity;
 import com.mjict.signboardsurvey.activity.SignPageActivity;
 import com.mjict.signboardsurvey.adapter.SignViewPagerAdapter;
@@ -26,6 +27,7 @@ import com.mjict.signboardsurvey.sframework.DefaultSActivityHandler;
 import com.mjict.signboardsurvey.task.ModifySignTask;
 import com.mjict.signboardsurvey.task.RegisterSignTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
+import com.mjict.signboardsurvey.util.MJUtilities;
 import com.mjict.signboardsurvey.util.SettingDataManager;
 import com.mjict.signboardsurvey.util.SyncConfiguration;
 import com.mjict.signboardsurvey.util.Utilities;
@@ -151,15 +153,13 @@ public class SignPageActivityHandler extends DefaultSActivityHandler {
                     @Override
                     public void onClicked(Date time) {
                         activity.hideTimePickerDialog();
-                        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.KOREAN);
-                        String timeText = format.format(time);
-                        activity.setTimeText(index, timeText);
+                        activity.setTime(index, time);
                     }
                 });
             }
         });
 
-        activity.setContentEditTextFocusChangeListener(new SignViewPagerAdapter.ContentTextFocusChangedListener() {
+        activity.setLastContentEditTextFocusChangeListener(new SignViewPagerAdapter.ContentTextFocusChangedListener() {
             @Override
             public void onFocusChange(int page, boolean hasFocus) {
                 if(hasFocus == true)
@@ -255,6 +255,12 @@ public class SignPageActivityHandler extends DefaultSActivityHandler {
                 isChanged = true;
                 break;
             }
+        }
+
+        // 마지막 페이지 입력 된거 있는지 체크
+        if(isChanged == false) {
+            SignInputData data = activity.getCurrentInputData(signs.size());
+            isChanged = checkChangeLast(data);
         }
 
         if(isChanged == true) {
@@ -396,10 +402,10 @@ public class SignPageActivityHandler extends DefaultSActivityHandler {
 //    }
 
     private void moveToPictureActivity(String path) {
-//        Intent intent = new Intent(activity.getApplicationContext(), PictureActivity.class);
-//        intent.putExtra(HANDLER_CLASS, SignPictureActivityHandler.class);
-//        intent.putExtra(SignPictureActivityHandler.FILE_PATH, path);
-//        activity.startActivity(intent);     // TODO 나중에 result 받아서 사진 보기 화면에서 사진 변경 할 경우
+        Intent intent = new Intent(activity.getApplicationContext(), PictureActivity.class);
+        intent.putExtra(HANDLER_CLASS, SignPictureActivityHandler.class);
+        intent.putExtra(MJConstants.PATH, path);
+        activity.startActivity(intent);     // TODO 나중에 result 받아서 사진 보기 화면에서 사진 변경 할 경우
     }
 
 //    private void inputDataChanged(int page, SignInputData inputData) {
@@ -542,6 +548,15 @@ public class SignPageActivityHandler extends DefaultSActivityHandler {
             return;
         }
 
+        // 돌출형 - 높이 유효성 체크
+        String signType = (String)inputData.signType;
+        if(signType.equals("03")) {
+            if(inputData.height.equals("")) {
+                Toast.makeText(activity, R.string.projected_sign_must_have_height, Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
         if(index >= signs.size()) {
             // 새로 입력
             Toast.makeText(activity, "새로운 데이터", Toast.LENGTH_SHORT).show();
@@ -627,11 +642,12 @@ public class SignPageActivityHandler extends DefaultSActivityHandler {
         }
 
         if(sign.getDemolishedDate() != null) {
-            if (sign.getDemolishedDate().equals(inputData.demolishDate) == false) {
+            String demolishDate = Utilities.dayToString(inputData.demolishDate);
+            if (sign.getDemolishedDate().equals(demolishDate) == false) {
                 return true;
             }
         } else {
-            if (inputData.demolishDate != null && inputData.demolishDate.isEmpty() == false) {
+            if ((inputData.demolishDate != null) == false) {
                 return true;
             }
         }
@@ -643,6 +659,43 @@ public class SignPageActivityHandler extends DefaultSActivityHandler {
         if(sign.getUniqueness().equals(inputData.uniqueness) == false)
             return true;
         if(sign.getMemo().equals(inputData.memo) == false)
+            return true;
+
+        return false;
+    }
+
+    private boolean checkChangeLast(SignInputData inputData) {
+        if(inputData.signImagePath.equals("") == false)
+            return true;
+        if(inputData.demolishImagePath.equals("") == false)
+            return true;
+        if(inputData.content.equals("") == false)
+            return true;
+        if(inputData.width.equals("") == false)
+            return true;
+        if(inputData.length.equals("") == false)
+            return true;
+        if(inputData.height.equals("") == false)
+            return true;
+        if(inputData.isFront)
+            return true;
+        if(inputData.isIntersection)
+            return true;
+        if(inputData.isFrontBack)
+            return true;
+        if(inputData.placedFloor.equals("") == false)
+            return true;
+        if(inputData.totalFloor.equals("") == false)
+            return true;
+        if(inputData.collisionWidth.equals("") == false)
+            return true;
+        if(inputData.collisionLength.equals("") == false)
+            return true;
+        if(inputData.isCollision)
+            return true;
+        if(inputData.demolishDate != null)
+            return true;
+        if(inputData.memo.equals("") == false)
             return true;
 
         return false;
@@ -842,7 +895,7 @@ public class SignPageActivityHandler extends DefaultSActivityHandler {
             activity.addToShopCategorySpinner(s.getCode(), s);
         }
 
-        Setting[] signTypes = sdm.getSignTypes();
+        Setting[] signTypes = MJUtilities.filterFixedSignTypes(sdm.getSignTypes());   // 고정 광고물만 보여줌
         for (int i = 0; i < signTypes.length; i++) {
             Setting s = signTypes[i];
             activity.addToTypeSpinner(new SimpleSpinner.SpinnerItem(s.getCode(), s));
@@ -1035,7 +1088,9 @@ public class SignPageActivityHandler extends DefaultSActivityHandler {
         String demolishImagePath = "";
         if(sign.getDemolitionPicPath() != null && sign.getDemolitionPicPath().isEmpty() == false)
             demolishImagePath = SyncConfiguration.getDirectoryForSingPicture(sign.isDemolishPicModified())+sign.getDemolitionPicPath();
-        String demolishDate = sign.getDemolishedDate();
+//        String demolishDate =
+        Date demolishDate = Utilities.stringToDay(sign.getDemolishedDate());
+
         Object inspectionResult = sign.getInspectionResult();
 
         SignInputData inputData = new SignInputData(signImagePath, content, signType, signStats, width,
@@ -1082,7 +1137,7 @@ public class SignPageActivityHandler extends DefaultSActivityHandler {
         int tblNumber = 510;
         boolean isFrontBackRoad = inputData.isFrontBack;
         String demolitionPicPath = inputData.demolishImagePath.substring(inputData.demolishImagePath.lastIndexOf("/")+1);;
-        String demolishedDate = inputData.demolishDate;
+        String demolishedDate = Utilities.dayToString(inputData.demolishDate);
         String reviewCode = (String)inputData.reviewStats;
         long shopId = -1;
         int addressId = -1;
@@ -1152,7 +1207,7 @@ public class SignPageActivityHandler extends DefaultSActivityHandler {
         String installSide = (String)inputData.installSide;
         String uniqueness = (String)inputData.uniqueness;
         String memo = inputData.memo;
-        String demolishDate = inputData.demolishDate;
+        String demolishDate = Utilities.dayToString(inputData.demolishDate);
         String inspectionResult = (String) inputData.inspectionResult;
 
         tempSign.setPicNumber(signImagePath);

@@ -159,22 +159,26 @@ public class ShopAndSignListAdapter extends BaseExpandableListAdapter {
 
         ShopAndSign data = dataList.get(groupPosition);
 
+        // TODO holder 페턴으로 묶자
         TextView ownerTextView = (TextView)v.findViewById(R.id.owner_text_view);
         TextView shopNameTextView = (TextView)v.findViewById(R.id.shop_name_text_view);
         TextView categoryTextView = (TextView)v.findViewById(R.id.shop_category_text_view);
         TextView signCountTextView = (TextView)v.findViewById(R.id.sign_count_text_view);
         final ImageButton optionButton = (ImageButton)v.findViewById(R.id.option_button);
+        View permitView = v.findViewById(R.id.permit_view);
 
         String representative = data.shop.representative;
         String name = data.shop.name;
         String category = data.shop.category;
         int signCount = (data.signs == null) ? 0 : data.signs.size();
         String countText = context.getString(R.string.number_of_case, signCount);
+        int permitViewVisibility = data.shop.permitted ? View.VISIBLE : View.GONE;
 
         ownerTextView.setText(representative);
         shopNameTextView.setText(name);
         categoryTextView.setText(category);
         signCountTextView.setText(countText);
+        permitView.setVisibility(permitViewVisibility);
 
         optionButton.setFocusable(false);
         optionButton.setOnClickListener(new View.OnClickListener() {
@@ -211,12 +215,19 @@ public class ShopAndSignListAdapter extends BaseExpandableListAdapter {
         String location = sign.location;
         String light = sign.light;
         String result = sign.result;
+        int permitVisibility = sign.permitted ? View.VISIBLE : View.GONE;
 
         holder.getTypeTextView().setText(type);
         holder.getSizeTextView().setText(size);
         holder.getLocationTextView().setText(location);
         holder.getLightTextView().setText(light);
         holder.getResultTextView().setText(result);
+        holder.getPermitView().setVisibility(permitVisibility);
+
+        boolean labelVisible = sign.labelVisible;
+        holder.getSignImageView().setLabelText(sign.status);
+        holder.getSignImageView().setLabelBackgroundColor(sign.labelColor);
+        holder.getSignImageView().setLabelVisual(labelVisible);
 
         if(sign.image != null)
             holder.getSignImageView().setImageBitmap(sign.image);

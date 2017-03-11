@@ -282,6 +282,8 @@ public class BuildingPictureActivityHandler extends SABaseActivityHandler {
                     bp.setId(id);
                     buildingPictures.add(bp);
 
+                    imageIndex = buildingPictures.size()-1;
+
                     startToLoadImage();
 
                     updatePageText();

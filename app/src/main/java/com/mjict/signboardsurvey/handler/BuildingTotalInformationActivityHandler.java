@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -174,17 +176,14 @@ public class BuildingTotalInformationActivityHandler extends SABaseActivityHandl
             public void onDeleteShopMenuClicked(int position) {
                 askAndDeleteShop(position);
             }
-            @Override
-            public void onShutdownShopClicked(int position) {
-                // TODO 폐업 처리
-
-            }
         });
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if(requestCode == MJConstants.REQUEST_SIGN_LIST_MODIFY) {
             if(resultCode == Activity.RESULT_OK) {  // 바뀐게 있음
                 Shop shop = (Shop)data.getSerializableExtra(MJConstants.SHOP);
@@ -494,6 +493,20 @@ public class BuildingTotalInformationActivityHandler extends SABaseActivityHandl
             return;
         }
 
+        // 업소명 중복 체크
+        boolean haveSameName = false;
+        for(int i=0; i<shopInformations.size(); i++) {
+            Shop s = shopInformations.get(i).shop;
+            if(s.getName().equals(inputData.name)) {
+                haveSameName = true;
+                break;
+            }
+        }
+        if(haveSameName) {
+            Toast.makeText(activity, R.string.cannot_register_same_name_shop, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // start to save shop
         String currentTime = Utilities.getCurrentTimeAsString();
         long id = -1;
@@ -784,9 +797,22 @@ public class BuildingTotalInformationActivityHandler extends SABaseActivityHandl
         String shopName = shop.getName();
         String phone = shop.getPhoneNumber();
         String representative = shop.getRepresentative();
-        boolean demolished = shop.getBusinessCondition().equals("4");   // TODO 따로 지정 필요
 
-        ShopInfo shopInfo = new ShopInfo(shopName, phone, shopCategory, representative, demolished);
+        // 폐업, 허가정보 체크
+        boolean demolished = false;
+        boolean permitted = false;
+        if(signs != null) {
+            for (int i = 0; i<signs.size(); i++) {
+                Sign s = signs.get(i);
+                if(s.getStatsCode().equals("1")) {
+                    demolished = true;
+                }
+                if(s.getTblNumber() == 310)
+                    permitted = true;
+            }
+        }
+
+        ShopInfo shopInfo = new ShopInfo(shopName, phone, shopCategory, representative, demolished, permitted);
         List<SignInfo> signInfos = new ArrayList<>();
         for(int i=0; i<signs.size(); i++) {
             Sign sign = signs.get(i);
@@ -803,9 +829,23 @@ public class BuildingTotalInformationActivityHandler extends SABaseActivityHandl
             String location = String.format("%d / %d", sign.getPlacedFloor(), sign.getTotalFloor());
             Setting resultSetting = smgr.getResult(sign.getInspectionResult());
             String result = (resultSetting == null) ? smgr.getDefaultResultName() : resultSetting.getName();
-            int labelColor = -1;
 
-            SignInfo signInfo = new SignInfo(image, content, type, size, status, light, location, result, labelColor);
+            // 철거, 철거예정, 폐업 레이블 색상 설정
+            int labelColor = -1;
+            boolean labelVisible = true;
+            if(sign.getStatsCode().equals("1"))
+                labelColor = ContextCompat.getColor(activity, R.color.postit_color_1);
+            else if(sign.getStatsCode().equals("2"))
+                labelColor = ContextCompat.getColor(activity, R.color.postit_color_2);
+            else if(sign.getStatsCode().equals("3"))
+                labelColor = ContextCompat.getColor(activity, R.color.postit_color_3);
+            else {
+                labelColor = Color.TRANSPARENT;
+                labelVisible = false;
+            }
+            boolean signPermitted = (sign.getTblNumber() == 310);
+
+            SignInfo signInfo = new SignInfo(image, content, type, size, status, light, location, result, labelColor, labelVisible, signPermitted);
             signInfos.add(signInfo);
         }
 

@@ -1,6 +1,7 @@
 package com.mjict.signboardsurvey;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.mjict.signboardsurvey.model.User;
@@ -22,27 +23,36 @@ public class MJContext {
 
 
     private static User currentUser;
-    private static int deviceNumber = 25;   // TODO 나중에 바꿔
 
     private static Queue<Long> recentSigns = new LinkedList<>();
     private static Queue<Long> recentBuildings = new LinkedList<>();
     private static Queue<String> recentKeywords = new LinkedList<>();
 
+    private static String profileImage;
+    private static Bitmap profileBitmap;
+
     public static User getCurrentUser() {
         return currentUser;
     }
 
-    // TODO 로그아웃 버튼 누르거나 로그인 화면 으로 돌아오거나 종료 누르면 null 하도록 해야겠지
     public static void setCurrentUser(User user) {
         currentUser = user;
     }
 
-    public static int getDeviceNumber() {
-        return deviceNumber;
+    public static void setProfileImage(String uri) {
+        profileImage = uri;
     }
 
-    public static void setDeviceNumber(int number) {
-        deviceNumber = number;
+    public static String getProfileImage() {
+        return profileImage;
+    }
+
+    public static void setProfileBitmap(Bitmap img) {
+        profileBitmap = img;
+    }
+
+    public static Bitmap getProfileBitmap() {
+        return profileBitmap;
     }
 
     public static void addRecentSing(long id) {
@@ -104,7 +114,7 @@ public class MJContext {
     }
 
     public static boolean save(Context context) {
-        AppDataConfiguration.clearRecent();
+        AppDataConfiguration.clearAll();
 
         Iterator<Long> signsIterator = recentSigns.iterator();
         int smax = AppDataConfiguration.MAX_RECENT_SIGN_COUNT;
@@ -129,6 +139,8 @@ public class MJContext {
             String keyword = keywordIterator.next();
             AppDataConfiguration.setRecentKeyword(kmax, keyword);
         }
+
+        AppDataConfiguration.setUserProfileImage(profileImage);
 
         boolean answer = true;
 
@@ -164,6 +176,8 @@ public class MJContext {
             String keyword = AppDataConfiguration.getRecentKeyword(i);
             recentKeywords.offer(keyword);
         }
+
+        profileImage = AppDataConfiguration.getUserProfileImage();
 
         // test
         String[] keywords = new String[recentKeywords.size()];

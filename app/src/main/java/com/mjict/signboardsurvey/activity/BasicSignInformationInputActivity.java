@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.adapter.ImageSpinnerAdapter;
@@ -36,6 +37,9 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
     private CheckBox frontCheckBox;
     private CheckBox intersectionCheckBox;
     private CheckBox frontBackCheckBox;
+
+    private TextView sizeLabel;
+    private TextView locationLabel;
 
 //    private LightSpinnerOnItemClickListener lightSpinnerOnItemClickListener;
 
@@ -73,6 +77,8 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
         intersectionCheckBox = (CheckBox)this.findViewById(R.id.intersection_check_box);
         frontBackCheckBox = (CheckBox)this.findViewById(R.id.front_back_check_box);
 
+        sizeLabel = (TextView)this.findViewById(R.id.size_label);
+        locationLabel = (TextView)this.findViewById(R.id.location_label);
 
 //        nextButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -248,6 +254,18 @@ public class BasicSignInformationInputActivity extends SABaseActivity {
 
     public boolean getFrontBackChecked() {
         return frontBackCheckBox.isChecked();
+    }
+
+    public void showSignImageReviewMark() {
+        signImageView.setBackgroundResource(R.drawable.bg_review_mark);
+    }
+
+    public void showSizeReviewMark() {
+        sizeLabel.setBackgroundResource(R.drawable.bg_review_mark);
+    }
+
+    public void showLocationReviewMark() {
+        locationLabel.setBackgroundResource(R.drawable.bg_review_mark);
     }
 
 //    public static interface LightSpinnerOnItemClickListener {

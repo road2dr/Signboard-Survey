@@ -20,11 +20,4 @@
         android:title="@string/delete_shop"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/shutdown_shop"
-        android:orderInCategory="103"
-        android:title="@string/shut_down"
-        app:showAsAction="never" />
-
-
 </menu>

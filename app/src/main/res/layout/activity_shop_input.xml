@@ -17,7 +17,8 @@
             android:src="@drawable/ic_left_arrow_sel"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
-            android:background="@null"/>
+            android:background="@null"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/title_text_view"
             android:layout_width="match_parent"
@@ -25,14 +26,14 @@
             android:layout_marginRight="?attr/actionBarSize"
             android:layout_toRightOf="@+id/back_image_button"
             android:gravity="center"
-            android:text="@string/basic_information"
+            android:text="@string/shop_information"
             android:textColor="@color/white"
             android:textSize="18sp"/>
         <TextView
             android:id="@+id/done_button"
             android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:text="@string/next"
+            android:text="@string/done"
             android:textColor="@color/navi_btn_text_color_sel"
             android:layout_alignParentRight="true"
             android:gravity="center"/>
@@ -109,7 +110,8 @@
         android:layout_height="45dp"
         android:orientation="horizontal"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp">
+        android:layout_marginRight="15dp"
+        android:visibility="gone">
         <TextView
             android:layout_width="100dp"
             android:layout_height="match_parent"

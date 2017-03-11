@@ -11,6 +11,7 @@ import com.mjict.signboardsurvey.widget.LabelImageView;
  */
 public class SignInfoRowViewHolder {
     private View parent;
+    private View permitView;
     private LabelImageView imageView;
     private TextView nameTextView;
     private TextView sizeTextView;
@@ -18,6 +19,14 @@ public class SignInfoRowViewHolder {
 
     public SignInfoRowViewHolder(View view) {
         parent = view;
+    }
+
+
+    public View getPermitView() {
+        if(permitView == null)
+            permitView = parent.findViewById(R.id.permit_view);
+
+        return permitView;
     }
 
     public LabelImageView getImageView() {

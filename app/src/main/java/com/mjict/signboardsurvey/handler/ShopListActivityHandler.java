@@ -20,12 +20,13 @@ import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.model.Setting;
 import com.mjict.signboardsurvey.model.Shop;
+import com.mjict.signboardsurvey.model.ShopInformation;
+import com.mjict.signboardsurvey.model.Sign;
 import com.mjict.signboardsurvey.model.ui.ShopInfo;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
 import com.mjict.signboardsurvey.task.DeleteShopTask;
-import com.mjict.signboardsurvey.task.LoadShopByBuildingTask;
+import com.mjict.signboardsurvey.task.LoadShopInformationByBuildingTask;
 import com.mjict.signboardsurvey.task.LoadValidBuildingImageTask;
-import com.mjict.signboardsurvey.task.ModifyShopShutDownTask;
 import com.mjict.signboardsurvey.task.ModifyShopTask;
 import com.mjict.signboardsurvey.task.RegisterShopTask;
 import com.mjict.signboardsurvey.task.SimpleAsyncTaskListener;
@@ -34,6 +35,9 @@ import com.mjict.signboardsurvey.util.SyncConfiguration;
 import com.mjict.signboardsurvey.widget.ShopOptionDialog;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,7 +48,7 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
 
     private ShopListActivity activity;
     private Building currentBuilding;
-    private List<Shop> currentShops;
+    private List<ShopInformation> currentShops;
 
     @Override
     public void onActivityCreate(Bundle savedInstanceState) {
@@ -72,10 +76,24 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
             }
         });
 
-        activity.setOptionMenuItemClickListener(new ShopListActivity.OnOptionMenuItemClickListener() {
+//        activity.setOptionMenuItemClickListener(new ShopListActivity.OnOptionMenuItemClickListener() {
+//            @Override
+//            public void addShopClicked() {
+//                goToShopInput(null);
+//            }
+//        });
+
+        activity.setAddShopButtonOnClickListener(new View.OnClickListener() {
             @Override
-            public void addShopClicked() {
+            public void onClick(View v) {
                 goToShopInput(null);
+            }
+        });
+
+        activity.setOnSortButtonClickListener(new ShopListActivity.OnSortButtonClickListener() {
+            @Override
+            public void onNameSortClicked(boolean reversed) {
+                sortList(reversed);
             }
         });
 
@@ -98,7 +116,7 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
             houseAddress = baseAddr + currentBuilding.getHouseNumber();
 
         String buildingNumber = currentBuilding.getFirstBuildingNumber();
-        if (currentBuilding.getSecondBuildingNumber() != null && currentBuilding.getSecondBuildingNumber().equals("") == false)
+        if (!currentBuilding.getSecondBuildingNumber().equals("") && !currentBuilding.getSecondBuildingNumber().equals("0"))
             buildingNumber = buildingNumber + "-" + currentBuilding.getSecondBuildingNumber();
 
         String streetAddress = baseAddr + currentBuilding.getStreetName() + buildingNumber;
@@ -119,6 +137,8 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if(requestCode == MJConstants.REQUEST_SHOP_INFORMATION) {
             if(resultCode == Activity.RESULT_OK) {
                 Shop shop = (Shop) data.getSerializableExtra(MJConstants.SHOP);
@@ -126,13 +146,26 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
                     // TODO something is wrong
                     return;
                 }
+                // 같은 이름 체크
+                boolean haveSameName = false;
+                for(int i=0; i<currentShops.size(); i++) {
+                    Shop s = currentShops.get(i).shop;
+                    if(s.getName().equals(shop.getName())) {
+                        haveSameName = true;
+                        break;
+                    }
+                }
 
-                // find out whether new or exist
+                if(haveSameName) {
+                    Toast.makeText(activity, R.string.cannot_register_same_name_shop, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // find out whether new or exist - 인덱스 찬기
                 int index = -1;
-
                 if(shop.getId() != -1) {
                     for (int i = 0; i < currentShops.size(); i++) {
-                        Shop s = currentShops.get(i);
+                        Shop s = currentShops.get(i).shop;
                         if (s.getId() == shop.getId()) {
                             index = i;
                             break;
@@ -140,9 +173,11 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
                     }
                 }
 
+                // 다른 정보 입력
                 SimpleDateFormat syncTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREAN);
                 String syncDate = syncTimeFormat.format(SyncConfiguration.getLastSynchronizeDate());
 
+                shop.setBusinessCondition("4");
                 shop.setSgCode(currentBuilding.getSgCode());
                 shop.setBuildingId(currentBuilding.getId());
                 shop.setAddressId(currentBuilding.getAddressId());
@@ -198,22 +233,23 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
     }
 
     private void startLoadShopInformation() {
-        LoadShopByBuildingTask task = new LoadShopByBuildingTask(activity.getApplicationContext());
-        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<List<Shop>>() {
+        LoadShopInformationByBuildingTask task = new LoadShopInformationByBuildingTask(activity.getApplicationContext());
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<List<ShopInformation>>() {
             @Override
             public void onTaskStart() {
                 activity.showWaitingDialog(R.string.loading_shop_information);
             }
 
             @Override
-            public void onTaskFinished(List<Shop> shops) {
+            public void onTaskFinished(List<ShopInformation> shops) {
                 activity.hideWaitingDialog();
                 currentShops = shops;
-                SettingDataManager smgr = SettingDataManager.getInstance();
-                if(shops != null) {
-                    for(int i=0; i<shops.size(); i++) {
-                        Shop shop = shops.get(i);
-                        ShopInfo info = shopToShopInfo(shop);
+
+                if(currentShops != null) {
+                    Collections.sort(currentShops, new ShopNameComparator());   // 이름순 정렬
+                    for(int i=0; i<currentShops.size(); i++) {
+                        ShopInformation si = currentShops.get(i);
+                        ShopInfo info = shopToShopInfo(si);
 
                         activity.addToList(info);
                     }
@@ -224,7 +260,6 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
     }
 
     private void startToRegisterShop(final Shop shop) {
-
         RegisterShopTask task = new RegisterShopTask(activity.getApplicationContext());
         task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Long>() {
             @Override
@@ -240,8 +275,9 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
                 }
 
                 shop.setId(result);
-                currentShops.add(shop);
-                ShopInfo info = shopToShopInfo(shop);
+                ShopInformation si = new ShopInformation(shop, new ArrayList<Sign>());
+                currentShops.add(si);
+                ShopInfo info = shopToShopInfo(si);
                 activity.addToList(info);
             }
         });
@@ -264,8 +300,9 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
                     return;
                 }
 
-                currentShops.set(index, shop);
-                ShopInfo info = shopToShopInfo(shop);
+//                currentShops.set(index, shop);
+                currentShops.get(index).shop = shop;
+                ShopInfo info = shopToShopInfo(currentShops.get(index));
                 activity.replaceListItem(index, info);
             }
         });
@@ -273,13 +310,13 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
     }
 
     private void shopItemClicked(int index) {
-        Shop shop = currentShops.get(index);
+        Shop shop = currentShops.get(index).shop;
 
         goToSignList(shop);
     }
 
     private void shopItemLongClicked(final int index) {
-        final Shop shop = currentShops.get(index);
+        final Shop shop = currentShops.get(index).shop;
         boolean deleteEnable = shop.isSynchronized() ? false : true;    // 앱에서 추가한 데이터만 삭제 할 수 있다.
         activity.showShopOptionDialog(new ShopOptionDialog.ShopOptionDialogOnClickListener() {
             @Override
@@ -291,11 +328,6 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
             public void onAddSignButtonClicked() {
                 activity.hideShopOptionDialog();
             }
-            @Override
-            public void onShutDownButtonClicked() {
-                activity.hideShopOptionDialog();
-                startToShutdown(index);
-            }
 
             @Override
             public void onDeleteButtonClicked() {
@@ -305,36 +337,36 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
         }, deleteEnable);
     }
 
-    private void startToShutdown(final int index) {
-        final Shop shop = currentShops.get(index);
-        Log.d("junseo", "startToShutdown: "+shop.getBusinessCondition());
-        ModifyShopShutDownTask task = new ModifyShopShutDownTask(activity.getApplicationContext());
-        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Shop>() {
-            @Override
-            public void onTaskStart() {
-                activity.showWaitingDialog(R.string.saving);
-            }
-
-            @Override
-            public void onTaskFinished(Shop shop) {
-                activity.hideWaitingDialog();
-                int resId = (shop == null) ? R.string.failed_to_save : R.string.succeeded_to_save;
-                Toast.makeText(activity, resId, Toast.LENGTH_SHORT).show();
-
-                Log.d("junseo", "onTaskFinished: "+shop.getBusinessCondition());
-
-                if(shop != null) {
-                    currentShops.set(index, shop);
-                    ShopInfo info = shopToShopInfo(shop);
-                    activity.replaceListItem(index, info);
-                }
-            }
-        });
-        task.execute(shop);
-    }
+//    private void startToShutdown(final int index) {
+//        final Shop shop = currentShops.get(index);
+//        Log.d("junseo", "startToShutdown: "+shop.getBusinessCondition());
+//        ModifyShopShutDownTask task = new ModifyShopShutDownTask(activity.getApplicationContext());
+//        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Shop>() {
+//            @Override
+//            public void onTaskStart() {
+//                activity.showWaitingDialog(R.string.saving);
+//            }
+//
+//            @Override
+//            public void onTaskFinished(Shop shop) {
+//                activity.hideWaitingDialog();
+//                int resId = (shop == null) ? R.string.failed_to_save : R.string.succeeded_to_save;
+//                Toast.makeText(activity, resId, Toast.LENGTH_SHORT).show();
+//
+//                Log.d("junseo", "onTaskFinished: "+shop.getBusinessCondition());
+//
+//                if(shop != null) {
+//                    currentShops.set(index, shop);
+//                    ShopInfo info = shopToShopInfo(shop);
+//                    activity.replaceListItem(index, info);
+//                }
+//            }
+//        });
+//        task.execute(shop);
+//    }
 
     private void startToDeleteShop(final int index) {
-        final Shop shop = currentShops.get(index);
+        final Shop shop = currentShops.get(index).shop;
 
         DeleteShopTask task = new DeleteShopTask(activity.getApplicationContext());
         task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<Boolean>() {
@@ -358,7 +390,7 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
     }
 
     private void askAndDeleteShop(final int index) {
-        final Shop shop = currentShops.get(index);
+        final Shop shop = currentShops.get(index).shop;
         if(shop.isSynchronized() == true)
             return;
 
@@ -380,6 +412,25 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
         dialog.show();    // 알림창 띄우기
     }
 
+    private void sortList(boolean reversed) {
+        if(currentShops == null)
+            return;
+
+        Collections.sort(currentShops, new ShopNameComparator());   // 이름순 정렬
+        if(reversed)
+            Collections.reverse(currentShops);
+
+        activity.clearList();
+
+        for(int i=0; i<currentShops.size(); i++) {
+            ShopInformation si = currentShops.get(i);
+            ShopInfo info = shopToShopInfo(si);
+
+            activity.addToList(info);
+        }
+
+    }
+
     private void goToShopInput(Shop shop) {
         Intent intent = new Intent(activity, ShopInputActivity.class);
         intent.putExtra(HANDLER_CLASS, ShopInputActivityHandler.class);
@@ -394,14 +445,48 @@ public class ShopListActivityHandler extends SABaseActivityHandler {
         activity.startActivity(intent);
     }
 
-    private ShopInfo shopToShopInfo(Shop shop) {
+    private ShopInfo shopToShopInfo(ShopInformation shopInfo) {
         SettingDataManager smgr = SettingDataManager.getInstance();
+
+        Shop shop = shopInfo.shop;
+        List<Sign> signs = shopInfo.signs;
         String name = shop.getName();
         Setting categorySetting = smgr.getShopCategory(shop.getCategory());
         String category = categorySetting == null ? smgr.getDefaultShopCategoty() : categorySetting.getName();
         String phone = shop.getPhoneNumber();
-        boolean demolished = shop.getBusinessCondition().equals("4") ? false : true;   // TODO 상수로 따로 빼던지 isDemolished() 함수를 만들던지 이런값들을 관리하는 클래스를 만들던지
 
-        return new ShopInfo(name, phone, category, "", demolished);
+        // 폐업 여부 체크 - 간판 하나라도 폐업이면 폐업 이라고 보여줘
+        // 허가 정보 체크 - 하나라도 310을 간고 있으면 허가
+        boolean demolished = false;
+        boolean permitted = false;
+        if(signs != null) {
+            for (int i = 0; i<signs.size(); i++) {
+                Sign s = signs.get(i);
+                if(s.getStatsCode().equals("1")) {
+                    demolished = true;
+                }
+
+                if(s.getTblNumber() == 310)
+                    permitted = true;
+            }
+        }
+
+        return new ShopInfo(name, phone, category, "", demolished, permitted);
     }
+
+    private class ShopNameComparator implements Comparator<ShopInformation> {
+        @Override
+        public int compare(ShopInformation lhs, ShopInformation rhs) {
+            return lhs.shop.getName().compareTo(rhs.shop.getName());
+        }
+    }
+
+//    private class ShopDateComparator implements Comparator<Shop> {
+//        @Override
+//        public int compare(Shop lhs, Shop rhs) {
+//            Date ld =
+//            if(lhs == null || rhs == null)
+//            return lhs.getName().compareTo(rhs.getName());
+//        }
+//    }
 }

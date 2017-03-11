@@ -1,6 +1,7 @@
 package com.mjict.signboardsurvey.activity;
 
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mjict.signboardsurvey.R;
+import com.mjict.signboardsurvey.widget.CircularImageView;
 import com.mjict.signboardsurvey.widget.WaitingDialog;
 
 
@@ -31,6 +33,9 @@ public abstract class SABaseActivity extends AppCompatSActivity {
     protected DrawerLayout drawer;
     private AppBarLayout appBarLayout;
 //    private NavigationView navigationView;
+    private CircularImageView userProfileImageView;
+    private TextView userIdTextView;
+    private TextView userNameTextView;
     private TextView titleTextView;
     private ImageView menuButton;
     private ImageView optionButton;
@@ -40,6 +45,7 @@ public abstract class SABaseActivity extends AppCompatSActivity {
     private Button demolishedSignButton;
     private Button reviewSignButton;
     private Button mapSearchButton;
+    private Button addAddressButton;
     private ImageButton homeButton;
     private ImageButton settingButton;
     private ImageButton quitButton;
@@ -99,6 +105,10 @@ public abstract class SABaseActivity extends AppCompatSActivity {
 //        navigationView = (NavigationView) findViewById(R.id.nav_view);
 //        navigationView.setNavigationItemSelectedListener(this);
 
+        userProfileImageView = (CircularImageView)this.findViewById(R.id.user_profile_image_view);
+        userIdTextView = (TextView)this.findViewById(R.id.user_id_text_view);
+        userNameTextView = (TextView)this.findViewById(R.id.user_name_text_view);
+
         menuButton = (ImageView)this.findViewById(R.id.menu_button);
         drawerArrowDrawable = new DrawerArrowDrawable(this);
         drawerArrowDrawable.setColor(Color.WHITE);
@@ -139,6 +149,7 @@ public abstract class SABaseActivity extends AppCompatSActivity {
         homeButton = (ImageButton)this.findViewById(R.id.home_button);
         settingButton = (ImageButton)this.findViewById(R.id.setting_button);
         quitButton = (ImageButton)this.findViewById(R.id.quit_button);
+        addAddressButton = (Button)this.findViewById(R.id.add_address_button);
     }
 
     @Override
@@ -264,6 +275,10 @@ public abstract class SABaseActivity extends AppCompatSActivity {
         quitButton.setOnClickListener(listener);
     }
 
+    public void setAddAddressButtonOnClickListener(View.OnClickListener listener) {
+        addAddressButton.setOnClickListener(listener);
+    }
+
     public void showOptionButton() {
         optionButton.setVisibility(View.VISIBLE);
     }
@@ -298,6 +313,23 @@ public abstract class SABaseActivity extends AppCompatSActivity {
 
     public void disableNavigation() {
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        menuButton.setVisibility(View.INVISIBLE);
+    }
+
+    public void setUserIdText(String userId) {
+        userIdTextView.setText(userId);
+    }
+
+    public void setUserNameText(String userName) {
+        userNameTextView.setText(userName);
+    }
+
+    public void setUserProfileImageViewOnClickListener(View.OnClickListener listener) {
+        userProfileImageView.setOnClickListener(listener);
+    }
+
+    public void setUserProfileImage(Bitmap image) {
+        userProfileImageView.setImageBitmap(image);
     }
 
     /**

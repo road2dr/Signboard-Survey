@@ -1,5 +1,7 @@
 package com.mjict.signboardsurvey.model.ui;
 
+import java.util.Date;
+
 /**
  * Created by Junseo on 2017-02-13.
  */
@@ -25,7 +27,7 @@ public class SignInputData {
     public Object uniqueness;
     public String memo;
     public String demolishImagePath;
-    public String demolishDate;
+    public Date demolishDate;
     public Object inspectionResult;
 
     public SignInputData(String signImagePath, String content, Object signType, Object signStats,
@@ -33,7 +35,7 @@ public class SignInputData {
                          String height, boolean isFront, boolean isIntersection, boolean isFrontBack,
                          boolean isCollision, String collisionWidth, String collisionLength, Object reviewStats,
                          Object installSide, Object uniqueness, String memo, String demolishImagePath,
-                         String demolishDate, Object inspectionResult) {
+                         Date demolishDate, Object inspectionResult) {
         this.signImagePath = signImagePath;
         this.content = content;
         this.signType = signType;
@@ -81,7 +83,7 @@ public class SignInputData {
         this.uniqueness = null;
         this.memo = "";
         this.demolishImagePath = "";
-        this.demolishDate = "";
+        this.demolishDate = null;
         this.inspectionResult = "";
     }
 }

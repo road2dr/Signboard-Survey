@@ -11,9 +11,12 @@ import com.mjict.signboardsurvey.R;
 import com.mjict.signboardsurvey.activity.ReviewSignActivity;
 import com.mjict.signboardsurvey.activity.SignInformationActivity;
 import com.mjict.signboardsurvey.model.Address;
+import com.mjict.signboardsurvey.model.Building;
 import com.mjict.signboardsurvey.model.IndexBitmap;
 import com.mjict.signboardsurvey.model.Setting;
+import com.mjict.signboardsurvey.model.Shop;
 import com.mjict.signboardsurvey.model.Sign;
+import com.mjict.signboardsurvey.model.SignInformation;
 import com.mjict.signboardsurvey.model.StreetAddress;
 import com.mjict.signboardsurvey.model.ui.ReviewSign;
 import com.mjict.signboardsurvey.task.AsyncTaskListener;
@@ -35,7 +38,7 @@ import java.util.List;
 public class ReviewSignActivityHandler extends SABaseActivityHandler {
 
     private ReviewSignActivity activity;
-    private List<Sign> searchResult;
+    private List<SignInformation> searchResult;
 
     @Override
     public void onActivityCreate(Bundle savedInstanceState) {
@@ -143,7 +146,7 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
         final String secondNumber = activity.getInputSecondBuildingNumber();
 
         SearchReviewSignTask task = new SearchReviewSignTask(activity.getApplicationContext());
-        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<List<Sign>>() {
+        task.setSimpleAsyncTaskListener(new SimpleAsyncTaskListener<List<SignInformation>>() {
             @Override
             public void onTaskStart() {
                 activity.showWaitingDialog(R.string.searching);
@@ -151,7 +154,7 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
                 searchResult = null;
             }
             @Override
-            public void onTaskFinished(List<Sign> result) {
+            public void onTaskFinished(List<SignInformation> result) {
                 activity.hideWaitingDialog();
 
                 searchResult = result;
@@ -159,8 +162,8 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
                     // TODO 에러 발생
                 }
                 for(int i=0; i<searchResult.size(); i++) {
-                    Sign sign = searchResult.get(i);
-                    ReviewSign s = signToReviewSign(sign);
+                    SignInformation si = searchResult.get(i);
+                    ReviewSign s = signToReviewSign(si);
                     activity.addToList(s);
                 }
 
@@ -229,7 +232,7 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
         String[] signImagePaths = new String[n];
 
         for(int i=0; i<n; i++) {
-            Sign sign = searchResult.get(i);
+            Sign sign = searchResult.get(i).sign;
             String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isSignPicModified());
             String signImagePath = signPicDir+sign.getPicNumber();
             signImagePaths[i] = signImagePath;
@@ -242,7 +245,7 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
         if(searchResult == null)
             return;
 
-        Sign sign = searchResult.get(position);
+        Sign sign = searchResult.get(position).sign;
         String signPicDir = SyncConfiguration.getDirectoryForSingPicture(sign.isSignPicModified());
         String signImagePath = signPicDir+sign.getPicNumber();
 
@@ -269,11 +272,12 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
         signImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, paths);
     }
     private void listRowClicked(int position, ReviewSign data) {
-        Sign sign = searchResult.get(position);
+        Sign sign = searchResult.get(position).sign;
 
         Intent intent = new Intent(activity.getBaseContext(), SignInformationActivity.class);
         intent.putExtra(HANDLER_CLASS, SignInformationActivityHandler.class);
         intent.putExtra(MJConstants.SIGN, sign);
+        intent.putExtra(MJConstants.REVIEW_SIGN_MODE, true);
 //        intent.putExtra(MJConstants.SIGN_LIST, shopSigns);
 
         activity.startActivityForResult(intent, MJConstants.REQUEST_SIGN_MODIFY);
@@ -282,21 +286,27 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
     private void findSignAndReplace(Sign sign) {
         int position = -1;
         for(int i=0; i<searchResult.size(); i++) {
-            Sign s = searchResult.get(i);
+            Sign s = searchResult.get(i).sign;
             if(s.getId() == sign.getId()) {
                 position = i;
             }
         }
         if(position != -1) {
-            searchResult.set(position, sign);
-            ReviewSign reviewSign = signToReviewSign(sign);
+//            searchResult.set(position, sign);
+            SignInformation si = searchResult.get(position);
+            si.sign = sign;
+            ReviewSign reviewSign = signToReviewSign(si);
             activity.replaceListItem(position, reviewSign);
 
             startToLoadImage(position);
         }
     }
 
-    private ReviewSign signToReviewSign(Sign sign) {
+    private ReviewSign signToReviewSign(SignInformation si) {
+        Sign sign = si.sign;
+        Shop shop = si.shop;
+        Building building = si.building;
+
         SettingDataManager sdmgr = SettingDataManager.getInstance();
 
         Setting reviewSetting = sdmgr.getReviewCode(sign.getReviewCode());
@@ -312,9 +322,14 @@ public class ReviewSignActivityHandler extends SABaseActivityHandler {
         String size = sign.getHeight() > 0 ? sign.getWidth()+"X"+sign.getLength() : sign.getWidth()+"X"+sign.getLength()+"X"+sign.getHeight();
         String location = sign.getPlacedFloor()+"/"+sign.getTotalFloor();
         String date = sign.getInputDate();
+        String address = building.getFirstBuildingNumber();
+        if(!building.getSecondBuildingNumber().equals("") && !building.getSecondBuildingNumber().equals("0"))
+            address = address + "-" +building.getSecondBuildingNumber();
+        address = address +" "+shop.getName();
+        boolean permitted = (sign.getTblNumber() == 310);
 
         ReviewSign reviewSign = new ReviewSign(null, status, type, content, lightType,
-                result, size, location, date);
+                result, size, location, date, address, permitted);
 
         return reviewSign;
     }

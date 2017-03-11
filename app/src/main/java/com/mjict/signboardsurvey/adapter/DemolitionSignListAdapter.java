@@ -54,37 +54,32 @@ public class DemolitionSignListAdapter extends ArrayAdapter<DemolishedSign> {
         int labelColor = -1;
         String labelText = null;
 
-//        switch (data.status) {
-//            case DEMOLISHED:     // 철거
-//                labelVisible = true;
-//                labelColor = data.labelColor;
-//                labelText = data.labelText;
-//                break;
-//            case TO_BE_DEMOLISH:     // 철거 예정
-//                labelVisible = true;
-//                labelColor = context.getResources().getColor(R.color.demolition_expect_label);
-//                labelText = context.getResources().getString(R.string.demolition_target);
-//                break;
-//            default:
-//                labelVisible = false;
-//        }
-
+        holder.getSignImageView().setLabelVisual(labelVisible);
         if(data.labelVisible) {
-            holder.getSignImageView().setLabelVisual(data.labelVisible);
             holder.getSignImageView().setLabelText(data.labelText);
             holder.getSignImageView().setLabelBackgroundColor(data.labelColor);
             layout.setSwipEnable(true);
-        } else {
-            holder.getSignImageView().setLabelVisual(false);
         }
 
+//        holder.getContentTextView().setText(data.content);
+//        holder.getTypeTextView().setText(data.type);
+//        holder.getAddressTextView().setText(data.light);    // TODO
+//        holder.getDemolitionDateTextView().setText(data.date);
+//        holder.getLocationTextView().setText(data.location);
+//        holder.getResultTextView().setText(data.result);
+//        holder.getSizeTextView().setText(data.size);
+
+        int visibility = data.permitted ? View.VISIBLE : View.GONE;
+
+        holder.getSignImageView().setLabelVisual(false);    // 이미지 하단부로 옮김
+        holder.getReviewTextView().setText(data.status.toString());
         holder.getContentTextView().setText(data.content);
-        holder.getTypeTextView().setText(data.type);
-        holder.getAddressTextView().setText(data.light);    // TODO
+        holder.getPermitView().setVisibility(visibility);
         holder.getDemolitionDateTextView().setText(data.date);
-        holder.getLocationTextView().setText(data.location);
+        holder.getAddressTextView().setText(data.address);
         holder.getResultTextView().setText(data.result);
         holder.getSizeTextView().setText(data.size);
+        holder.getSignImageView().setImageBitmap(data.signImage);
 
         holder.getSignImageView().setImageBitmap(data.signImage);
         holder.getDemolitionImageView().setImageBitmap(data.demolishedImage);

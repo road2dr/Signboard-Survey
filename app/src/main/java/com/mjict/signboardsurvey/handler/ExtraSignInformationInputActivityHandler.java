@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.mjict.signboardsurvey.MJConstants;
@@ -24,9 +25,7 @@ import com.mjict.signboardsurvey.util.WrongNumberFormatException;
 import com.mjict.signboardsurvey.util.WrongNumberScopeException;
 import com.mjict.signboardsurvey.widget.TimePickerDialog;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by Junseo on 2016-11-18.
@@ -103,9 +102,14 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
             @Override
             public void onClicked(Date time) {
                 activity.hideTimePickerDialog();
-                SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.KOREAN);
-                String timeText = format.format(time);
-                activity.setDemolishDateText(timeText);
+                activity.setDemolishDate(time);
+            }
+        });
+
+        activity.setCollisionCheckBoxOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                activity.setCollisionWidthAndLengthEnabled(isChecked);
             }
         });
 
@@ -120,6 +124,8 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
     boolean imageChanged = false;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
         if(requestCode == MJConstants.REQUEST_TAKE_AND_SAVE) {
             if(resultCode == Activity.RESULT_OK) {
                 Boolean result = data.getBooleanExtra(MJConstants.RESPONSE, false);
@@ -144,7 +150,7 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
         Setting installedSideSetting = (Setting) activity.getSelectedInstalledSide();
         Setting uniquenessSetting = (Setting)activity.getSelectedUniqueness();
         String memo = activity.getInputMemo();
-        String demolishDate = activity.getInputDemolishDate();
+        String demolishDate = Utilities.dayToString(activity.getInputDemolishDate());
         Setting resultSetting = (Setting)activity.getSelectedResult();
         Setting reviewSetting = (Setting)activity.getSelectedReview();
         String picPath = (demolishPicPath == null) ? "" : demolishPicPath.substring(demolishPicPath.lastIndexOf("/")+1);
@@ -217,7 +223,7 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
         String demolishDate = currentSign.getDemolishedDate();
         Object result = currentSign.getInspectionResult();
 
-
+        Date demolishTime = Utilities.stringToDay(currentSign.getDemolishedDate());
 //        if(status == 철거 ) {
 //            activity.setDemolitionLayoutVisible(true);
 //        } else {
@@ -226,9 +232,10 @@ public class ExtraSignInformationInputActivityHandler extends SABaseActivityHand
 
 
         activity.setCollisionChecked(collisionChecked);
+        activity.setCollisionWidthAndLengthEnabled(collisionChecked);
         activity.setCollisionWidthText(String.format("%.2f", collisionWidth));
         activity.setCollisionLengthText(String.format("%.2f", collisionLength));
-        activity.setDemolishDateText(demolishDate);
+        activity.setDemolishDate(demolishTime);
         activity.setResultSpinnerSelection(result);
         activity.setMemoText(memo);
         activity.setInstalledSideSpinnerSelection(installedSideCode);

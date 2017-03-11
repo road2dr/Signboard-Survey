@@ -15,9 +15,11 @@ public class SignInfo {
     public String location;
     public String result;
     public int labelColor;
+    public boolean labelVisible;
+    public boolean permitted;
 
     public SignInfo(Bitmap image, String content, String type, String size, String status, String light, String location,
-                    String result, int labelColor) {
+                    String result, int labelColor, boolean labelVisible, boolean permitted) {
         this.image = image;
         this.content = content;
         this.type = type;
@@ -27,5 +29,7 @@ public class SignInfo {
         this.location = location;
         this.result = result;
         this.labelColor = labelColor;
+        this.labelVisible = labelVisible;
+        this.permitted = permitted;
     }
 }

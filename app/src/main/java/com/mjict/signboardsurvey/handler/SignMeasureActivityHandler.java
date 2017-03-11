@@ -242,14 +242,19 @@ public class SignMeasureActivityHandler extends SABaseActivityHandler {
         Log.d("junseo", "각도: "+angle);
 
         // 실제 세로 길이
-        double c = Math.sqrt( (distance*distance) + (b*b) - 2*distance*b*Math.cos(angle*Math.PI/180) );
+//        double c = Math.sqrt( (distance*distance) + (b*b) - 2*distance*b*Math.cos(angle*Math.PI/180) );   // 부산 특허
+        double c = real_h;
         Log.d("junseo", "실제 세로: "+c);
+
+        double meterWidth = real_bd/1000;
+        double meterLength = c/1000;
+        double meterArea = meterWidth * meterLength;
 
         double area = c * real_bd;
 
-        activity.setWidthText(String.format("%.3f", real_bd));
-        activity.setHeightText(String.format("%.3f", c));
-        activity.setResultText(String.format("%.3f", area));
+        activity.setWidthText(String.format("%.2f", meterWidth));
+        activity.setHeightText(String.format("%.2f", meterLength));
+        activity.setResultText(String.format("%.2f", meterArea));
 
         sizeXForResponse = (float) real_bd;
         sizeYForResponse = (float) c;
